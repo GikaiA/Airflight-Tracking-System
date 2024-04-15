@@ -1,0 +1,19 @@
+.footer {
+    display: flex;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+    justify-content: space-between;
+  }
+
+  .copyright-section {
+    padding-left: 10px;
+  }
+  
+  .copyright-sentence {
+    font-size: 15px;
+  }

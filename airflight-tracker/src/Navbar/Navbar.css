@@ -1,0 +1,21 @@
+.navbar{
+    background-color: transparent;
+}
+
+ul{
+    display: flex;
+    list-style-type: none;
+    float: right;
+}
+
+.navbar-item{
+    color: white;
+    text-decoration-line: none;
+}
+
+a{
+    color: white;
+    text-decoration-line: none;
+    margin-right: 25px;
+    font-size: 20px;
+}

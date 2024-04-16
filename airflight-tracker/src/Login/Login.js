@@ -6,7 +6,7 @@ const handleLogin = async (e) => {}
 
 function Login() {
   return (
-    <div className='loginpage'>
+    <div className='loginPage'>
       
       <div id = 'loginWrapper'>
         <form onSubmit={handleLogin}>

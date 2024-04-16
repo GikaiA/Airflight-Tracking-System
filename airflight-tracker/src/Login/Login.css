@@ -1,0 +1,13 @@
+.loginpage {
+    background-color: rgb(0, 0, 0);
+}
+
+#loginWrapper {
+    width: 25%;
+    margin: auto;
+    background: rgb(58, 58, 58);
+    border-radius: 20px;
+    padding: 10px 15px;
+    height: auto;
+    box-shadow: 20px 10px rgb(185, 70, 70);
+}

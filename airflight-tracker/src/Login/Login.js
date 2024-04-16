@@ -10,10 +10,10 @@ function Login() {
       
       <div id = 'loginWrapper'>
         <form onSubmit={handleLogin}>
-          <label>Username: </label>
-          <input type='text' id='UserNameField'/><br></br>
-          <label>Password: </label>
-          <input type='password' id='PasswordField'/><br></br>
+          <label>Username</label>
+          <input type='text' id='UserNameField'/>
+          <label>Password</label>
+          <input type='password' id='PasswordField'/>
         </form>
       </div>
     </div>

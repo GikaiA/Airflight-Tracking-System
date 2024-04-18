@@ -1,21 +1,32 @@
-.navbar{
-    background-color: transparent;
+ .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0437F2;
 }
 
-ul{
+.navbar-menu {
     display: flex;
     list-style-type: none;
-    float: right;
+    margin: 0;
+    align-items: center;
 }
 
-.navbar-item{
-    color: white;
-    text-decoration-line: none;
-}
-
-a{
+.navbar-item {
     color: white;
     text-decoration-line: none;
     margin-right: 25px;
-    font-size: 20px;
+}
+
+.navbar-logo {
+    width: 80px;
+    margin-right: 10px;
+    padding-bottom: 10px;
+}
+
+a{
+    color:#F2BF04;
+    text-decoration-line: none;
+    margin-right: 25px;
+    font-size: 22px;
 }

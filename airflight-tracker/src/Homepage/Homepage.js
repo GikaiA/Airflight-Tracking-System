@@ -1,13 +1,23 @@
-import React from 'react';
-import './Homepage.css';
-import airforcewallpaper from '../images/airforcewallpaper.jpg'
+import React from "react";
+import "./Homepage.css";
+import airforcebg from "../videos/airforce-bg.mp4";
+import airforcelogo from "../images/airforcelogo.png";
 
 function Homepage() {
   return (
-    <div className='homepage'>
-        <img src={airforcewallpaper} alt='airforce-wallpaper' className='airforce-wallpaper'></img>
+    <div className="homepage">
+      <video autoPlay muted controls={false} loop playsInline={true}>
+        <source src={airforcebg} type="video/mp4"></source>
+      </video>
+      <div className="logo-section">
+        <img
+          src={airforcelogo}
+          alt="airforce-mainlogo"
+          className="airforce-logo"
+        ></img>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Homepage
+export default Homepage;

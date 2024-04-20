@@ -11,9 +11,9 @@ function Login() {
       <div id = 'loginWrapper'>
         <form onSubmit={handleLogin}>
           <label>Username</label>
-          <input type='text' id='UserNameField'/>
+          <input type='text' id='UserNameField' placeholder='User ID'/>
           <label>Password</label>
-          <input type='password' id='PasswordField'/>
+          <input type='password' id='PasswordField' placeholder='Password'/>
         </form>
       </div>
     </div>

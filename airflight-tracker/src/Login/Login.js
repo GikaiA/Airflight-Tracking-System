@@ -1,6 +1,5 @@
 import React from 'react';
 import './Login.css';
-import airforcewallpaper from '../images/airforcewallpaper.jpg'
 
 const handleLogin = async (e) => {}
 

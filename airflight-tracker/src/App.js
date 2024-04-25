@@ -5,6 +5,7 @@ import Login from './Login/Login';
 import Database from './Database/Database';
 import Navbar from './Navbar/Navbar';
 import Footer from './Footer/Footer';
+import AccessForbidden from './AccessForbidden/AccessForbidden';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
       <Route path='/' element={<Homepage/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/database' element={<Database/>}/>
+      <Route path='/accessforbidden' element={<AccessForbidden/>}/>
     </Routes>
     <Footer/>
     </BrowserRouter>

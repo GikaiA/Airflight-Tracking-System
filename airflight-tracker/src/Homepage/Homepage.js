@@ -1,7 +1,7 @@
 import React from "react";
 import "./Homepage.css";
 import airforcebg from "../videos/airforce-bg.mp4";
-import airforcelogo from "../images/airforcelogo.png";
+import airforcelogo from "../images/airforcelogo-white.png";
 
 function Homepage() {
   return (

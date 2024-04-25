@@ -6,15 +6,17 @@ import airforcelogononame from "../images/airforcelogo-noname.png";
 function Navbar() {
   return (
     <div className="navbar">
-      <img
-        src={airforcelogononame}
-        alt="airforce-logo"
-        className="navbar-logo"
-      ></img>
+      <Link to="/">
+        <img
+          src={airforcelogononame}
+          alt="airforce-logo"
+          className="navbar-logo"
+        ></img>
+      </Link>
       <ul className="navbar-menu">
         <li className="navbar-item">
-        <button className="login-button">
-          <Link to="/">Home</Link>
+          <button className="login-button">
+            <Link to="/">Home</Link>
           </button>
         </li>
         <li className="navbar-item">

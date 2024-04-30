@@ -1,0 +1,41 @@
+.background-wrapper {
+    background-size: cover;
+    height: 97vh;
+    max-height: 100%;
+  }
+  
+  .register-section {
+    background-color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 25px;
+    border-radius: 10px;
+  }
+  
+  .register-form {
+    width: 500px;
+    padding: 20px 20px;
+    margin: 10px;
+  }
+  .input-field {
+    font-size: 20px;
+    display: block;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px;
+    background-color: lightgray;
+  }
+  
+  .register-button {
+    font-size: 20px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .register-button:hover {
+    cursor: pointer;
+  }

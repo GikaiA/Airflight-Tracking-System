@@ -5,7 +5,7 @@ function Footer() {
   return (
     <div className='footer'>
        <div className="copyright-section">
-        <p className="copyright-sentence">Copyright ©</p>
+        <p className="copyright-sentence">Copyright © Airflight Tracker</p>
       </div>
     </div>
   )

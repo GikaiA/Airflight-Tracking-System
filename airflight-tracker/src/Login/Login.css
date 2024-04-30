@@ -1,9 +1,17 @@
 .loginpage {
-    background-color: #0437F2;
+    background-color: #061a62;
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 120vh;
+}
+
+
+
+.login-section{
     height: 100vh;
+    background-color: #061a62;
+    color: #F2BF04;
 }
 
 input {
@@ -15,6 +23,7 @@ input {
 
 label{
     font-size: 20px;
+    padding-bottom: 10px;
 }
 
 #loginWrapper {
@@ -27,9 +36,40 @@ label{
     padding-bottom: 10px;
 }
 
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-field{
+    width: 500px;
+    max-width: 100%;
+}
+
 .login-component-button{
     font-size: 20px;
     border: none;
     border-radius: 10px;
     cursor: pointer;
+}
+
+
+.login-form-button{
+ width: 100px;
+ padding: 10px 10px;
+ background-color: #F2BF04;
+ color: #061a62;
+ border-radius: 5px;
+ border: none;
+}
+
+.login-form-button:hover{
+    cursor: pointer;
+}
+
+
+.forget-login-sentence{
+    color: #F2BF04;
 }

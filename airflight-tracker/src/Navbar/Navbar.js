@@ -1,9 +1,21 @@
 import React from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import airforcelogononame from "../images/airforcelogo-noname.png";
+import supabase from "../supabaseClient";
 
-function Navbar() {
+function Navbar({ user }) {
+  const naviagate = useNavigate
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      naviagate('/')
+      // You can perform any additional actions after sign-out if needed
+    } catch (error) {
+      console.error("Error signing out:", error.message);
+    }
+  };
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -11,18 +23,24 @@ function Navbar() {
           src={airforcelogononame}
           alt="airforce-logo"
           className="navbar-logo"
-        ></img>
+        />
       </Link>
       <ul className="navbar-menu">
-        <li className="navbar-item">
+        {/* <li className="navbar-item">
           <button className="login-button">
             <Link to="/">Home</Link>
           </button>
-        </li>
+        </li> */}
         <li className="navbar-item">
-          <button className="login-button">
-            <Link to="/login">Log In</Link>
-          </button>
+          {user ? (
+            <button className="login-button" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          ) : (
+            <button className="login-button">
+              <Link to="/login">Log In</Link>
+            </button>
+          )}
         </li>
       </ul>
     </div>

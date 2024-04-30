@@ -26,16 +26,17 @@
 }
 
 .login-button{
-    background-color: #0437F2;
+    background-color: #061a62;
     border-radius: 10px;
     border-color: transparent;
     transition-duration: 0.5s;
+    padding: 10px 20px;
 }
 
 
 .login-button:hover{
     background-color: #F2BF04;
-    color: #0437F2;
+    color: #061a62;
 }
 
 /* .login-text{

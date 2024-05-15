@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 //The mongoDB side of things how and what data is stored
 const mongoose = requires('mongoose');
 const bcrypt = require('bcryptjs');

@@ -1,0 +1,12 @@
+.findpilot{
+    height: 120vh;
+    padding-top: 50px;
+}
+
+
+.find-pilot-section{
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+    padding: 12px 15px;
+}

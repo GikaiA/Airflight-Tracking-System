@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = requires('express');
 const router = express. Router();
 const User = require('../models/User');

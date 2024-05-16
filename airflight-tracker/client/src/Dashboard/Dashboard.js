@@ -1,5 +1,5 @@
 import React from "react";
-import "./Database.css";
+import "./Dashboard.css";
 import carlton from "../images/carlton.gif";
 import { useNavigate, Link } from "react-router-dom";
 

@@ -10,7 +10,6 @@ function Navbar({ user }) {
     try {
       await supabase.auth.signOut();
       naviagate('/')
-      // You can perform any additional actions after sign-out if needed
     } catch (error) {
       console.error("Error signing out:", error.message);
     }
@@ -26,11 +25,6 @@ function Navbar({ user }) {
         />
       </Link>
       <ul className="navbar-menu">
-        {/* <li className="navbar-item">
-          <button className="login-button">
-            <Link to="/">Home</Link>
-          </button>
-        </li> */}
         <li className="navbar-item">
           {user ? (
             <button className="login-button" onClick={handleSignOut}>

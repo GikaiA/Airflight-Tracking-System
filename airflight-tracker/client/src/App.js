@@ -1,12 +1,14 @@
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Homepage from './Homepage/Homepage';
 import Login from './Login/Login';
-import Database from './Database/Database';
+import Database from './Dashboard/Dashboard';
 import Navbar from './Navbar/Navbar';
 import Footer from './Footer/Footer';
 import AccessForbidden from './AccessForbidden/AccessForbidden';
 import Register from './Register/Register';
+import supabase from './supabaseClient';
 
 
 function App() {

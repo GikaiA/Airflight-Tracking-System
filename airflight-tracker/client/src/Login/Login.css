@@ -21,7 +21,7 @@ input {
     font-size: 15px;
 }
 
-label{
+.login-label{
     font-size: 20px;
     padding-bottom: 10px;
 }

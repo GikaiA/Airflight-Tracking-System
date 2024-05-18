@@ -1,0 +1,27 @@
+.search{
+    height: 100vh;
+    background-color:#061a62 ;
+}
+
+
+.search-field-section{
+    padding-top: 90px;
+}
+
+
+.search-field{
+    font-size: 22px;
+    width: 700px;
+    background-color: lightgray;
+    border-radius: 10px;
+    border: none;
+    color: black;
+}
+
+.search-button{
+    font-size: 22px;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

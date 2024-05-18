@@ -1,12 +1,59 @@
-.findpilot{
-    height: 120vh;
-    padding-top: 50px;
+.findpilot {
+  height: 90vh;
+  background-color: #061a62;
+  padding-top: 50px;
+}
+
+.findpilot-title {
+  display: flex;
+  justify-content: center;
+  color: white;
+}
+.find-pilot-section {
+  display: flex;
+  justify-content: center;
+  height: 400px;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 20px 20px auto;
+  padding: 50px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Style for form inputs */
+.form-container input,
+.form-container select {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+/* Style for submit button */
+.findpilot-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Style for dropdown menus */
+.form-container select {
+  background-color: #fff;
+  cursor: pointer;
 }
 
 
-.find-pilot-section{
-    border-radius: 5px;
-    background-color: white;
-    color: black;
-    padding: 12px 15px;
+.dropdown-title{
+    font-size: 20px;
 }

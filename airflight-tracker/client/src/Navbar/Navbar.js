@@ -6,6 +6,7 @@ import supabase from "../supabaseClient";
 
 function Navbar({ user }) {
   const naviagate = useNavigate
+
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -18,24 +19,23 @@ function Navbar({ user }) {
   return (
     <div className="navbar">
       <Link to="/">
-        <img
-          src={airforcelogononame}
-          alt="airforce-logo"
-          className="navbar-logo"
-        />
+        <img src={airforcelogononame} alt="airforce-logo" className="navbar-logo"/>
       </Link>
       <ul className="navbar-menu">
-        <li className="navbar-item">
-          {user ? (
-            <button className="login-button" onClick={handleSignOut}>
-              Sign Out
-            </button>
-          ) : (
-            <button className="login-button">
-              <Link to="/login">Log In</Link>
-            </button>
-          )}
-        </li>
+        {user ? (
+          <>
+            <li className="navbar-item">
+              <Link to="/profile" className="navbar-link">Profile</Link>
+            </li>
+            <li className="navbar-item">
+              <button className="login-button" onClick={handleSignOut}>Sign Out</button>
+            </li>
+          </>
+        ) : (
+          <li className="navbar-item">
+            <Link to="/login" className="login-button">Log In</Link>
+          </li>
+        )}
       </ul>
     </div>
   );

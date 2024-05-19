@@ -24,17 +24,11 @@ function Navbar({ user }) {
       <ul className="navbar-menu">
         {user ? (
           <>
-            <li className="navbar-item">
-              <Link to="/profile" className="navbar-link">Profile</Link>
-            </li>
-            <li className="navbar-item">
-              <button className="login-button" onClick={handleSignOut}>Sign Out</button>
-            </li>
+            <li className="navbar-item"><Link to="/profile" className="navbar-link">Profile</Link></li>
+            <li className="navbar-item"><button className="login-button" onClick={handleSignOut}>Sign Out</button></li>
           </>
         ) : (
-          <li className="navbar-item">
-            <Link to="/login" className="login-button">Log In</Link>
-          </li>
+          <li className="navbar-item"><Link to="/login" className="login-button">Log In</Link></li>
         )}
       </ul>
     </div>

@@ -19,7 +19,10 @@ const Login = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/database");
+      const { data, error } = await supabase.auth.getSession()
+      console.log(`session: `, data)
+      
+      navigate("/Dashboard");
     }
   };
 

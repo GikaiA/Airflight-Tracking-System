@@ -2,8 +2,13 @@ import React from "react";
 import "./Dashboard.css";
 import carlton from "../images/carlton.gif";
 import { useNavigate, Link } from "react-router-dom";
+import supabase from "../supabaseClient";
 
-function Dashboard() {
+function Dashboard({}) {
+  const {user} = supabase.auth.getUser();
+
+
+
   return (
     <div className="database">
       <p className="database-sentence"> YOU MADE IT TO THE DATABASE</p>

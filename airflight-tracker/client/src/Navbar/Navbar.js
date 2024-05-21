@@ -30,6 +30,26 @@ function Navbar({ user }) {
         ) : (
           <li className="navbar-item"><Link to="/login" className="login-button">Log In</Link></li>
         )}
+        <li className="navbar-item">
+          <Link to='/about' className="navbar-text">About</Link>
+        </li>
+        <li className="navbar-item">
+          <Link to='/findapilot' className="navbar-text">Find a Pilot</Link>
+        </li>
+        <li className="navbar-item">
+          <Link to='/search' className="navbar-text">Search</Link>
+        </li>
+        <li className="navbar-item">
+          {user ? (
+            <button className="login-button" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          ) : (
+            <button className="login-button">
+              <Link to="/login" className="login-text">Log In</Link>
+            </button>
+          )}
+        </li>
       </ul>
     </div>
   );

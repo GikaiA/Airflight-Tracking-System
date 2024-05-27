@@ -20,7 +20,6 @@ router.get('/profile/:id', async (req, res) => {
 module.exports = router;
 
 //Update the user profile route:
-// Update user profile
 router.put('/profile/:id', async (req, res) => {
     const { username, flight_hrs_ttl, night_hrs, nvg_hrs, combat_hrs, combat_sorties, total_sorties, instructor_time, primary_time, secondary_time} = req.body;
     try {

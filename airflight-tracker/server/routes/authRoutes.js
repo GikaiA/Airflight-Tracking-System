@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const express = requires('express');
+const express = require('express');
 const router = express. Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
@@ -51,4 +51,4 @@ router.post('/login', async (req,res) =>{
 
 
 
-module.export = router;
+module.exports = router;

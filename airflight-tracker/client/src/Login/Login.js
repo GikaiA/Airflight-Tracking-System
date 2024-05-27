@@ -19,7 +19,7 @@ const Login = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/database");
+      navigate("/dashboard");
     }
   };
 

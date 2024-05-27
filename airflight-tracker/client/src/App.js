@@ -23,6 +23,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/edit-profile/:id" element={<EditProfile />} />
           <Route path="/findapilot" element={<FindPilot />} />
           <Route path="/search" element={<Search />} />
           <Route path="/accessforbidden" element={<AccessForbidden />} />

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage/Homepage";
 import Login from "./Login/Login";
 import Dashboard from "./Dashboard/Dashboard";
+import EditProfile from './Dashboard/EditProfile';
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import AccessForbidden from "./AccessForbidden/AccessForbidden";

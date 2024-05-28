@@ -1,25 +1,30 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import supabase from "../supabaseClient";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");  // Assuming username is used for login
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      navigate("/dashboard");
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })  // Make sure to send the correct body data
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+      // Store the token and handle post-login actions
+      localStorage.setItem('token', data.token);
+      navigate("/dashboard");  // Redirect to dashboard after successful login
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -28,13 +33,13 @@ const Login = () => {
       <div className="login-sub-section">
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Login</h2>
-          <label className="login-label">Email</label>
+          <label className="login-label">Username</label>
           <input
-            type="email"
-            placeholder="Email"
+            type="text"  // Changed from email to text if using username
+            placeholder="Username"
             className="login-field"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            value={username}
+            onChange={e => setUsername(e.target.value)}
           />
           <label className="login-label">Password</label>
           <input

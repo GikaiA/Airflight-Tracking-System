@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true, index: true },
+    email: { type: String, required: true, unique: true }, // Add email field
     password: { type: String, required: true },
     total_flight_hours: { type: Number, required: true },
     night_hours: { type: Number, required: true },
@@ -18,11 +19,7 @@ const userSchema = new mongoose.Schema({
 // Hashing passwords for security purposes
 userSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
-        try {
-            this.password = await bcrypt.hash(this.password, 10); // Using 10 rounds
-        } catch (error) {
-            return next(error);
-        }
+        this.password = await bcrypt.hash(this.password, 10); // Using 10 rounds
     }
     next();
 });

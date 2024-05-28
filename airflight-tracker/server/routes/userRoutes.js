@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
-// GET user profile
+// GET user profile route
 router.get('/profile/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -15,12 +15,14 @@ router.get('/profile/:id', async (req, res) => {
     }
 });
 
-// Update user profile
+// PUT update user profile
 router.put('/profile/:id', async (req, res) => {
-    const updates = req.body;
     try {
+        const updates = req.body;
         const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
-        if (!user) return res.status(404).send('User not found');
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
         res.json(user);
     } catch (error) {
         res.status(500).send(error.message);

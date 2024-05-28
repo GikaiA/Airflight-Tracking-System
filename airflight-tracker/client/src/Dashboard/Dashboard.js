@@ -1,64 +1,70 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import "./Dashboard.css";
-import carlton from "../images/carlton.gif";
-import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios';
 
-function Dashboard() {
-  return (
-    <div className="database">
-      <p className="database-sentence"> YOU MADE IT TO THE DATABASE</p>
-      <img src={carlton} alt="carlton-gif" className="carlton"></img>
-      <Link to="/">
-        <button className="logout-button">Log Out </button>
-      </Link>
-    </div>
-  );
-}
-
-function Dashboard() {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
+const Dashboard = () => {
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();  // Hook to navigate programmatically
 
   useEffect(() => {
-      // Replace 'userId' with actual user ID from somewhere like a global state or local storage
-      const userId = 'your_user_id_here';
-      axios.get(`/api/user/profile/${userId}`)
-          .then(response => {
-              setUser(response.data);
-          })
-          .catch(error => {
-              console.error('Error fetching user profile:', error);
-              // Handle error, maybe redirect if not authenticated
-              navigate('/login');
-          });
-  }, [navigate]);
+    const fetchUserData = async () => {
+      const userId = localStorage.getItem('userId');  // Assume user ID is stored in local storage
+      const token = localStorage.getItem('token');   // Retrieve the stored token
+
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Authorization header
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch user data');
+        }
+        setUserData(data);
+      } catch (err) {
+        setError(err.message);
+        console.error(err);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const handleEditProfile = () => {
+    navigate('/edit-profile');  // Navigate to EditProfile page
+  };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
-      <div className="database">
-          <p className="database-sentence">YOU MADE IT TO THE DATABASE</p>
-          <img src={carlton} alt="carlton-gif" className="carlton"/>
-          {user ? (
-              <div>
-                  <h1>User Profile</h1>
-                  <p>Username: {user.username}</p>
-                  <p>Rank: {user.rank}</p>
-                  <p>Flight Hours: {user.flightHours}</p>
-              </div>
-          ) : (
-              <p>Loading user data...</p>
-          )}
-          <Link to="/">
-              <button className="logout-button">Log Out</button>
-          </Link>
+    <div className="dashboard">
+      <h1>Dashboard</h1>
+      <div>
+        <h2>Welcome, {userData.username}!</h2>
+        <p>Email: {userData.email}</p>
+        <p>Total Flight Hours: {userData.total_flight_hours}</p>
+        <p>Night Hours: {userData.night_hours}</p>
+        <p>NVG Hours: {userData.nvg_hours}</p>
+        <p>Combat Hours: {userData.combat_hours}</p>
+        <p>Combat Sorties: {userData.combat_sorties}</p>
+        <p>Total Sorties: {userData.total_sorties}</p>
+        <p>Instructor Time: {userData.instructor_time}</p>
+        <p>Primary Time: {userData.primary_time}</p>
+        <p>Secondary Time: {userData.secondary_time}</p>
+        <button onClick={handleEditProfile}>Edit Profile</button>
       </div>
+    </div>
   );
-}
-
-
-
-{user && (
-  <button onClick={() => navigate(`/edit-profile/${user._id}`)}>Edit Profile</button>
-)}
+};
 
 export default Dashboard;

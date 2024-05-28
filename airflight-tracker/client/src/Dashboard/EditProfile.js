@@ -1,50 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function EditProfile() {
-    const [formData, setFormData] = useState({ rank: '', flightHours: 0 });
-    const navigate = useNavigate();
-    const { id } = useParams();
+const EditProfile = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    // Add other fields as necessary
+  });
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        axios.get(`/api/user/profile/${id}`)
-            .then(response => {//gotta add the rest of the values
-                setFormData({ rank: response.data.rank, flightHours: response.data.flightHours });
-            })
-            .catch(error => console.error('Error fetching user data:', error));
-    }, [id]);
+  useEffect(() => {
+    // Fetch the current user data to populate the form (similar fetch as in Dashboard)
+    // Assume user ID is stored in local storage or passed some other secure way
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setFormData(data);  // Assuming the data keys match the formData structure
+        } else {
+          throw new Error(data.message || 'Failed to fetch profile data');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+      }
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.put(`/api/user/profile/${id}`, formData)
-            .then(() => {
-                alert('Profile updated successfully!');
-                navigate('/dashboard');
-            })
-            .catch(error => console.error('Failed to update profile:', error));
-    };
+    fetchUserData();
+  }, []);
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <label>Rank:
-                <input type="text" name="rank" value={formData.rank} onChange={handleChange} />
-            </label>
-            <label>Flight Hours:
-                <input type="number" name="flightHours" value={formData.flightHours} onChange={handleChange} />
-            </label>
-            <button type="submit">Update Profile</button>
-        </form>
-    );
-}
+  const handleFormChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Submit updated data to the backend
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        alert('Profile updated successfully');
+        navigate('/dashboard');
+      } else {
+        throw new Error('Profile update failed');
+      }
+    } catch (err) {
+      console.error('Update error:', err);
+      alert(err.message);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Edit Profile</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input type="text" name="username" value={formData.username} onChange={handleFormChange} />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" value={formData.email} onChange={handleFormChange} />
+        </label>
+        {/* Add more fields as needed */}
+        <button type="submit">Update Profile</button>
+      </form>
+    </div>
+  );
+};
 
 export default EditProfile;
-S

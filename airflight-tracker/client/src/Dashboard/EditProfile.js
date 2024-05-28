@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -7,34 +7,38 @@ const EditProfile = () => {
     email: '',
     // Add other fields as necessary
   });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { id } = useParams();  // Access the id parameter from the URL
 
   useEffect(() => {
-    // Fetch the current user data to populate the form (similar fetch as in Dashboard)
-    // Assume user ID is stored in local storage or passed some other secure way
-    const userId = localStorage.getItem('userId');
+    // Fetch the current user data to populate the form
     const token = localStorage.getItem('token');
 
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+        const response = await fetch(`http://localhost:3000/api/user/profile/${id}`, {
+          method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+            'Content-Type': 'application/json'
+          }
         });
         const data = await response.json();
-        if (response.ok) {
-          setFormData(data);  // Assuming the data keys match the formData structure
-        } else {
+        if (!response.ok) {
           throw new Error(data.message || 'Failed to fetch profile data');
         }
+        setFormData(data);  // Assuming the data keys match the formData structure
       } catch (err) {
-        console.error('Error:', err);
+        setError(err.message);
+        console.error('Fetch error:', err);
       }
     };
 
-    fetchUserData();
-  }, []);
+    if (id) {
+      fetchUserData();
+    }
+  }, [id]);
 
   const handleFormChange = (event) => {
     const { name, value } = event.target;
@@ -48,7 +52,7 @@ const EditProfile = () => {
     event.preventDefault();
     // Submit updated data to the backend
     try {
-      const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+      const response = await fetch(`http://localhost:3000/api/user/profile/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -60,13 +64,18 @@ const EditProfile = () => {
         alert('Profile updated successfully');
         navigate('/dashboard');
       } else {
-        throw new Error('Profile update failed');
+        const data = await response.json();
+        throw new Error(data.message || 'Profile update failed');
       }
     } catch (err) {
+      setError(err.message);
       console.error('Update error:', err);
-      alert(err.message);
     }
   };
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>

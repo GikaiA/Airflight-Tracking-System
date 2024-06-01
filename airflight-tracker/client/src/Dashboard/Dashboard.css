@@ -1,22 +1,50 @@
-.database{
-    height: 100vh;
-    background-color:#061a62 ;
+.dashboard {
+  height: 100vh;
+  background-color: #061a62;
 }
 
-.database-sentence{
-    margin: 0;
-    color: #F2BF04;
+.dashboard-title {
+  display: flex;
+  padding-left: 100px;
+  color: white;
+  margin: 0;
 }
 
-
-.carlton{
-    width: 600px;
-    height: 500px;
+/* Styles for matches overview section */
+.matches-overview {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
 }
 
+/* Heading styles */
+.matches-overview h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
 
-.logout-button{
-    font-size: 15px;
-    background-color: #F2BF04;
-    color: #061a62;
+/* List styles */
+.matches-overview ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matches-overview li {
+  padding: 10px;
+  border-bottom: 1px solid #dcdcdc;
+  color: #333;
+}
+
+.matches-overview li:last-child {
+  border-bottom: none;
+}
+
+.match-text {
+  font-size: 20px;
+  font-weight: bold;
 }

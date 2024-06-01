@@ -1,56 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();  // Hook to navigate programmatically
+  // const [userData, setUserData] = useState(null);
+  // const [error, setError] = useState('');
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const userId = localStorage.getItem('userId');  // Assume user ID is stored in local storage
-      const token = localStorage.getItem('token');   // Retrieve the stored token
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     const userId = localStorage.getItem('userId');
+  //     const token = localStorage.getItem('token');
 
-      try {
-        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,  // Authorization header
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch user data');
-        }
-        setUserData(data);
-      } catch (err) {
-        setError(err.message);
-        console.error(err);
-      }
-    };
+  //     try {
+  //       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+  //         method: 'GET',
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`,
+  //           'Content-Type': 'application/json'
+  //         }
+  //       });
+  //       const data = await response.json();
+  //       if (!response.ok) {
+  //         throw new Error(data.message || 'Failed to fetch user data');
+  //       }
+  //       setUserData(data);
+  //     } catch (err) {
+  //       setError(err.message);
+  //       console.error(err);
+  //     }
+  //   };
 
-    fetchUserData();
-  }, []);
+  //   fetchUserData();
+  // }, []);
 
-  const handleEditProfile = () => {
-    navigate('/edit-profile');  // Navigate to EditProfile page
-  };
+  // const handleEditProfile = () => {
+  //   navigate('/edit-profile');
+  // };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
-  if (!userData) {
-    return <div>Loading...</div>;
-  }
+  // if (!userData) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <div className="dashboard">
-      <h1>Dashboard</h1>
+      <h1 className="dashboard-title">Welcome, User!!</h1>
+      <div class="matches-overview">
+        <h2>Current Matches</h2>
+        <ul>
+          <li className="match-text">Match with Lt. Smith (F-16) - Training Mission</li>
+          <li className="match-text">Match with Capt. Davis (F-35) - Combat Mission</li>
+        </ul>
+      </div>
+
       <div>
-        <h2>Welcome, {userData.username}!</h2>
+        {/* <h2>Welcome, {userData.username}!</h2>
         <p>Email: {userData.email}</p>
         <p>Total Flight Hours: {userData.total_flight_hours}</p>
         <p>Night Hours: {userData.night_hours}</p>
@@ -61,7 +69,7 @@ const Dashboard = () => {
         <p>Instructor Time: {userData.instructor_time}</p>
         <p>Primary Time: {userData.primary_time}</p>
         <p>Secondary Time: {userData.secondary_time}</p>
-        <button onClick={handleEditProfile}>Edit Profile</button>
+        <button onClick={handleEditProfile}>Edit Profile</button> */}
       </div>
     </div>
   );

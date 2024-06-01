@@ -6,22 +6,25 @@ const jwt = require('jsonwebtoken');
 
 // User registration route
 router.post('/register', async (req, res) => {
-    const {username, email, password} = req.body;
+    const { username, email, password } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             username,
             email,
             password: hashedPassword,
+            //  Defaults for optional fields if necessary
+            // total_flight_hours: 0,
+            // night_hours: 0,
+            // other fields...
         });
         await newUser.save();
         res.status(201).send('Registration Successful');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Registration unsuccessful');
+        res.status(500).send('Registration unsuccessful: ' + error.message);
     }
 });
-
 
 
 // router.post('/register', async (req, res) => {

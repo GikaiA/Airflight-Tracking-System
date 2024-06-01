@@ -1,6 +1,6 @@
 // src/services/authService.js
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://localhost:3000/api'; // Adjusted to the correct port
 
 export const login = async (username, password) => {
     const response = await fetch(`${API_BASE_URL}/login`, {
@@ -11,7 +11,8 @@ export const login = async (username, password) => {
         body: JSON.stringify({ username, password })
     });
     if (!response.ok) {
-        throw new Error('Failed to login');
+        const errorData = await response.json(); // to get detailed error message
+        throw new Error(errorData.message || 'Failed to login');
     }
     return await response.json();
 };
@@ -25,7 +26,8 @@ export const register = async (userData) => {
         body: JSON.stringify(userData)
     });
     if (!response.ok) {
-        throw new Error('Failed to register');
+        const errorData = await response.json(); // to get detailed error message
+        throw new Error(errorData.message || 'Failed to register');
     }
     return await response.json();
 };

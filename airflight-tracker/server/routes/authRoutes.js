@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     const newUser = new User({
       username,
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
     await newUser.save();
     console.log('User registered successfully:', newUser);
@@ -32,7 +32,6 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Registration unsuccessful', error: error.message });
   }
 });
-
 
 // User login route
 router.post('/login', async (req, res) => {

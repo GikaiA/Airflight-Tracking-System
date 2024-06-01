@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import supabase from "../supabaseClient";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-    } else {
-      const { data, error } = await supabase.auth.getSession()
-      console.log(`session: `, data)
-      
-      navigate("/Dashboard");
+    console.log('Attempting login with', username, password);  // Add this line
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -31,13 +34,13 @@ const Login = () => {
       <div className="login-sub-section">
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Login</h2>
-          <label className="login-label">Email</label>
+          <label className="login-label">Username</label>
           <input
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Username"
             className="login-field"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            value={username}
+            onChange={e => setUsername(e.target.value)}
           />
           <label className="login-label">Password</label>
           <input

@@ -5,7 +5,7 @@ import airforcelogo from "../images/airforcelogo.png";
 function About() {
   return (
     <div className="about">
-      <div className="logo-section">
+      <div className="about-logo-section">
         <img
           src={airforcelogo}
           alt="airforce-logo"

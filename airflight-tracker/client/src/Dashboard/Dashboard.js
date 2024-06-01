@@ -3,48 +3,48 @@ import { useNavigate, Link } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
-  // const [userData, setUserData] = useState(null);
-  // const [error, setError] = useState('');
-  // const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     const userId = localStorage.getItem('userId');
-  //     const token = localStorage.getItem('token');
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('token');
 
-  //     try {
-  //       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
-  //         method: 'GET',
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`,
-  //           'Content-Type': 'application/json'
-  //         }
-  //       });
-  //       const data = await response.json();
-  //       if (!response.ok) {
-  //         throw new Error(data.message || 'Failed to fetch user data');
-  //       }
-  //       setUserData(data);
-  //     } catch (err) {
-  //       setError(err.message);
-  //       console.error(err);
-  //     }
-  //   };
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to fetch user data');
+        }
+        setUserData(data);
+      } catch (err) {
+        setError(err.message);
+        console.error(err);
+      }
+    };
 
-  //   fetchUserData();
-  // }, []);
+    fetchUserData();
+  }, []);
 
-  // const handleEditProfile = () => {
-  //   navigate('/edit-profile');
-  // };
+  const handleEditProfile = () => {
+    navigate('/edit-profile');
+  };
 
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
-  // if (!userData) {
-  //   return <div>Loading...</div>;
-  // }
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="dashboard">

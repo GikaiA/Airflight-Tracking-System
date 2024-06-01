@@ -28,6 +28,7 @@ const Register = () => {
         throw new Error(data.message || 'Registration failed');
       }
       localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);  // Store userId in local storage
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);

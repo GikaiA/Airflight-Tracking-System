@@ -20,8 +20,9 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
-      // Store the token and handle post-login actions
+      // Store the token and userId, and handle post-login actions
       localStorage.setItem('token', data.token);
+      localStorage.setItem('userId', data.userId);  // Store userId in local storage
       navigate("/dashboard");  // Redirect to dashboard after successful login
     } catch (err) {
       setError(err.message);

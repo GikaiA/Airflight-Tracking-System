@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";  // Uncomment this as useState and useEffect are used
-import { useNavigate } from "react-router-dom";  // Remove Link if it's not used
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Ensure useNavigate is used if navigation is needed
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = localStorage.getItem('userId');  // Ensure userId is stored in localStorage
-      const token = localStorage.getItem('token');  // Ensure token is stored in localStorage
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('token');
+
+      if (!userId || !token) {
+        setError('User is not authenticated. Please log in.');
+        return;
+      }
 
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
@@ -20,14 +25,20 @@ const Dashboard = () => {
             'Content-Type': 'application/json'
           }
         });
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch user data');
+
+        if (response.headers.get('content-type')?.includes('application/json')) {
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.message || 'Failed to fetch user data');
+          }
+          setUserData(data);
+        } else {
+          const textData = await response.text();
+          throw new Error(textData || 'Failed to fetch user data');
         }
-        setUserData(data);
       } catch (err) {
         setError(err.message);
-        console.error(err);
+        console.error('Fetch error:', err);
       }
     };
 
@@ -35,7 +46,7 @@ const Dashboard = () => {
   }, []);
 
   const handleEditProfile = () => {
-    navigate('/edit-profile');  // Ensure this route is configured in your router
+    navigate(`/edit-profile/${localStorage.getItem('userId')}`);
   };
 
   if (error) {
@@ -46,7 +57,6 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  // Uncommented and revised user display data
   return (
     <div className="dashboard">
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>

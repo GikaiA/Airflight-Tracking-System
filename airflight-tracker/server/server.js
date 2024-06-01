@@ -37,9 +37,10 @@ connectDB();
 const app = express();  // Ensure 'app' is initialized before any operations are performed on it
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Adjust this depending on your front-end URL
-    credentials: true
-})); // Enable CORS
+    origin: 'http://localhost:3001',  // This allows only the client at 3001 to make requests.
+    credentials: true,  // This is needed if your requests include credentials like cookies or auth headers.       methods: 'GET,POST,PUT,DELETE',  // Adjust per your requirements.
+    allowedHeaders: 'Content-Type,Authorization'  // Adjust based on your needs.
+    }));
 
 app.use(helmet()); // Secure your app by setting various HTTP headers
 

@@ -14,8 +14,8 @@ const app = express();  // Ensure 'app' is initialized before any operations are
 
 // CORS Configuration
 app.use(cors({
-    origin: 'http://localhost:3001',
-    credentials: true,
+  origin: 'http://localhost:3001',
+  credentials: true,
 }));
 
 app.use(helmet()); // Secure your app by setting various HTTP headers
@@ -28,12 +28,12 @@ app.use('/api/user', userRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
 // Use environment variable for the port or default to 3000 if not set
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });

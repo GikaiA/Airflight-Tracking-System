@@ -3,27 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");  // Assuming username is used for login
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log('Attempting login with', username, password);  // Add this line
     try {
       const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })  // Make sure to send the correct body data
+        body: JSON.stringify({ username, password })
       });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
-      // Store the token and userId, and handle post-login actions
       localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);  // Store userId in local storage
-      navigate("/dashboard");  // Redirect to dashboard after successful login
+      localStorage.setItem('userId', data.userId);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     }
@@ -36,7 +36,7 @@ const Login = () => {
           <h2>Login</h2>
           <label className="login-label">Username</label>
           <input
-            type="text"  // Changed from email to text if using username
+            type="text"
             placeholder="Username"
             className="login-field"
             value={username}

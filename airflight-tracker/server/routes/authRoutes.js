@@ -5,8 +5,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 
-
-
 // User registration route
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
@@ -35,6 +33,9 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Registration unsuccessful', error: error.message });
   }
 });
+
+
+
 
 
 // User login route

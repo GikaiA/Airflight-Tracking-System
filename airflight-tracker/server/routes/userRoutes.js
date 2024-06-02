@@ -29,4 +29,5 @@ router.put('/profile/:id', auth, async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+
 module.exports = router;

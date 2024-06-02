@@ -13,6 +13,9 @@
     "react-scripts": "^3.0.1",
     "web-vitals": "^2.1.4"
   },
+  "overrides":{
+    
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -39,6 +42,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+   
   }
 }

@@ -4,6 +4,10 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 983b577 (installed library)
 // User registration route
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
@@ -17,7 +21,6 @@ router.post('/register', async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log('Hashed Password:', hashedPassword);
     const newUser = new User({
       username,
       email,
@@ -33,6 +36,12 @@ router.post('/register', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> parent of 983b577 (installed library)
 // User login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -45,9 +54,12 @@ router.post('/login', async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
+<<<<<<< HEAD
 
     console.log('Comparing password:', password);
     console.log('Stored hashed password:', user.password);
+=======
+>>>>>>> parent of 983b577 (installed library)
     console.log('Password match:', isMatch);
 
     if (!isMatch) {

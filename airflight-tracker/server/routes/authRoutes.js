@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-
-
-
 // User registration route
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
@@ -36,7 +33,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-
 // User login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -51,9 +47,9 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
+    const isMatch = await bcrypt.compare(password, user.password);
     console.log('Comparing password:', password);
     console.log('Stored hashed password:', user.password);
-    const isMatch = await bcrypt.compare(password, user.password);
     console.log('Password match:', isMatch);
 
     if (!isMatch) {

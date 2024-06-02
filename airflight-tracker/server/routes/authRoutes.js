@@ -36,6 +36,7 @@ router.post('/register', async (req, res) => {
 // User login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
+  console.log('Received login request:', req.body);
 
   try {
     const user = await User.findOne({ username });

@@ -4,7 +4,6 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
-
 // User registration route
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
@@ -34,10 +33,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-
-
-
-
 // User login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -49,7 +44,7 @@ router.post('/login', async (req, res) => {
 
     if (!user) {
       console.log('User not found');
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     console.log('Comparing password:', password);
@@ -62,12 +57,11 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1hr' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.status(200).json({ token, userId: user._id });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
-
 module.exports = router;

@@ -1,26 +1,25 @@
-
-require('dotenv').config(); // Load environment variables from .env file at the start
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const connectDB = require('./db'); // Ensure the path to db.js is correct
+const connectDB = require('./db');  // Ensure the path to db.js is correct
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+require('dotenv').config(); // Load environment variables from .env file at the start
 
 // Establish MongoDB connection
 connectDB();
 
-const app = express(); // Ensure 'app' is initialized before any operations are performed on it
+const app = express();  // Ensure 'app' is initialized before any operations are performed on it
 
 // CORS Configuration
 app.use(cors({
-  origin: 'http://localhost:3001', // Adjust the origin as needed
+  origin: 'http://localhost:3001',
   credentials: true,
 }));
 
 app.use(helmet()); // Secure your app by setting various HTTP headers
-app.use(express.json()); // Middleware for parsing JSON bodies
+
+app.use(express.json());  // Middleware for parsing JSON bodies
 
 // Set up routes
 app.use('/api/auth', authRoutes);

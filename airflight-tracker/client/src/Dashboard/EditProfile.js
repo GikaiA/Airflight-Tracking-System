@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
@@ -18,18 +17,14 @@ const EditProfile = () => {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { id } = useParams();  // Access the id parameter from the URL
+  const { id } = useParams();
 
   useEffect(() => {
-    // Fetch the current user data to populate the form
-    const token = localStorage.getItem('token');
-
     const fetchUserData = async () => {
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${id}`, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
@@ -37,10 +32,9 @@ const EditProfile = () => {
         if (!response.ok) {
           throw new Error(data.message || 'Failed to fetch profile data');
         }
-        setFormData(data);  // Assuming the data keys match the formData structure
+        setFormData(data);
       } catch (err) {
         setError(err.message);
-        console.error('Fetch error:', err);
       }
     };
 
@@ -59,14 +53,11 @@ const EditProfile = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = localStorage.getItem('token');
-    // Submit updated data to the backend
     try {
       const response = await fetch(`http://localhost:3000/api/user/profile/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -79,7 +70,6 @@ const EditProfile = () => {
       }
     } catch (err) {
       setError(err.message);
-      console.error('Update error:', err);
     }
   };
 

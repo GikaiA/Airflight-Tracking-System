@@ -1,34 +1,33 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const connectDB = require('./db');  // Ensure the path to db.js is correct
+const connectDB = require('./db');
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
-require('dotenv').config(); // Load environment variables from .env file at the start
 
 // Establish MongoDB connection
 connectDB();
 
-const app = express();  // Ensure 'app' is initialized before any operations are performed on it
+const app = express();
 
-// CORS Configuration
 app.use(cors({
   origin: 'http://localhost:3001',
   credentials: true,
 }));
 
-app.use(helmet()); // Secure your app by setting various HTTP headers
+app.use(helmet());
+app.use(express.json());
 
-app.use(express.json());  // Middleware for parsing JSON bodies
-
-// Set up routes
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 // Use environment variable for the port or default to 3000 if not set

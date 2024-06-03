@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/authService";
 import "./Register.css";
 
 const Register = () => {
@@ -19,18 +20,7 @@ const Register = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData)
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-      localStorage.setItem('token', data.token);
+      const data = await register(formData);
       localStorage.setItem('userId', data.userId);
       navigate('/dashboard');
     } catch (err) {

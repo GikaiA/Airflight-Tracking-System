@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService"; // Adjusted import path
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { login } from "../services/authService"; // Ensure the correct import path
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -14,10 +14,9 @@ const Login = () => {
     try {
       const data = await login(username, password);
       localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-      navigate("/dashboard");
+      localStorage.setItem('userId', data.userId);  // Store userId for later use
+      navigate("/dashboard");  // Redirect to dashboard after successful login
     } catch (err) {
-      console.error('Login error:', err.message);
       setError(err.message);
     }
   };
@@ -27,26 +26,29 @@ const Login = () => {
       <div className="login-sub-section">
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Login</h2>
-          <label className="login-label" htmlFor="username">Username</label>
+          <label className="login-label">Username</label>
           <input
-            id="username"
             type="text"
             placeholder="Username"
             className="login-field"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
-          <label className="login-label" htmlFor="password">Password</label>
+          <label className="login-label">Password</label>
           <input
-            id="password"
             type="password"
             placeholder="Password"
             className="login-field"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="login-form-button">Log In</button>
+          <button type="submit" className="login-form-button">
+            Log In
+          </button>
           {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          <p className="forget-login-sentence">
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </p>
         </form>
       </div>
     </div>

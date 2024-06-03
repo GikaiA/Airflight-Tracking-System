@@ -10,9 +10,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem('userId');
-      const token = localStorage.getItem('token');
 
-      if (!userId || !token) {
+      if (!userId) {
         setError('User is not authenticated. Please log in.');
         return;
       }
@@ -21,21 +20,17 @@ const Dashboard = () => {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });
 
-        if (response.headers.get('content-type')?.includes('application/json')) {
-          const data = await response.json();
-          if (!response.ok) {
-            throw new Error(data.message || 'Failed to fetch user data');
-          }
-          setUserData(data);
-        } else {
-          const textData = await response.text();
-          throw new Error(textData || 'Failed to fetch user data');
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText);
         }
+
+        const data = await response.json();
+        setUserData(data);
       } catch (err) {
         setError(err.message);
         console.error('Fetch error:', err);

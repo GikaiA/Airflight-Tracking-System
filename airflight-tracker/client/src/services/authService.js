@@ -1,5 +1,21 @@
 const API_BASE_URL = 'http://localhost:3000/api';
 
+const handleResponse = async (response) => {
+  if (!response.ok) {
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      const errorData = await response.json();
+      console.error('Error data:', errorData);
+      throw new Error(errorData.message || 'Failed to process request');
+    } else {
+      const errorText = await response.text();
+      console.error('Error text:', errorText);
+      throw new Error('Unexpected response format');
+    }
+  }
+  return response.json();
+};
+
 export const login = async (username, password) => {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -9,16 +25,7 @@ export const login = async (username, password) => {
       },
       body: JSON.stringify({ username, password }),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json(); // to get detailed error message
-      console.error('Login fetch error:', errorData); // Log the detailed error message
-      throw new Error(errorData.message || 'Failed to login');
-    }
-
-    const responseData = await response.json();
-    console.log('Login successful:', responseData);
-    return responseData;
+    return await handleResponse(response);
   } catch (error) {
     console.error('Login error details:', error);
     throw error;
@@ -34,16 +41,7 @@ export const register = async (userData) => {
       },
       body: JSON.stringify(userData),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json(); // to get detailed error message
-      console.error('Registration fetch error:', errorData); // Log the detailed error message
-      throw new Error(errorData.message || 'Failed to register');
-    }
-
-    const responseData = await response.json();
-    console.log('Registration successful:', responseData);
-    return responseData;
+    return await handleResponse(response);
   } catch (error) {
     console.error('Registration error details:', error);
     throw error;

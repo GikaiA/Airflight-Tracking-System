@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./Login.css";
 import { login } from "../services/authService"; // Ensure the correct import path
+import "./Login.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -13,9 +13,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const data = await login(username, password);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);  // Store userId for later use
-      navigate("/dashboard");  // Redirect to dashboard after successful login
+      localStorage.setItem('userId', data.userId);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     }

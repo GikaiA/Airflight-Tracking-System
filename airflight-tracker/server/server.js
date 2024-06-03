@@ -1,11 +1,10 @@
-require('dotenv').config();  // Load environment variables from .env file at the start
-
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const connectDB = require('./db');  // Ensure the path to db.js is correct
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+require('dotenv').config(); // Load environment variables from .env file at the start
 
 // Establish MongoDB connection
 connectDB();

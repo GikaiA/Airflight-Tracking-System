@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import { login } from "../services/authService"; // Ensure the correct import path
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -10,20 +11,11 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Attempting login with', username, password);  // Add this line
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
+      const data = await login(username, password);
       localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-      navigate("/dashboard");
+      localStorage.setItem('userId', data.userId);  // Store userId for later use
+      navigate("/dashboard");  // Redirect to dashboard after successful login
     } catch (err) {
       setError(err.message);
     }
@@ -40,7 +32,7 @@ const Login = () => {
             placeholder="Username"
             className="login-field"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <label className="login-label">Password</label>
           <input
@@ -48,7 +40,7 @@ const Login = () => {
             placeholder="Password"
             className="login-field"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit" className="login-form-button">
             Log In
@@ -61,6 +53,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   instructor_time: { type: Number, required: false },
   primary_time: { type: Number, required: false },
   secondary_time: { type: Number, required: false },
-});
+}, { collection: 'pilot' });  // Specify the collection name
 
 userSchema.pre('save', async function(next) {
   if (this.isModified('password')) {

@@ -11,14 +11,11 @@ export const login = async (username, password) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json(); // to get detailed error message
-      console.error('Login fetch error:', errorData); // Log the detailed error message
+      const errorData = await response.json();
       throw new Error(errorData.message || 'Failed to login');
     }
 
-    const responseData = await response.json();
-    console.log('Login successful:', responseData);
-    return responseData;
+    return await response.json();
   } catch (error) {
     console.error('Login error details:', error);
     throw error;

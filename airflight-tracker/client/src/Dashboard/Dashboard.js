@@ -1,28 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = localStorage.getItem('userId');
+      const userId = localStorage.getItem("userId");
 
       if (!userId) {
-        setError('User is not authenticated. Please log in.');
+        setError("User is not authenticated. Please log in.");
         return;
       }
 
       try {
-        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await fetch(
+          `http://localhost:3000/api/user/profile/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -33,7 +36,7 @@ const Dashboard = () => {
         setUserData(data);
       } catch (err) {
         setError(err.message);
-        console.error('Fetch error:', err);
+        console.error("Fetch error:", err);
       }
     };
 
@@ -41,7 +44,7 @@ const Dashboard = () => {
   }, []);
 
   const handleEditProfile = () => {
-    navigate(`/edit-profile/${localStorage.getItem('userId')}`);
+    navigate(`/edit-profile/${localStorage.getItem("userId")}`);
   };
 
   if (error) {
@@ -54,6 +57,12 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
+      <button className="logout-button" onClick={"logout function"}>
+        <Link to="/" className="logout-text">
+          Log Out
+        </Link>
+      </button>
+
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
       <p>Email: {userData.email}</p>
       <p>Total Flight Hours: {userData.total_flight_hours}</p>

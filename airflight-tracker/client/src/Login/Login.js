@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService"; // Adjusted import path
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../services/authService"; // Ensure the correct import path
 import "./Login.css";
 
 const Login = () => {
@@ -12,20 +12,10 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-      localStorage.setItem('token', data.token);
+      const data = await login(username, password);
       localStorage.setItem('userId', data.userId);
       navigate("/dashboard");
     } catch (err) {
-      console.error('Login error:', err.message);
       setError(err.message);
     }
   };
@@ -35,26 +25,29 @@ const Login = () => {
       <div className="login-sub-section">
         <form className="login-form" onSubmit={handleLogin}>
           <h2>Login</h2>
-          <label className="login-label" htmlFor="username">Username</label>
+          <label className="login-label">Username</label>
           <input
-            id="username"
             type="text"
             placeholder="Username"
             className="login-field"
             value={username}
-            onChange={e => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
-          <label className="login-label" htmlFor="password">Password</label>
+          <label className="login-label">Password</label>
           <input
-            id="password"
             type="password"
             placeholder="Password"
             className="login-field"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="login-form-button">Log In</button>
+          <button type="submit" className="login-form-button">
+            Log In
+          </button>
           {error && <div style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          <p className="forget-login-sentence">
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </p>
         </form>
       </div>
     </div>

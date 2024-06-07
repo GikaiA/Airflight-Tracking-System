@@ -10,6 +10,10 @@
   margin: 0;
 }
 
+
+.user-detail-section{
+  color: white;
+}
 /* Styles for matches overview section */
 .matches-overview {
   background-color: #ffffff;
@@ -68,4 +72,15 @@
 
 .logout-text:hover{
   color: #061a62;
+}
+
+.edit-profile-buttton{
+  font-size: 18px;
+  background-color: #F2BF04;
+  color: #061a62;
+  border-radius: 10px;
+  border-color: transparent;
+  transition-duration: 0.5s;
+  padding: 10px 20px;
+  cursor: pointer;
 }

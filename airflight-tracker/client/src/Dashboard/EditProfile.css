@@ -1,0 +1,23 @@
+.editprofile{
+    height: 120vh;
+    display: block;
+    background-color: #061a62;
+}
+
+.editprofile-title{
+    margin: 0;
+    color: white;
+}
+.edit-profile-form{
+    display: flex;
+    flex-direction: column;
+padding-top: 20px;
+}
+
+.editprofile-field{
+    width: auto;
+}
+
+label{
+    color: white;
+}

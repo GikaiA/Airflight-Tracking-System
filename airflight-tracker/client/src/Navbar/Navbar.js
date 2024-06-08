@@ -72,6 +72,11 @@ function Navbar() {
         {isAuthenticated && (
           <>
             <li className='navbar-item'>
+              <Link to='/dashboard' className='navbar-text'>
+                Dashboard
+              </Link>
+            </li>
+            <li className='navbar-item'>
               <Link to='/findapilot' className='navbar-text'>
                 Find a Pilot
               </Link>

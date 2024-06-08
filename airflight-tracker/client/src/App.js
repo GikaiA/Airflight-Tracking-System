@@ -14,27 +14,30 @@ import Register from "./Register/Register";
 import Search from "./Search/Search";
 import FindPilot from "./FindPilot/FindPilot";
 import About from "./About/About";
+import { AuthProvider } from './Context/AuthContext'; //new file
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/about" element={<About/>}/>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/edit-profile/:id" element={<EditProfile />} />
-          <Route path="/findapilot" element={<FindPilot />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/accessforbidden" element={<AccessForbidden />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
-    </div>
-  );
+   <AuthProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/about" element={<About/>}/>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/edit-profile/:id" element={<EditProfile />} />
+            <Route path="/findapilot" element={<FindPilot />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/accessforbidden" element={<AccessForbidden />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </div>
+   </AuthProvider>
+ );
 }
 
 export default App;

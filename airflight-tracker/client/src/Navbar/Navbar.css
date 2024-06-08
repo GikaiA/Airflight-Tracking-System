@@ -1,4 +1,4 @@
- .navbar {
+.navbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -55,3 +55,16 @@
     color: #061a62;
 }
 
+.logout-button{
+    font-size: 22px;
+    background-color: #F2BF04;
+    color: #061a62;
+    border-radius: 10px;
+    border-color: transparent;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+ .error-text{
+    display: none;
+ }

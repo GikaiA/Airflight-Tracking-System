@@ -57,11 +57,11 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <button className="logout-button" onClick={"logout function"}>
+      {/* <button className="logout-button" onClick={"logout function"}>
         <Link to="/" className="logout-text">
           Log Out
         </Link>
-      </button>
+      </button> */}
 
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
       <div className="user-detail-section">

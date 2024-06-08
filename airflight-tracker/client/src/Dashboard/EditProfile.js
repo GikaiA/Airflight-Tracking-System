@@ -198,7 +198,7 @@ const EditProfile = () => {
             className="editprofile-field"
           />
         </label>
-        <button type="submit">Update Profile</button>
+        <button type="submit" className="edit-profile-button">Update Profile</button>
       </form>
     </div>
   );

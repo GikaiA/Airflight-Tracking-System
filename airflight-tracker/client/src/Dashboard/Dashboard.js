@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate , Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -64,17 +64,19 @@ const Dashboard = () => {
       </button>
 
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
-      <p>Email: {userData.email}</p>
-      <p>Total Flight Hours: {userData.total_flight_hours}</p>
-      <p>Night Hours: {userData.night_hours}</p>
-      <p>NVG Hours: {userData.nvg_hours}</p>
-      <p>Combat Hours: {userData.combat_hours}</p>
-      <p>Combat Sorties: {userData.combat_sorties}</p>
-      <p>Total Sorties: {userData.total_sorties}</p>
-      <p>Instructor Time: {userData.instructor_time}</p>
-      <p>Primary Time: {userData.primary_time}</p>
-      <p>Secondary Time: {userData.secondary_time}</p>
-      <button onClick={handleEditProfile}>Edit Profile</button>
+      <div className="user-detail-section">
+        <p>Email: {userData.email}</p>
+        <p>Total Flight Hours: {userData.total_flight_hours}</p>
+        <p>Night Hours: {userData.night_hours}</p>
+        <p>NVG Hours: {userData.nvg_hours}</p>
+        <p>Combat Hours: {userData.combat_hours}</p>
+        <p>Combat Sorties: {userData.combat_sorties}</p>
+        <p>Total Sorties: {userData.total_sorties}</p>
+        <p>Instructor Time: {userData.instructor_time}</p>
+        <p>Primary Time: {userData.primary_time}</p>
+        <p>Secondary Time: {userData.secondary_time}</p>
+      </div>
+      <button onClick={handleEditProfile}  className="edit-profile-buttton">Edit Profile</button>
     </div>
   );
 };

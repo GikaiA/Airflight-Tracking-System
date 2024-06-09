@@ -54,6 +54,57 @@
 }
 
 
-.dropdown-title{
-    font-size: 20px;
+.find-pilot-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Ensure items are aligned at the top */
+  height: auto; /* Remove fixed height */
+  padding-bottom: 20px; /* Add padding at the bottom */
+}
+
+.results {
+  position: relative;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column; /* Adjusts the flex direction */
+}
+
+.results-heading {
+  color: white;
+  text-align: center;
+  margin: 0; /* Remove default margin */
+  padding: 10px 0; /* Add padding for better spacing */
+  border-radius: 5px 5px 0 0; /* Rounded corners for the top */
+}
+
+.results table {
+  width: 70%;
+  margin: 0 auto; /* Center the table */
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 0 0 5px 5px; /* Rounded corners for the bottom */
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.results th,
+.results td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.results th {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.results tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.results tbody tr:hover {
+  background-color: #e0e0e0;
 }

@@ -30,4 +30,31 @@ router.put('/profile/:id', auth, async (req, res) => {
   }
 });
 
+// POST route to find pilots based on filters
+router.post('/findPilot', async (req, res) => {
+  try {
+    const { rank, totalFlightHours, nvgHours, flightHours } = req.body;
+    const query = {};
+
+    if (rank) query.rank = rank;
+    if (totalFlightHours) {
+      const totalFlightHoursRange = totalFlightHours.split('-').map(Number);
+      query.total_flight_hours = { $gte: totalFlightHoursRange[0], $lte: totalFlightHoursRange[1] };
+    }
+    if (nvgHours) {
+      const nvgHoursRange = nvgHours.split('-').map(Number);
+      query.nvg_hours = { $gte: nvgHoursRange[0], $lte: nvgHoursRange[1] };
+    }
+    if (flightHours) {
+      const flightHoursRange = flightHours.split('-').map(Number);
+      query.flight_hours = { $gte: flightHoursRange[0], $lte: flightHoursRange[1] };
+    }
+
+    const pilots = await User.find(query);
+    res.json(pilots);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;

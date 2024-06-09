@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -57,12 +57,6 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      {/* <button className="logout-button" onClick={"logout function"}>
-        <Link to="/" className="logout-text">
-          Log Out
-        </Link>
-      </button> */}
-
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
       <div className="user-detail-section">
         <p>Email: {userData.email}</p>
@@ -76,7 +70,7 @@ const Dashboard = () => {
         <p>Primary Time: {userData.primary_time}</p>
         <p>Secondary Time: {userData.secondary_time}</p>
       </div>
-      <button onClick={handleEditProfile}  className="edit-profile-buttton">Edit Profile</button>
+      <button onClick={handleEditProfile} className="edit-profile-button">Edit Profile</button>
     </div>
   );
 };

@@ -27,7 +27,7 @@ app.use('/api/user', userRoutes);
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/build/index.js'));
 });
 
 // Use environment variable for the port or default to 3000 if not set

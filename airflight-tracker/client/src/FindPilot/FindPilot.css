@@ -1,5 +1,5 @@
 .findpilot {
-  height: 90vh;
+  height: 170vh;
   background-color: #061a62;
   padding-top: 50px;
 }
@@ -62,12 +62,17 @@
   padding-bottom: 20px; /* Add padding at the bottom */
 }
 
+.dropdown-title{
+  color: black;
+}
+
 .results {
   position: relative;
   margin-top: 20px;
   display: flex;
   justify-content: center;
   flex-direction: column; /* Adjusts the flex direction */
+  background-color: #061a62;
 }
 
 .results-heading {
@@ -82,7 +87,7 @@
   width: 70%;
   margin: 0 auto; /* Center the table */
   border-collapse: collapse;
-  background-color: #fff;
+  background-color: #061a62;
   border-radius: 0 0 5px 5px; /* Rounded corners for the bottom */
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -90,6 +95,7 @@
 
 .results th,
 .results td {
+  color: white;
   padding: 8px 10px;
   text-align: left;
   border-bottom: 1px solid #ccc;
@@ -97,14 +103,14 @@
 }
 
 .results th {
-  background-color: #007bff;
+  background-color: #061a62;
   color: #fff;
 }
 
 .results tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #061a62;
 }
 
-.results tbody tr:hover {
+/* .results tbody tr:hover {
   background-color: #e0e0e0;
-}
+} */

@@ -37,17 +37,32 @@ router.post('/findPilot', async (req, res) => {
     const query = {};
 
     if (rank) query.rank = rank;
+
     if (totalFlightHours) {
-      const totalFlightHoursRange = totalFlightHours.split('-').map(Number);
-      query.total_flight_hours = { $gte: totalFlightHoursRange[0], $lte: totalFlightHoursRange[1] };
+      if (totalFlightHours === '3001+') {
+        query.total_flight_hours = { $gte: 3001 };
+      } else {
+        const [min, max] = totalFlightHours.split('-').map(Number);
+        query.total_flight_hours = { $gte: min, $lte: max };
+      }
     }
+
     if (nvgHours) {
-      const nvgHoursRange = nvgHours.split('-').map(Number);
-      query.nvg_hours = { $gte: nvgHoursRange[0], $lte: nvgHoursRange[1] };
+      if (nvgHours === '3001+') {
+        query.nvg_hours = { $gte: 3001 };
+      } else {
+        const [min, max] = nvgHours.split('-').map(Number);
+        query.nvg_hours = { $gte: min, $lte: max };
+      }
     }
+
     if (flightHours) {
-      const flightHoursRange = flightHours.split('-').map(Number);
-      query.flight_hours = { $gte: flightHoursRange[0], $lte: flightHoursRange[1] };
+      if (flightHours === '3001+') {
+        query.flight_hours = { $gte: 3001 };
+      } else {
+        const [min, max] = flightHours.split('-').map(Number);
+        query.flight_hours = { $gte: min, $lte: max };
+      }
     }
 
     const pilots = await User.find(query);

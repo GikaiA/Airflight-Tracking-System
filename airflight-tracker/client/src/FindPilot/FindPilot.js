@@ -49,14 +49,14 @@ function FindPilot() {
             </label>
             <select id='dropdown1' name='dropdown1' value={rank} onChange={(e) => setRank(e.target.value)}>
               <option value=''>Select a rank</option>
-              <option value='Airman basic (E-1)'>(O-1)</option>
-              <option value='Airman (E-2)'>(O-2)</option>
-              <option value='Airman first class (E-3)'>(O-3)</option>
-              <option value='Senior airman (E-4)'>(O-4)</option>
-              <option value='Staff sergeant (E-5)'>(O-5)</option>
-              <option value='Technical sergeant (E-6)'>(O-6)</option>
-              <option value='Master sergeant (E-7)'>(O-7)</option>
-              <option value='Senior master sergeant (E-8)'>(O-8)</option>
+              <option value='Airman basic (O-1)'>(O-1)</option>
+              <option value='Airman (O-2)'>(O-2)</option>
+              <option value='Airman first class (O-3)'>(O-3)</option>
+              <option value='Senior airman (O-4)'>(O-4)</option>
+              <option value='Staff sergeant (O-5)'>(O-5)</option>
+              <option value='Technical sergeant (O-6)'>(O-6)</option>
+              <option value='Master sergeant (O-7)'>(O-7)</option>
+              <option value='Senior master sergeant (O-8)'>(O-8)</option>
             </select>
 
             <label htmlFor='dropdown2' className='dropdown-title'>
@@ -85,7 +85,7 @@ function FindPilot() {
               <option value='3001+'>3001+</option>
             </select>
 
-            <label htmlFor='dropdown4' className='dropdown-title'>
+            {/* <label htmlFor='dropdown4' className='dropdown-title'>
               Flight Hours
             </label>
             <select id='dropdown4' name='dropdown4' value={flightHours} onChange={(e) => setFlightHours(e.target.value)}>
@@ -96,7 +96,7 @@ function FindPilot() {
               <option value='1000-2000'>1,000-2,000</option>
               <option value='2000-3000'>2,000-3,000</option>
               <option value='3001+'>3001+</option>
-            </select>
+            </select> */}
 
             <button type='submit' className='findpilot-button'>
               Find Pilot
@@ -115,7 +115,7 @@ function FindPilot() {
                   <p className='card-text'><strong>Rank:</strong> {pilot.rank ? pilot.rank : 'N/A'}</p>
                   <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours ? pilot.total_flight_hours : 'N/A'}</p>
                   <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours ? pilot.nvg_hours : 'N/A'}</p>
-                  <p className='card-text'><strong>Flight Hours:</strong> {pilot.flight_hours ? pilot.flight_hours : 'N/A'}</p>
+                  {/* <p className='card-text'><strong>Flight Hours:</strong> {pilot.flight_hours ? pilot.flight_hours : 'N/A'}</p> */}
                 </div>
               </div>
             ))}
@@ -129,3 +129,4 @@ function FindPilot() {
 }
 
 export default FindPilot;
+

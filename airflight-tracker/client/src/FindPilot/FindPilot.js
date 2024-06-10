@@ -49,14 +49,14 @@ function FindPilot() {
             </label>
             <select id='dropdown1' name='dropdown1' value={rank} onChange={(e) => setRank(e.target.value)}>
               <option value=''>Select a rank</option>
-              <option value='Airman basic (E-1)'>Airman basic (E-1)</option>
-              <option value='Airman (E-2)'>Airman (E-2)</option>
-              <option value='Airman first class (E-3)'>Airman first class (E-3)</option>
-              <option value='Senior airman (E-4)'>Senior airman (E-4)</option>
-              <option value='Staff sergeant (E-5)'>Staff sergeant (E-5)</option>
-              <option value='Technical sergeant (E-6)'>Technical sergeant (E-6)</option>
-              <option value='Master sergeant (E-7)'>Master sergeant (E-7)</option>
-              <option value='Senior master sergeant (E-8)'>Senior master sergeant (E-8)</option>
+              <option value='Airman basic (E-1)'>(O-1)</option>
+              <option value='Airman (E-2)'>(O-2)</option>
+              <option value='Airman first class (E-3)'>(O-3)</option>
+              <option value='Senior airman (E-4)'>(O-4)</option>
+              <option value='Staff sergeant (E-5)'>(O-5)</option>
+              <option value='Technical sergeant (E-6)'>(O-6)</option>
+              <option value='Master sergeant (E-7)'>(O-7)</option>
+              <option value='Senior master sergeant (E-8)'>(O-8)</option>
             </select>
 
             <label htmlFor='dropdown2' className='dropdown-title'>
@@ -121,7 +121,7 @@ function FindPilot() {
             ))}
           </div>
         ) : (
-          <p>No pilots found</p>
+          <p className='no-pilot-sentence'>No pilots found</p>
         )}
       </div>
     </div>

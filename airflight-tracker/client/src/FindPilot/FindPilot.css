@@ -48,6 +48,11 @@ select {
   justify-content: center;
 }
 
+.no-pilot-sentence{
+  color: white;
+  height: 280vh;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

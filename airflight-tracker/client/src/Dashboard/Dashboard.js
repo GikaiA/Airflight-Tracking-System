@@ -71,6 +71,7 @@ const Dashboard = () => {
         <p>Secondary Time: {userData.secondary_time}</p>
       </div>
       <button onClick={handleEditProfile} className="edit-profile-button">Edit Profile</button>
+      <div className="history"></div>
     </div>
   );
 };

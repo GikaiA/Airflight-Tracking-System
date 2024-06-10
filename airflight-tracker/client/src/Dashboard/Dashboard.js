@@ -88,7 +88,7 @@ const Dashboard = () => {
           <p className="team-sentence">N/A</p>
         </div>
         <div className="history">
-          <h1 className="history-title">History</h1>
+          <h1 className="history-title"> Flight History</h1>
           <p className="history-sentence">N/A</p>
         </div>
       </div>

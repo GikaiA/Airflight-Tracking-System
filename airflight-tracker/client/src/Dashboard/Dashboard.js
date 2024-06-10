@@ -61,6 +61,7 @@ const Dashboard = () => {
       <div className="dashboard-cards-section">
         <div className="user-detail-section">
           <p className="user-detail">Email: {userData.email}</p>
+          <p className="user-detail">Rank: N/A</p>
           <p className="user-detail">
             Total Flight Hours: {userData.total_flight_hours}
           </p>
@@ -83,10 +84,12 @@ const Dashboard = () => {
           </button>
         </div>
         <div className="team">
-          <p>BOOKMARK PILOTS</p>
+          <h1 className="team-title">My Team</h1>
+          <p className="team-sentence">N/A</p>
         </div>
         <div className="history">
-          <p>No current Pilots at this moment!!</p>
+          <h1 className="history-title">History</h1>
+          <p className="history-sentence">N/A</p>
         </div>
       </div>
     </div>

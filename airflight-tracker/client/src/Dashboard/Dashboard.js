@@ -58,20 +58,37 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
-      <div className="user-detail-section">
-        <p>Email: {userData.email}</p>
-        <p>Total Flight Hours: {userData.total_flight_hours}</p>
-        <p>Night Hours: {userData.night_hours}</p>
-        <p>NVG Hours: {userData.nvg_hours}</p>
-        <p>Combat Hours: {userData.combat_hours}</p>
-        <p>Combat Sorties: {userData.combat_sorties}</p>
-        <p>Total Sorties: {userData.total_sorties}</p>
-        <p>Instructor Time: {userData.instructor_time}</p>
-        <p>Primary Time: {userData.primary_time}</p>
-        <p>Secondary Time: {userData.secondary_time}</p>
+      <div className="dashboard-cards-section">
+        <div className="user-detail-section">
+          <p className="user-detail">Email: {userData.email}</p>
+          <p className="user-detail">
+            Total Flight Hours: {userData.total_flight_hours}
+          </p>
+          <p className="user-detail">Night Hours: {userData.night_hours}</p>
+          <p className="user-detail">NVG Hours: {userData.nvg_hours}</p>
+          <p className="user-detail">Combat Hours: {userData.combat_hours}</p>
+          <p className="user-detail">
+            Combat Sorties: {userData.combat_sorties}
+          </p>
+          <p className="user-detail">Total Sorties: {userData.total_sorties}</p>
+          <p className="user-detail">
+            Instructor Time: {userData.instructor_time}
+          </p>
+          <p className="user-detail">Primary Time: {userData.primary_time}</p>
+          <p className="user-detail">
+            Secondary Time: {userData.secondary_time}
+          </p>
+          <button onClick={handleEditProfile} className="edit-profile-button">
+            Edit Profile
+          </button>
+        </div>
+        <div className="team">
+          <p>BOOKMARK PILOTS</p>
+        </div>
+        <div className="history">
+          <p>No current Pilots at this moment!!</p>
+        </div>
       </div>
-      <button onClick={handleEditProfile} className="edit-profile-button">Edit Profile</button>
-      <div className="history"></div>
     </div>
   );
 };

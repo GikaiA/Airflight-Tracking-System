@@ -36,9 +36,11 @@ select {
 
 .findpilot-button {
   padding: 10px 20px;
-  background-color: #0073b1;
-  color: white;
+  background-color: #F2BF04;
+  font-size: 22px;
+  color: #061a62;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 

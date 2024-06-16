@@ -57,39 +57,52 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1 className="dashboard-title">Welcome, {userData.username}!</h1>
+      <div className="header">
+        <h1>Welcome, {userData.username}!</h1>
+        <button onClick={handleEditProfile} className="edit-profile-button">
+          Edit Profile
+        </button>
+      </div>
       <div className="dashboard-cards-section">
-        <div className="user-detail-section">
-          <p className="user-detail">Email: {userData.email}</p>
-          <p className="user-detail">Rank: N/A</p>
-          <p className="user-detail">
-            Total Flight Hours: {userData.total_flight_hours}
-          </p>
-          <p className="user-detail">Night Hours: {userData.night_hours}</p>
-          <p className="user-detail">NVG Hours: {userData.nvg_hours}</p>
-          <p className="user-detail">Combat Hours: {userData.combat_hours}</p>
-          <p className="user-detail">
-            Combat Sorties: {userData.combat_sorties}
-          </p>
-          <p className="user-detail">Total Sorties: {userData.total_sorties}</p>
-          <p className="user-detail">
-            Instructor Time: {userData.instructor_time}
-          </p>
-          <p className="user-detail">Primary Time: {userData.primary_time}</p>
-          <p className="user-detail">
-            Secondary Time: {userData.secondary_time}
-          </p>
-          <button onClick={handleEditProfile} className="edit-profile-button">
-            Edit Profile
-          </button>
+        <div className="user-detail-section card">
+          <h2>User Details</h2>
+          <p>Email: {userData.email}</p>
+          <p>Rank: N/A</p>
+          <p>Total Flight Hours: {userData.total_flight_hours}</p>
+          <p>Night Hours: {userData.night_hours}</p>
+          <p>NVG Hours: {userData.nvg_hours}</p>
+          <p>Combat Hours: {userData.combat_hours}</p>
+          <p>Combat Sorties: {userData.combat_sorties}</p>
+          <p>Total Sorties: {userData.total_sorties}</p>
+          <p>Instructor Time: {userData.instructor_time}</p>
+          <p>Primary Time: {userData.primary_time}</p>
+          <p>Secondary Time: {userData.secondary_time}</p>
         </div>
-        <div className="team">
-          <h1 className="team-title">My Team</h1>
-          <p className="team-sentence">N/A</p>
+        <div className="team card">
+          <h2>My Team</h2>
+          <div className="team-members">
+            <div className="team-member">
+              <p>Name: John Doe</p>
+              <p>Role: Pilot</p>
+            </div>
+            <div className="team-member">
+              <p>Name: Jane Smith</p>
+              <p>Role: Co-Pilot</p>
+            </div>
+          </div>
         </div>
-        <div className="history">
-          <h1 className="history-title"> Flight History</h1>
-          <p className="history-sentence">N/A</p>
+        <div className="history card">
+          <h2>History</h2>
+          <div className="history-records">
+            <div className="history-record">
+              <p>Date: 2023-05-01</p>
+              <p>Mission: Training Flight</p>
+            </div>
+            <div className="history-record">
+              <p>Date: 2023-04-20</p>
+              <p>Mission: Reconnaissance</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

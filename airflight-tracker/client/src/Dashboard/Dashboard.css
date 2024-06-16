@@ -1,111 +1,72 @@
 .dashboard {
   height: 100vh;
   background-color: #061a62;
+  color: white;
+  padding: 20px;
 }
 
-.dashboard-title {
-  display: flex;
-  padding-left: 100px;
-  color: white;
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
   margin: 0;
 }
 
 .dashboard-cards-section {
   display: flex;
   justify-content: space-around;
-  width: 100%;
-  height: 100%;
-  /* max-width: 1200px; */
+  flex-wrap: wrap;
 }
 
-.user-detail-section {
-  background-color: #061a62;
-  /* border: 1px solid #f2bf04; */
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-}
-
-.user-detail {
-  color: white;
-}
-/* Styles for matches overview section */
-.matches-overview {
+.card {
   background-color: #ffffff;
-  border: 1px solid #dcdcdc;
-  border-radius: 8px;
+  color: #061a62;
+  border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 10px;
   flex: 1;
+  min-width: 300px;
+  max-width: 400px;
 }
 
-/* Heading styles */
-.matches-overview h2 {
-  font-size: 1.5em;
+.card h2 {
+  color: #061a62;
   margin-bottom: 10px;
-  color: #2c3e50;
 }
 
-/* List styles */
-.matches-overview ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.matches-overview li {
-  padding: 10px;
-  border-bottom: 1px solid #dcdcdc;
-  color: #333;
-}
-
-.matches-overview li:last-child {
-  border-bottom: none;
-}
-
-.match-text {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.team-title,
-.history-title {
-  color: white;
-}
-
-.team-sentence,
-.history-sentence {
-  color: white;
-  font-size: 25px;
-}
-
-.his .logout-button {
-  background-color: #f2bf04;
-  color: #061a62;
-  border-radius: 10px;
-  border-color: transparent;
-  transition-duration: 0.5s;
-  padding: 10px 20px;
-}
-
-.logout-text {
-  font-size: 22px;
-  background-color: #f2bf04;
-  color: #061a62;
-  text-decoration-line: none;
-}
-
-.logout-text:hover {
-  color: #061a62;
-}
-
-.edit-profile-buttton {
+.edit-profile-button {
   font-size: 18px;
   background-color: #f2bf04;
   color: #061a62;
   border-radius: 10px;
-  border-color: transparent;
-  transition-duration: 0.5s;
+  border: none;
   padding: 10px 20px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-profile-button:hover {
+  background-color: #e6ac03;
+}
+
+.team-members, .history-records {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.team-member, .history-record {
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+@media (max-width: 768px) {
+  .dashboard-cards-section {
+    flex-direction: column;
+    align-items: center;
+  }
 }

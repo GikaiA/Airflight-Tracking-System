@@ -198,7 +198,18 @@ const EditProfile = () => {
             className="editprofile-field"
           />
         </label>
-        <button type="submit" className="edit-profile-button">Update Profile</button>
+        <div className="buttons-container">
+          <button type="submit" className="edit-profile-button">
+            Update Profile
+          </button>
+          <button
+            type="button"
+            className="back-button"
+            onClick={() => navigate("/dashboard")}
+          >
+            Back to Dashboard
+          </button>
+        </div>
       </form>
     </div>
   );

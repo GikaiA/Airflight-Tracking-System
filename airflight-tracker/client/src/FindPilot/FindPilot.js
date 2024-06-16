@@ -49,14 +49,14 @@ function FindPilot() {
             </label>
             <select id='dropdown1' name='dropdown1' value={rank} onChange={(e) => setRank(e.target.value)}>
               <option value=''>Select a rank</option>
-              <option value='Airman basic (0-1)'>(O-1)</option>
-              <option value='Airman (0-2)'>(O-2)</option>
-              <option value='Airman first class (0-3)'>(O-3)</option>
-              <option value='Senior airman (0-4)'>(O-4)</option>
-              <option value='Staff sergeant (0-5)'>(O-5)</option>
-              <option value='Technical sergeant (0-6)'>(O-6)</option>
-              <option value='Master sergeant (0-7)'>(O-7)</option>
-              <option value='Senior master sergeant (0-8)'>(O-8)</option>
+              <option value='Airman basic (O-1)'>(O-1)</option>
+              <option value='Airman (O-2)'>(O-2)</option>
+              <option value='Airman first class (O-3)'>(O-3)</option>
+              <option value='Senior airman (O-4)'>(O-4)</option>
+              <option value='Staff sergeant (O-5)'>(O-5)</option>
+              <option value='Technical sergeant (O-6)'>(O-6)</option>
+              <option value='Master sergeant (O-7)'>(O-7)</option>
+              <option value='Senior master sergeant (O-8)'>(O-8)</option>
             </select>
 
             <label htmlFor='dropdown2' className='dropdown-title'>
@@ -115,7 +115,7 @@ function FindPilot() {
                   <p className='card-text'><strong>Rank:</strong> {pilot.rank ? pilot.rank : 'N/A'}</p>
                   <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours ? pilot.total_flight_hours : 'N/A'}</p>
                   <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours ? pilot.nvg_hours : 'N/A'}</p>
-                  <p className='card-text'><strong>Flight Hours:</strong> {pilot.flight_hours ? pilot.flight_hours : 'N/A'}</p>
+                  {/* <p className='card-text'><strong>Flight Hours:</strong> {pilot.flight_hours ? pilot.flight_hours : 'N/A'}</p> */}
                 </div>
               </div>
             ))}

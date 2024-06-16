@@ -1,69 +1,79 @@
 .editprofile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #061a62;
-    padding: 20px;
-  }
-  
-  .editprofile-title {
-    margin: 20px 0;
-    color: white;
-    font-size: 2.5rem;
-  }
-  
-  .edit-profile-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .editprofile-field {
-    width: 100%;
-    max-width: 350px;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  label {
-    width: 100%;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #061a62;
-  }
-  
-  .edit-profile-button, .back-button {
-    width: 100%;
-    max-width: 350px;
-    font-size: 18px;
-    background-color: #F2BF04;
-    color: #061a62;
-    border-radius: 10px;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition-duration: 0.3s;
-    margin: 10px 0;
-  }
-  
-  .edit-profile-button:hover, .back-button:hover {
-    background-color: #e1ab02;
-  }
-  
-  .buttons-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
+  text-align: center;
+  padding: 20px;
+  background-color: #061a62;
+}
+
+.editprofile-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.edit-profile-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 40px; /* Increased gap for more separation */
+}
+
+.form-column {
+  width: calc(50% - 20px); /* Adjusted width calculation */
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #061a62;
+}
+
+.editprofile-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 20px;
+}
+
+.edit-profile-button,
+.back-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.edit-profile-button {
+  background-color: #28a745;
+}
+
+.back-button {
+  background-color: #007bff;
+}
+
+
+
    

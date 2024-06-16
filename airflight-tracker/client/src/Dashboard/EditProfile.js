@@ -88,116 +88,131 @@ const EditProfile = () => {
     <div className="editprofile">
       <h1 className="editprofile-title">Edit Profile</h1>
       <form onSubmit={handleSubmit} className="edit-profile-form">
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Total Flight Hours:
-          <input
-            type="number"
-            name="total_flight_hours"
-            value={formData.total_flight_hours}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Night Hours:
-          <input
-            type="number"
-            name="night_hours"
-            value={formData.night_hours}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          NVG Hours:
-          <input
-            type="number"
-            name="nvg_hours"
-            value={formData.nvg_hours}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Combat Hours:
-          <input
-            type="number"
-            name="combat_hours"
-            value={formData.combat_hours}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Combat Sorties:
-          <input
-            type="number"
-            name="combat_sorties"
-            value={formData.combat_sorties}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Total Sorties:
-          <input
-            type="number"
-            name="total_sorties"
-            value={formData.total_sorties}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Instructor Time:
-          <input
-            type="number"
-            name="instructor_time"
-            value={formData.instructor_time}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Primary Time:
-          <input
-            type="number"
-            name="primary_time"
-            value={formData.primary_time}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
-        <label>
-          Secondary Time:
-          <input
-            type="number"
-            name="secondary_time"
-            value={formData.secondary_time}
-            onChange={handleFormChange}
-            className="editprofile-field"
-          />
-        </label>
+        <div className="form-columns">
+          <div className="form-column">
+            <label>
+              Username:
+              <input
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleFormChange}
+                className="editprofile-field"
+              />
+            </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleFormChange}
+                className="editprofile-field"
+              />
+            </label>
+            <label>
+              Total Flight Hours:
+              <input
+                type="number"
+                name="total_flight_hours"
+                value={formData.total_flight_hours}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Night Hours:
+              <input
+                type="number"
+                name="night_hours"
+                value={formData.night_hours}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              NVG Hours:
+              <input
+                type="number"
+                name="nvg_hours"
+                value={formData.nvg_hours}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+          </div>
+          <div className="form-column">
+            <label>
+              Combat Hours:
+              <input
+                type="number"
+                name="combat_hours"
+                value={formData.combat_hours}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Combat Sorties:
+              <input
+                type="number"
+                name="combat_sorties"
+                value={formData.combat_sorties}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Total Sorties:
+              <input
+                type="number"
+                name="total_sorties"
+                value={formData.total_sorties}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Instructor Time:
+              <input
+                type="number"
+                name="instructor_time"
+                value={formData.instructor_time}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Primary Time:
+              <input
+                type="number"
+                name="primary_time"
+                value={formData.primary_time}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+            <label>
+              Secondary Time:
+              <input
+                type="number"
+                name="secondary_time"
+                value={formData.secondary_time}
+                onChange={handleFormChange}
+                className="editprofile-field"
+                min="0"
+              />
+            </label>
+          </div>
+        </div>
         <div className="buttons-container">
           <button type="submit" className="edit-profile-button">
             Update Profile

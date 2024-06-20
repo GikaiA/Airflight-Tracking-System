@@ -1,23 +1,26 @@
 .loginpage {
     background-color: #061a62;
+    width: 100%;
+    height: 100vh;
     display: flex;
     align-items: center;
-    justify-content: center;
-    /* height: 100vh; */
+    overflow: hidden;
 }
 
 .login-split-section{
+    width: 1800px;
+    margin-left: 0;
+    height: 100%;
     display: flex;
-  width: 90%;
-  max-width: 1200px;
-  border-radius: 8px;
-  overflow: hidden;
+    justify-content: center;
 }
 
 .airforce-bg{
-    width: 35%;
-    height: 100%;
+    width: 1800px;
+    height: 1150px;
     object-fit: cover;
+    max-width: max-content;
+    max-height: max-content;
 }
 
 

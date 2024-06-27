@@ -6,12 +6,16 @@ function FindPilot() {
   const [totalFlightHours, setTotalFlightHours] = useState('');
   const [nvgHours, setNvgHours] = useState('');
   const [flightHours, setFlightHours] = useState('');
+  const [combatHours, setCombatHours] = useState('');
+  const [combatSorties, setCombatSorties] = useState('');
+  const [totalSorties, setTotalSorties] = useState('');
   const [pilots, setPilots] = useState([]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log('Submitting form with values:', { rank, totalFlightHours, nvgHours, flightHours });
+    console.log('Submitting form with values:', { rank, totalFlightHours, nvgHours, flightHours, combatHours, totalSorties, combatSorties });
 
     fetch('http://localhost:3000/api/user/findPilot', {
       method: 'POST',
@@ -23,6 +27,9 @@ function FindPilot() {
         totalFlightHours,
         nvgHours,
         flightHours,
+        combatHours,
+        totalSorties,
+        combatSorties,
       }),
     })
       .then((response) => {
@@ -85,10 +92,10 @@ function FindPilot() {
               <option value='3001+'>3001+</option>
             </select>
 
-            {/* <label htmlFor='dropdown4' className='dropdown-title'>
-              Flight Hours
+            <label htmlFor='dropdown4' className='dropdown-title'>
+              Combat Hours
             </label>
-            <select id='dropdown4' name='dropdown4' value={flightHours} onChange={(e) => setFlightHours(e.target.value)}>
+            <select id='dropdown4' name='dropdown4' value={combatHours} onChange={(e) => setCombatHours(e.target.value)}>
               <option value=''>Select...</option>
               <option value='0-300'>0-300</option>
               <option value='300-500'>300-500</option>
@@ -96,7 +103,33 @@ function FindPilot() {
               <option value='1000-2000'>1,000-2,000</option>
               <option value='2000-3000'>2,000-3,000</option>
               <option value='3001+'>3001+</option>
-            </select> */}
+            </select>
+
+            <label htmlFor='dropdown5' className='dropdown-title'>
+              Total Sorties
+            </label>
+            <select id='dropdown5' name='dropdown5' value={totalSorties} onChange={(e) => setTotalSorties(e.target.value)}>
+              <option value=''>Select...</option>
+              <option value='0-300'>0-300</option>
+              <option value='300-500'>300-500</option>
+              <option value='600-900'>600-900</option>
+              <option value='1000-2000'>1,000-2,000</option>
+              <option value='2000-3000'>2,000-3,000</option>
+              <option value='3001+'>3001+</option>
+            </select>
+
+            <label htmlFor='dropdown6' className='dropdown-title'>
+              Combat Sorties
+            </label>
+            <select id='dropdown6' name='dropdown6' value={combatSorties} onChange={(e) => setCombatSorties(e.target.value)}>
+              <option value=''>Select...</option>
+              <option value='0-300'>0-300</option>
+              <option value='300-500'>300-500</option>
+              <option value='600-900'>600-900</option>
+              <option value='1000-2000'>1,000-2,000</option>
+              <option value='2000-3000'>2,000-3,000</option>
+              <option value='3001+'>3001+</option>
+            </select>
 
             <button type='submit' className='findpilot-button'>
               Find Pilot
@@ -113,9 +146,11 @@ function FindPilot() {
                   <h3 className='card-title'>{pilot.username}</h3>
                   <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
                   <p className='card-text'><strong>Rank:</strong> {pilot.rank ? pilot.rank : 'N/A'}</p>
-                  <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours ? pilot.total_flight_hours : 'N/A'}</p>
                   <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours ? pilot.nvg_hours : 'N/A'}</p>
-                  {/* <p className='card-text'><strong>Flight Hours:</strong> {pilot.flight_hours ? pilot.flight_hours : 'N/A'}</p> */}
+                  <p className='card-text'><strong>Combat Hours:</strong> {pilot.combat_hours ? pilot.combat_hours : 'N/A'}</p>
+                  <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours ? pilot.total_flight_hours : 'N/A'}</p>
+                  <p className='card-text'><strong>Comabt Sorties:</strong> {pilot.combat_sorties ? pilot.combat_sorties : 'N/A'}</p>
+                  <p className='card-text'><strong>Total Sorties:</strong> {pilot.total_sorties ? pilot.total_sorties : 'N/A'}</p>
                 </div>
               </div>
             ))}

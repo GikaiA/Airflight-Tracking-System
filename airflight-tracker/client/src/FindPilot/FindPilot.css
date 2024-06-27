@@ -36,7 +36,7 @@ select {
 
 .findpilot-button {
   padding: 10px 20px;
-  background-color: #F2BF04;
+  background-color: #f2bf04;
   font-size: 22px;
   color: #061a62;
   border: none;
@@ -50,17 +50,15 @@ select {
   justify-content: center;
 }
 
-.no-pilot-sentence{
+.no-pilot-sentence {
   color: white;
   height: 280vh;
 }
 
 .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 50px;
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 1200px;
 }
 
 .card {

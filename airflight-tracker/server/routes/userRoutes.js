@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const auth = require('../middleware/authMiddleware');
 
-// GET user profile route
+// GET user profile by ID route
 router.get('/profile/:id', auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -37,36 +37,34 @@ router.post('/findPilot', async (req, res) => {
     const query = {};
 
     if (rank) query.rank = rank;
-
     if (totalFlightHours) {
-      if (totalFlightHours === '3001+') {
-        query.total_flight_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = totalFlightHours.split('-').map(Number);
-        query.total_flight_hours = { $gte: min, $lte: max };
-      }
+      const totalFlightHoursRange = totalFlightHours.split('-').map(Number);
+      query.total_flight_hours = { $gte: totalFlightHoursRange[0], $lte: totalFlightHoursRange[1] };
     }
-
     if (nvgHours) {
-      if (nvgHours === '3001+') {
-        query.nvg_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = nvgHours.split('-').map(Number);
-        query.nvg_hours = { $gte: min, $lte: max };
-      }
+      const nvgHoursRange = nvgHours.split('-').map(Number);
+      query.nvg_hours = { $gte: nvgHoursRange[0], $lte: nvgHoursRange[1] };
     }
-
     if (flightHours) {
-      if (flightHours === '3001+') {
-        query.flight_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = flightHours.split('-').map(Number);
-        query.flight_hours = { $gte: min, $lte: max };
-      }
+      const flightHoursRange = flightHours.split('-').map(Number);
+      query.flight_hours = { $gte: flightHoursRange[0], $lte: flightHoursRange[1] };
     }
 
     const pilots = await User.find(query);
     res.json(pilots);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// GET user profile by username route
+router.get('/profile/username/:username', auth, async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user);
   } catch (error) {
     res.status(500).send(error.message);
   }

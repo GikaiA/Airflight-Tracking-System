@@ -1,0 +1,602 @@
+[
+    {
+        "mission_id": "Tanker_1",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 4,
+        "destination": "Dubai, UAE",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_2",
+        "aircraft": "C-37A/B",
+        "duration_hours": 8,
+        "destination": "Lisbon, Portugal",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_3",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 5,
+        "destination": "Oslo, Norway",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_4",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 2,
+        "destination": "Manchester, UK",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_5",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 4,
+        "destination": "Manama, Bahrain",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_6",
+        "aircraft": "C-32",
+        "duration_hours": 3,
+        "destination": "Singapore",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_7",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 4,
+        "destination": "Edinburgh, Scotland",
+        "mission_type": "Tanker",
+        "specific_mission": "Aerial Refueling"
+    },
+    {
+        "mission_id": "Transport_8",
+        "aircraft": "C-37A/B",
+        "duration_hours": 5,
+        "destination": "Zurich, Switzerland",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_9",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 8,
+        "destination": "Cape Town, South Africa",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_10",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 4,
+        "destination": "Mexico City, Mexico",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_11",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 6,
+        "destination": "Baghdad, Iraq",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_12",
+        "aircraft": "C-37A/B",
+        "duration_hours": 5,
+        "destination": "Tashkent, Uzbekistan",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_13",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 4,
+        "destination": "Cape Town, South Africa",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_14",
+        "aircraft": "C-32",
+        "duration_hours": 4,
+        "destination": "Lagos, Nigeria",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_15",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 6,
+        "destination": "Cape Town, South Africa",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_16",
+        "aircraft": "C-20",
+        "duration_hours": 3,
+        "destination": "Brussels, Belgium",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_17",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 4,
+        "destination": "Birmingham, UK",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_18",
+        "aircraft": "C-32",
+        "duration_hours": 6,
+        "destination": "Kabul, Afghanistan",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_19",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 4,
+        "destination": "Prague, Czech Republic",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_20",
+        "aircraft": "HC-130J Combat King II",
+        "duration_hours": 9,
+        "destination": "Doha, Qatar",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_21",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 7,
+        "destination": "Prague, Czech Republic",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_22",
+        "aircraft": "C-5 Galaxy",
+        "duration_hours": 3,
+        "destination": "Tehran, Iran",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_23",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 7,
+        "destination": "Kinshasa, DRC",
+        "mission_type": "Tanker",
+        "specific_mission": "Aerial Refueling"
+    },
+    {
+        "mission_id": "Transport_24",
+        "aircraft": "HC-130J Combat King II",
+        "duration_hours": 2,
+        "destination": "Birmingham, UK",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_25",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 8,
+        "destination": "Kabul, Afghanistan",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_26",
+        "aircraft": "C-20",
+        "duration_hours": 8,
+        "destination": "Delhi, India",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_27",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 6,
+        "destination": "Abu Dhabi, UAE",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_28",
+        "aircraft": "HC-130J Combat King II",
+        "duration_hours": 5,
+        "destination": "Abu Dhabi, UAE",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_29",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 4,
+        "destination": "Sydney, Australia",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_30",
+        "aircraft": "MC-130H Combat Talon II",
+        "duration_hours": 3,
+        "destination": "Doha, Qatar",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_31",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 6,
+        "destination": "Glasgow, Scotland",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_32",
+        "aircraft": "HC-130P/N King",
+        "duration_hours": 8,
+        "destination": "Astana, Kazakhstan",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_33",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 6,
+        "destination": "London, UK",
+        "mission_type": "Tanker",
+        "specific_mission": "Aerial Refueling"
+    },
+    {
+        "mission_id": "Transport_34",
+        "aircraft": "C-21",
+        "duration_hours": 4,
+        "destination": "Warsaw, Poland",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_35",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 5,
+        "destination": "Manama, Bahrain",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_36",
+        "aircraft": "C-37A/B",
+        "duration_hours": 5,
+        "destination": "Kinshasa, DRC",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_37",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 4,
+        "destination": "Copenhagen, Denmark",
+        "mission_type": "Tanker",
+        "specific_mission": "Force Multiplication"
+    },
+    {
+        "mission_id": "Transport_38",
+        "aircraft": "C-5 Galaxy",
+        "duration_hours": 10,
+        "destination": "Paris, France",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_39",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 7,
+        "destination": "Singapore",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_40",
+        "aircraft": "C-37A/B",
+        "duration_hours": 2,
+        "destination": "Reykjavik, Iceland",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_41",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 6,
+        "destination": "Abu Dhabi, UAE",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_42",
+        "aircraft": "HC-130J Combat King II",
+        "duration_hours": 6,
+        "destination": "Casablanca, Morocco",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_43",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 4,
+        "destination": "Athens, Greece",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_44",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 9,
+        "destination": "Johannesburg, South Africa",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_45",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 8,
+        "destination": "Abu Dhabi, UAE",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_46",
+        "aircraft": "VC-25 Air Force One",
+        "duration_hours": 4,
+        "destination": "Warsaw, Poland",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_47",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 8,
+        "destination": "Dubai, UAE",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_48",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 3,
+        "destination": "Manchester, UK",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_49",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 4,
+        "destination": "Baghdad, Iraq",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_50",
+        "aircraft": "C-37A/B",
+        "duration_hours": 4,
+        "destination": "Tashkent, Uzbekistan",
+        "mission_type": "Transport",
+        "specific_mission": "Cargo and Equipment Transport"
+    },
+    {
+        "mission_id": "Tanker_51",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 4,
+        "destination": "Zurich, Switzerland",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_52",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 10,
+        "destination": "Algiers, Algeria",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_53",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 7,
+        "destination": "Moscow, Russia",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_54",
+        "aircraft": "C-17 Globemaster III",
+        "duration_hours": 8,
+        "destination": "Amman, Jordan",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_55",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 6,
+        "destination": "Tehran, Iran",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_56",
+        "aircraft": "HC-130P/N King",
+        "duration_hours": 4,
+        "destination": "Glasgow, Scotland",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_57",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 8,
+        "destination": "Baku, Azerbaijan",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_58",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 2,
+        "destination": "Nairobi, Kenya",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_59",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 4,
+        "destination": "Baghdad, Iraq",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_60",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 4,
+        "destination": "Stockholm, Sweden",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_61",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 5,
+        "destination": "Santiago, Chile",
+        "mission_type": "Tanker",
+        "specific_mission": "Force Multiplication"
+    },
+    {
+        "mission_id": "Transport_62",
+        "aircraft": "C-20",
+        "duration_hours": 10,
+        "destination": "Amman, Jordan",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_63",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 7,
+        "destination": "Stockholm, Sweden",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_64",
+        "aircraft": "C-130 Hercules",
+        "duration_hours": 4,
+        "destination": "Havana, Cuba",
+        "mission_type": "Transport",
+        "specific_mission": "Airdrop Missions"
+    },
+    {
+        "mission_id": "Tanker_65",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 6,
+        "destination": "Mexico City, Mexico",
+        "mission_type": "Tanker",
+        "specific_mission": "Nuclear Operations"
+    },
+    {
+        "mission_id": "Transport_66",
+        "aircraft": "C-21",
+        "duration_hours": 9,
+        "destination": "Copenhagen, Denmark",
+        "mission_type": "Transport",
+        "specific_mission": "Medical Evacuation"
+    },
+    {
+        "mission_id": "Tanker_67",
+        "aircraft": "KC-46A Pegasus",
+        "duration_hours": 5,
+        "destination": "Warsaw, Poland",
+        "mission_type": "Tanker",
+        "specific_mission": "Airborne Command and Control"
+    },
+    {
+        "mission_id": "Transport_68",
+        "aircraft": "C-37A/B",
+        "duration_hours": 7,
+        "destination": "Bogota, Colombia",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_69",
+        "aircraft": "KC-135 Stratotanker",
+        "duration_hours": 7,
+        "destination": "Johannesburg, South Africa",
+        "mission_type": "Tanker",
+        "specific_mission": "Force Multiplication"
+    },
+    {
+        "mission_id": "Transport_70",
+        "aircraft": "VC-25 Air Force One",
+        "duration_hours": 5,
+        "destination": "Santiago, Chile",
+        "mission_type": "Transport",
+        "specific_mission": "VIP/Personnel Transport"
+    },
+    {
+        "mission_id": "Tanker_71",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 8,
+        "destination": "Athens, Greece",
+        "mission_type": "Tanker",
+        "specific_mission": "Surveillance and Reconnaissance"
+    },
+    {
+        "mission_id": "Transport_72",
+        "aircraft": "C-5 Galaxy",
+        "duration_hours": 7,
+        "destination": "Cape Town, South Africa",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_73",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 6,
+        "destination": "Kingston, Jamaica",
+        "mission_type": "Tanker",
+        "specific_mission": "Aerial Refueling"
+    },
+    {
+        "mission_id": "Transport_74",
+        "aircraft": "HC-130J Combat King II",
+        "duration_hours": 2,
+        "destination": "Edinburgh, Scotland",
+        "mission_type": "Transport",
+        "specific_mission": "Troop Transport"
+    },
+    {
+        "mission_id": "Tanker_75",
+        "aircraft": "KC-10 Extender",
+        "duration_hours": 7,
+        "destination": "Kinshasa, DRC",
+        "mission_type": "Tanker",
+        "specific_mission": "Force Multiplication"
+    }
+]

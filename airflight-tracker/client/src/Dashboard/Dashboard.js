@@ -5,6 +5,7 @@ import "./Dashboard.css";
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState("");
+  const [updateMessage, setUpdateMessage] = useState(""); // Add state for update message
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,11 +42,14 @@ const Dashboard = () => {
     };
 
     fetchUserData();
-  }, []);
 
-  const handleEditProfile = () => {
-    navigate(`/edit-profile/${localStorage.getItem("userId")}`);
-  };
+    // Check if there is an update message in localStorage
+    const message = localStorage.getItem("updateMessage");
+    if (message) {
+      setUpdateMessage(message);
+      localStorage.removeItem("updateMessage"); // Remove the message after displaying
+    }
+  }, []);
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -59,24 +63,48 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="header">
         <h1>Welcome, {userData.username}!</h1>
-        <button onClick={handleEditProfile} className="edit-profile-button">
+        <button onClick={() => navigate(`/edit-profile/${localStorage.getItem("userId")}`)} className="edit-profile-button">
           Edit Profile
         </button>
       </div>
+      {updateMessage && (
+        <div className="update-message">{updateMessage}</div>
+      )} {/* Display update message */}
       <div className="dashboard-cards-section">
         <div className="user-detail-section card">
           <h2>User Details</h2>
           <p>Email: {userData.email}</p>
-          <p>Rank: N/A</p>
+          <p>Rank: {userData.rank}</p>
           <p>Total Flight Hours: {userData.total_flight_hours}</p>
-          <p>Night Hours: {userData.night_hours}</p>
           <p>NVG Hours: {userData.nvg_hours}</p>
-          <p>Combat Hours: {userData.combat_hours}</p>
-          <p>Combat Sorties: {userData.combat_sorties}</p>
-          <p>Total Sorties: {userData.total_sorties}</p>
-          <p>Instructor Time: {userData.instructor_time}</p>
-          <p>Primary Time: {userData.primary_time}</p>
-          <p>Secondary Time: {userData.secondary_time}</p>
+          <p>
+            Aircraft Qualification:
+            <ul>
+              {userData.aircraft_qualification &&
+                userData.aircraft_qualification.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+            </ul>
+          </p>
+          <p>Mission Experience: {userData.mission_experience}</p>
+          <p>
+            Training Completed:
+            <ul>
+              {userData.training_completed &&
+                userData.training_completed.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+            </ul>
+          </p>
+          <p>
+            Language Proficiency:
+            <ul>
+              {userData.language_proficiency &&
+                userData.language_proficiency.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+            </ul>
+          </p>
         </div>
         <div className="team card">
           <h2>My Team</h2>

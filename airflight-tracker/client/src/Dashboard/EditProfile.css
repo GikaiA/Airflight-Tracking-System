@@ -1,78 +1,108 @@
-.editprofile {
-  text-align: center;
-  padding: 20px;
-  background-color: #061a62;
-}
-
-.editprofile-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: white;
-}
-
-.edit-profile-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 900px;
+.edit-profile {
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
-.form-columns {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 40px; /* Increased gap for more separation */
+.edit-profile h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.form-column {
-  width: calc(50% - 20px); /* Adjusted width calculation */
-}
-
-label {
+.edit-profile label {
   display: block;
   margin-bottom: 10px;
-  font-weight: bold;
-  color: #061a62;
 }
 
-.editprofile-field {
+.edit-profile input[type="text"],
+.edit-profile input[type="email"],
+.edit-profile input[type="number"] {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
+  padding: 8px;
+  margin-top: 5px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
-.buttons-container {
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.dropdown-header {
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  gap: 20px;
+  align-items: center;
 }
 
-.edit-profile-button,
+.dropdown-options {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.dropdown.active .dropdown-options {
+  display: block;
+}
+
+.dropdown-header::after {
+  content: '▼';
+  float: right;
+}
+
+.dropdown.active .dropdown-header::after {
+  transform: rotate(180deg);
+}
+
+.dropdown label {
+  display: block;
+  padding: 10px;
+}
+
+.dropdown label:hover {
+  background-color: #f1f1f1;
+}
+
+.update-button,
 .back-button {
-  padding: 10px 20px;
-  font-size: 18px;
-  color: white;
+  background-color: #007bff;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  padding: 10px 20px;
   cursor: pointer;
   margin-top: 20px;
 }
 
-.edit-profile-button {
-  background-color: #28a745;
+.update-button {
+  margin-right: 10px;
 }
 
-.back-button {
-  background-color: #007bff;
+.arrow {
+  margin-left: 10px;
 }
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+
+
 
 
 

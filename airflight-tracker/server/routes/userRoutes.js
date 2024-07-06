@@ -16,17 +16,43 @@ router.get('/profile/:id', auth, async (req, res) => {
   }
 });
 
-// PUT update user profile
 router.put('/profile/:id', auth, async (req, res) => {
   try {
-    const updates = req.body;
+    const {
+      email,
+      rank,
+      total_flight_hours,
+      nvg_hours,
+      aircraft_qualification,
+      training_completed,
+      language_proficiency,
+    } = req.body;
+
+    if (!email) {
+      return res.status(400).send('Email is required');
+    }
+
+    const updates = {
+      email,
+      rank,
+      total_flight_hours,
+      nvg_hours,
+      aircraft_qualification, // Already an array
+      training_completed, // Already an array
+      language_proficiency, // Already an array
+    };
+
     const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
     if (!user) {
       return res.status(404).send('User not found');
     }
     res.json(user);
   } catch (error) {
-    res.status(500).send(error.message);
+    if (error.code === 11000) {
+      res.status(400).send('Duplicate key error: Email already exists');
+    } else {
+      res.status(500).send(error.message);
+    }
   }
 });
 

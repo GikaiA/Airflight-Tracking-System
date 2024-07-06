@@ -1,230 +1,212 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import "./EditProfile.css";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './EditProfile.css';
 
 const EditProfile = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    total_flight_hours: "",
-    night_hours: "",
-    nvg_hours: "",
-    combat_hours: "",
-    combat_sorties: "",
-    total_sorties: "",
-    instructor_time: "",
-    primary_time: "",
-    secondary_time: "",
-  });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { id } = useParams();
+
+  // Initialize state with empty strings or arrays
+  const [email, setEmail] = useState('');
+  const [rank, setRank] = useState('');
+  const [totalFlightHours, setTotalFlightHours] = useState('');
+  const [nvgHours, setNvgHours] = useState('');
+  const [aircraftQualification, setAircraftQualification] = useState([]);
+  const [trainingCompleted, setTrainingCompleted] = useState([]);
+  const [languageProficiency, setLanguageProficiency] = useState([]);
+  const [dropdowns, setDropdowns] = useState({
+    aircraft: false,
+    training: false,
+    language: false,
+  });
+
+  const aircraftQualificationOptions = [
+    'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
+    'C-5 Galaxy', 'C-17 Globemaster III', 'C-20', 'C-21', 'C-32', 'C-37A/B', 'C-40B/C',
+    'C-130 Hercules', 'HC-130J Combat King II', 'HC-130P/N King', 'MC-130H Combat Talon II', 'VC-25 Air Force One'
+  ];
+
+  const trainingCompletedOptions = [
+    'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
+    'C-130 Hercules Initial Qualification Course', 'Boeing 767 Type Rating', 'KC-135 Stratotanker Type Rating',
+    'Aerial Refueling Course', 'Combat Airlift Course', 'Advanced Aircraft Maneuvering Program (AAMP)', 'Emergency Response Training'
+  ];
+
+  const languageProficiencyOptions = [
+    'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
+  ];
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/user/profile/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || "Failed to fetch profile data");
-        }
-        setFormData(data);
-      } catch (err) {
-        setError(err.message);
+    const fetchUserProfile = async () => {
+      const userId = localStorage.getItem("userId");
+
+      if (!userId) {
+        alert("User is not authenticated. Please log in.");
+        return;
       }
-    };
 
-    if (id) {
-      fetchUserData();
-    }
-  }, [id]);
-
-  const handleFormChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/user/profile/${id}`,
-        {
-          method: "PUT",
+      try {
+        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText);
         }
-      );
-      if (response.ok) {
-        alert("Profile updated successfully");
-        navigate("/dashboard");
-      } else {
+
         const data = await response.json();
-        throw new Error(data.message || "Profile update failed");
+        setEmail(data.email || '');
+        setRank(data.rank || '');
+        setTotalFlightHours(data.total_flight_hours || '');
+        setNvgHours(data.nvg_hours || '');
+        setAircraftQualification(data.aircraft_qualification || []);
+        setTrainingCompleted(data.training_completed || []);
+        setLanguageProficiency(data.language_proficiency || []);
+      } catch (error) {
+        console.error("Fetch error:", error);
       }
-    } catch (err) {
-      setError(err.message);
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const handleCheckboxChange = (setState, currentState, value) => {
+    if (currentState.includes(value)) {
+      setState(currentState.filter(item => item !== value));
+    } else {
+      setState([...currentState, value]);
     }
   };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!email) {
+      alert('Email cannot be empty');
+      return;
+    }
+
+    const userId = localStorage.getItem("userId");
+    const updateData = {
+      email,
+      rank,
+      total_flight_hours: totalFlightHours,
+      nvg_hours: nvgHours,
+      aircraft_qualification: aircraftQualification,
+      training_completed: trainingCompleted,
+      language_proficiency: languageProficiency,
+    };
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+
+      localStorage.setItem("updateMessage", "Profile updated successfully!");
+      navigate('/dashboard');
+    } catch (error) {
+      console.error("Update error:", error);
+    }
+  };
+
+  const toggleDropdown = (section) => {
+    setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
+  };
 
   return (
-    <div className="editprofile">
-      <h1 className="editprofile-title">Edit Profile</h1>
-      <form onSubmit={handleSubmit} className="edit-profile-form">
-        <div className="form-columns">
-          <div className="form-column">
-            <label>
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleFormChange}
-                className="editprofile-field"
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleFormChange}
-                className="editprofile-field"
-              />
-            </label>
-            <label>
-              Total Flight Hours:
-              <input
-                type="number"
-                name="total_flight_hours"
-                value={formData.total_flight_hours}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Night Hours:
-              <input
-                type="number"
-                name="night_hours"
-                value={formData.night_hours}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              NVG Hours:
-              <input
-                type="number"
-                name="nvg_hours"
-                value={formData.nvg_hours}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
+    <div className="edit-profile">
+      <h2>Edit Profile</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Email:
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <label>
+          Rank:
+          <input type="text" value={rank} onChange={(e) => setRank(e.target.value)} />
+        </label>
+        <label>
+          Total Flight Hours:
+          <input type="number" value={totalFlightHours} onChange={(e) => setTotalFlightHours(e.target.value)} />
+        </label>
+        <label>
+          NVG Hours:
+          <input type="number" value={nvgHours} onChange={(e) => setNvgHours(e.target.value)} />
+        </label>
+        <label>
+          Aircraft Qualification:
+          <div className={`dropdown ${dropdowns.aircraft ? 'active' : ''}`}>
+            <div className="dropdown-header" onClick={() => toggleDropdown('aircraft')}>
+              Select Aircraft Qualification <span className={`arrow ${dropdowns.aircraft ? 'up' : 'down'}`}></span>
+            </div>
+            <div className="dropdown-options">
+              {aircraftQualificationOptions.map((option) => (
+                <label key={option}>
+                  <input
+                    type="checkbox"
+                    checked={aircraftQualification.includes(option)}
+                    onChange={() => handleCheckboxChange(setAircraftQualification, aircraftQualification, option)}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
           </div>
-          <div className="form-column">
-            <label>
-              Combat Hours:
-              <input
-                type="number"
-                name="combat_hours"
-                value={formData.combat_hours}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Combat Sorties:
-              <input
-                type="number"
-                name="combat_sorties"
-                value={formData.combat_sorties}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Total Sorties:
-              <input
-                type="number"
-                name="total_sorties"
-                value={formData.total_sorties}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Instructor Time:
-              <input
-                type="number"
-                name="instructor_time"
-                value={formData.instructor_time}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Primary Time:
-              <input
-                type="number"
-                name="primary_time"
-                value={formData.primary_time}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
-            <label>
-              Secondary Time:
-              <input
-                type="number"
-                name="secondary_time"
-                value={formData.secondary_time}
-                onChange={handleFormChange}
-                className="editprofile-field"
-                min="0"
-              />
-            </label>
+        </label>
+        <label>
+          Training Completed:
+          <div className={`dropdown ${dropdowns.training ? 'active' : ''}`}>
+            <div className="dropdown-header" onClick={() => toggleDropdown('training')}>
+              Select Training Completed <span className={`arrow ${dropdowns.training ? 'up' : 'down'}`}></span>
+            </div>
+            <div className="dropdown-options">
+              {trainingCompletedOptions.map((option) => (
+                <label key={option}>
+                  <input
+                    type="checkbox"
+                    checked={trainingCompleted.includes(option)}
+                    onChange={() => handleCheckboxChange(setTrainingCompleted, trainingCompleted, option)}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="buttons-container">
-          <button type="submit" className="edit-profile-button">
-            Update Profile
-          </button>
-          <button
-            type="button"
-            className="back-button"
-            onClick={() => navigate("/dashboard")}
-          >
-            Back to Dashboard
-          </button>
-        </div>
+        </label>
+        <label>
+          Language Proficiency:
+          <div className={`dropdown ${dropdowns.language ? 'active' : ''}`}>
+            <div className="dropdown-header" onClick={() => toggleDropdown('language')}>
+              Select Language Proficiency <span className={`arrow ${dropdowns.language ? 'up' : 'down'}`}></span>
+            </div>
+            <div className="dropdown-options">
+              {languageProficiencyOptions.map((option) => (
+                <label key={option}>
+                  <input
+                    type="checkbox"
+                    checked={languageProficiency.includes(option)}
+                    onChange={() => handleCheckboxChange(setLanguageProficiency, languageProficiency, option)}
+                  />
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+        </label>
+        <button type="submit" className="update-button">Update Profile</button>
+        <button type="button" className="back-button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>
       </form>
     </div>
   );

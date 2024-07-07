@@ -1,95 +1,53 @@
 .findpilot {
-  text-align: center;
   padding: 20px;
-  background-color: #061a62;
+  background-color: #001f3f; /* Dark blue background */
+  color: #ffffff; /* White text for better contrast */
 }
 
 .findpilot-title {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: white;
+  text-align: center;
+  color: #ffffff; /* White title color */
 }
 
-.find-pilot-section {
+.missions, .pilot-results {
   display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
-.form-container {
-  max-width: 600px;
-  width: 100%;
-}
-
-.dropdown-title {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: white;
-}
-
-select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-}
-
-.findpilot-button {
-  padding: 10px 20px;
-  background-color: #f2bf04;
-  font-size: 22px;
-  color: #061a62;
-  border: none;
-  border-radius: 5px;
+.mission-card, .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 10px;
   cursor: pointer;
+  transition: box-shadow 0.3s;
+  background-color: #ffffff; /* White background for the cards */
+  color: #000000; /* Black text for better readability */
 }
 
-.pilot-results {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.no-pilot-sentence {
-  color: white;
-  height: 280vh;
-}
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.card {
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-  padding: 20px;  /* Added padding inside the cards */
-}
-
-.card:hover {
-  transform: translateY(-5px);
+.mission-card:hover, .card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  background-color: #f1f1f1; /* Light gray background on hover */
 }
 
 .card-body {
-  padding: 20px;
+  text-align: left;
+}
+
+.mission-card h3 {
+  margin: 0;
+  color: #001f3f; /* Dark blue color for headings */
+}
+
+.mission-card p {
+  margin: 5px 0;
 }
 
 .card-title {
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  color: black;
+  color: #001f3f; /* Dark blue color for card titles */
 }
 
 .card-text {
-  margin-bottom: 10px;
-  color: black;
-}
-
-.card-text strong {
-  color: black;
+  color: #000000; /* Black text for card details */
 }

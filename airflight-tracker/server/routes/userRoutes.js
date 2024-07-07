@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Mission = require('../models/Mission');
 const auth = require('../middleware/authMiddleware');
 
 // GET user profile route
@@ -56,46 +57,30 @@ router.put('/profile/:id', auth, async (req, res) => {
   }
 });
 
-// POST route to find pilots based on filters
-router.post('/findPilot', async (req, res) => {
+router.get('/recommendedMissions', auth, async (req, res) => {
   try {
-    const { rank, totalFlightHours, nvgHours, flightHours } = req.body;
-    const query = {};
+    const missions = await Mission.find({});
+    res.json(missions);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
-    if (rank) query.rank = rank;
-
-    if (totalFlightHours) {
-      if (totalFlightHours === '3001+') {
-        query.total_flight_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = totalFlightHours.split('-').map(Number);
-        query.total_flight_hours = { $gte: min, $lte: max };
-      }
-    }
-
-    if (nvgHours) {
-      if (nvgHours === '3001+') {
-        query.nvg_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = nvgHours.split('-').map(Number);
-        query.nvg_hours = { $gte: min, $lte: max };
-      }
-    }
-
-    if (flightHours) {
-      if (flightHours === '3001+') {
-        query.flight_hours = { $gte: 3001 };
-      } else {
-        const [min, max] = flightHours.split('-').map(Number);
-        query.flight_hours = { $gte: min, $lte: max };
-      }
-    }
-
-    const pilots = await User.find(query);
+router.post('/findPilot', auth, async (req, res) => {
+  try {
+    const { missionId } = req.body;
+    // Fetch pilots available for the selected mission
+    const pilots = await User.find({ aircraft_qualification: missionId });
     res.json(pilots);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
+// Function to fetch pilots for a specific mission (implement your logic)
+async function getPilotsForMission(missionId) {
+  // Placeholder logic, replace with your actual implementation
+  return await User.find({ missionId });
+}
 
 module.exports = router;

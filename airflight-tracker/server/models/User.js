@@ -4,13 +4,13 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  rank: { type: String, required: false },
-  total_flight_hours: { type: Number, required: false },
-  nvg_hours: { type: Number, required: false },
-  aircraft_qualification: { type: [String], required: false },
-  mission_experience: { type: String, required: false },
-  training_completed: { type: [String], required: false },
-  language_proficiency: { type: [String], required: false }
+  rank: { type: String, default: '' },
+  total_flight_hours: { type: Number, default: null },
+  nvg_hours: { type: Number, default: null },
+  aircraft_qualification: { type: [String], default: [] },
+  mission_experience: { type: String, default: '' },
+  training_completed: { type: [String], default: [] },
+  language_proficiency: { type: [String], default: [] }
 }, { collection: 'pilot' });
 
 const User = mongoose.model('User', userSchema);

@@ -1,7 +1,8 @@
+/* General styling for the dashboard */
 .dashboard {
   height: 100vh;
-  background-color: #061a62;
-  color: white;
+  background-color: #001f3f; /* Dark blue background */
+  color: #ffdc00; /* Bright yellow text for contrast */
   padding: 20px;
 }
 
@@ -11,7 +12,10 @@
 }
 
 .header h1 {
-  margin: 0;
+  margin: 10px;
+  font-size: 2.5em;
+  color: #ffdc00;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 .dashboard-cards-section {
@@ -21,35 +25,43 @@
 }
 
 .card {
-  background-color: #ffffff;
-  color: #061a62;
+  background-color: #002f6c; /* Slightly lighter blue for the cards */
+  color: #ffdc00; /* Bright yellow text */
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
   margin: 10px;
   flex: 1;
   min-width: 300px;
   max-width: 400px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .card h2 {
-  color: #061a62;
+  color: #ffdc00; /* Bright yellow headings */
   margin-bottom: 10px;
+  font-size: 1.8em;
 }
 
 .edit-profile-button {
-  font-size: 18px;
-  background-color: #f2bf04;
-  color: #061a62;
+  font-size: 1.2em;
+  background-color: #ff4136; /* Bold red button */
+  color: white;
   border-radius: 10px;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .edit-profile-button:hover {
-  background-color: #e6ac03;
+  background-color: #ff851b; /* Slightly lighter red on hover */
+  transform: scale(1.05);
 }
 
 .team-members, .history-records {
@@ -59,11 +71,18 @@
 }
 
 .team-member, .history-record {
-  background-color: #f2f2f2;
+  background-color: #004080; /* Darker blue for list items */
+  color: #ffdc00;
   border-radius: 5px;
   padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.team-member p, .history-record p {
+  margin: 0;
+}
+
+/* Responsive design */
 @media (max-width: 768px) {
   .dashboard-cards-section {
     flex-direction: column;

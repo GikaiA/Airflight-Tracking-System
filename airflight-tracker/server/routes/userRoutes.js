@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Mission = require('../models/Mission');
 const auth = require('../middleware/authMiddleware');
 
 // GET user profile by ID route
@@ -56,44 +57,61 @@ router.put('/profile/:id', auth, async (req, res) => {
   }
 });
 
-// POST route to find pilots based on filters
-router.post('/findPilot', async (req, res) => {
+router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
-    const { rank, totalFlightHours, nvgHours, flightHours } = req.body;
-    const query = {};
-
-    if (rank) query.rank = rank;
-    if (totalFlightHours) {
-      const totalFlightHoursRange = totalFlightHours.split('-').map(Number);
-      query.total_flight_hours = { $gte: totalFlightHoursRange[0], $lte: totalFlightHoursRange[1] };
-    }
-    if (nvgHours) {
-      const nvgHoursRange = nvgHours.split('-').map(Number);
-      query.nvg_hours = { $gte: nvgHoursRange[0], $lte: nvgHoursRange[1] };
-    }
-    if (flightHours) {
-      const flightHoursRange = flightHours.split('-').map(Number);
-      query.flight_hours = { $gte: flightHoursRange[0], $lte: flightHoursRange[1] };
-    }
-
-    const pilots = await User.find(query);
-    res.json(pilots);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
-
-// GET user profile by username route
-router.get('/profile/username/:username', auth, async (req, res) => {
-  try {
-    const user = await User.findOne({ username: req.params.username });
+    const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).send('User not found');
     }
-    res.json(user);
+
+    const missions = await Mission.find({});
+    const recommendedMissions = missions
+      .map((mission) => {
+        let score = 0;
+        if (user.aircraft_qualification.includes(mission.aircraft)) score += 5;
+        if (user.total_flight_hours >= mission.required_hours) score += 3;
+        if (user.nvg_hours >= mission.nvg_hours) score += 2;
+        if (user.training_completed.includes(mission.training)) score += 4;
+        if (user.language_proficiency.includes(mission.language)) score += 1;
+
+        return { ...mission._doc, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3); // Get top 3 missions
+
+    res.json(recommendedMissions);
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
+
+router.post('/findPilot', auth, async (req, res) => {
+  try {
+    const { missionId } = req.body;
+    const mission = await Mission.findById(missionId);
+
+    if (!mission) {
+      return res.status(404).send('Mission not found');
+    }
+
+    const pilots = await User.find({
+      aircraft_qualification: { $in: [mission.aircraft] },
+      total_flight_hours: { $gte: mission.required_hours },
+      nvg_hours: { $gte: mission.nvg_hours },
+      training_completed: { $in: [mission.training] },
+      language_proficiency: { $in: [mission.language] },
+    });
+
+    res.json({ mission, pilots });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// Function to fetch pilots for a specific mission (implement your logic)
+async function getPilotsForMission(missionId) {
+  // Placeholder logic, replace with your actual implementation
+  return await User.find({ missionId });
+}
 
 module.exports = router;

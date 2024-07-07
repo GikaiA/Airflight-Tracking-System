@@ -27,10 +27,9 @@ app.use('/api/user', userRoutes);
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.js'));
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
-// Use environment variable for the port or default to 3000 if not set
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

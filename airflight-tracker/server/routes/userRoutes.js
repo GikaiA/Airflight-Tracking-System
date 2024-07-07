@@ -98,4 +98,43 @@ router.post('/findPilot', async (req, res) => {
   }
 });
 
+// POST route to search pilots based on usernames
+router.post('/findPilotByName', async (req, res) => {
+  try {
+    const { query } = req.body;
+    const searchQuery = {};
+
+    if (query.username) {
+      console.log(query.username);
+      searchQuery.username = new RegExp(query.username, 'i'); // Case-insensitive search
+      console.log(searchQuery);
+    }
+
+    const pilots = await User.find(searchQuery);
+    res.json(pilots);
+  } catch (error) {
+    console.error('Error finding pilots:', error);
+    res.status(500).json({ error: error.message });
+  }
+  /*
+  try {
+    const { name } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+
+    const searchQuery = {
+      name: new RegExp(name, 'i') // Case-insensitive search
+    };
+
+    const pilots = await User.find(searchQuery);
+    res.json(pilots);
+  } catch (error) {
+    console.error('Error finding pilots:', error);
+    res.status(500).json({ error: error.message });
+  }*/
+});
+
+
 module.exports = router;

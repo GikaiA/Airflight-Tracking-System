@@ -11,6 +11,8 @@ function Search() {
     setLoading(true);
     setError('');
 
+    //console.log('Searching with given query value:', { query });
+
     fetch('http://localhost:3000/api/user/findPilotByName', {
       method: 'POST',
       headers: {
@@ -25,6 +27,7 @@ function Search() {
         return response.json();
       })
       .then((data) => {
+        //console.log('Fetched Pilots:', data);
         setPilots(data);
         setLoading(false);
       })

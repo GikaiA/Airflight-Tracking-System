@@ -1,53 +1,96 @@
+/* General styling for the entire page */
 .findpilot {
   padding: 20px;
-  background-color: #001f3f; /* Dark blue background */
-  color: #ffffff; /* White text for better contrast */
+  color: #fff;
+  background-color: #001f3f;
+  min-height: 100vh;
 }
 
 .findpilot-title {
   text-align: center;
-  color: #ffffff; /* White title color */
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  color: #ffdc00;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.missions, .pilot-results {
+/* Styling for the mission cards and pilot cards */
+.missions {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 20px; /* Add some space between cards */
 }
 
 .mission-card, .card {
-  border: 1px solid #ddd;
+  border: 1px solid #ffdc00;
   border-radius: 8px;
   padding: 16px;
-  margin: 10px;
+  margin: 8px;
+  width: 300px;
+  text-align: center;
   cursor: pointer;
-  transition: box-shadow 0.3s;
-  background-color: #ffffff; /* White background for the cards */
-  color: #000000; /* Black text for better readability */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #002f6c;
+  color: #ffdc00;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .mission-card:hover, .card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  background-color: #f1f1f1; /* Light gray background on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px rgba(255, 220, 0, 0.5);
+}
+
+.selected-mission {
+  text-align: center;
+  padding: 20px;
+}
+
+.selected-mission h2 {
+  font-size: 2em;
+  color: #ffdc00;
+}
+
+.selected-mission p {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Add some space between cards */
 }
 
 .card-body {
-  text-align: left;
-}
-
-.mission-card h3 {
-  margin: 0;
-  color: #001f3f; /* Dark blue color for headings */
-}
-
-.mission-card p {
-  margin: 5px 0;
+  padding: 8px;
 }
 
 .card-title {
-  color: #001f3f; /* Dark blue color for card titles */
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }
 
 .card-text {
-  color: #000000; /* Black text for card details */
+  font-size: 1em;
+  margin-bottom: 5px;
+}
+
+/* Styling for the back button */
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff4136;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #ff851b;
+  transform: scale(1.05);
 }

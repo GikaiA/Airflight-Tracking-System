@@ -8,13 +8,14 @@ function FindPilot() {
 
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
-      console.log('Fetching recommended missions...');
+      const userId = localStorage.getItem("userId");
+
       try {
-        const response = await fetch('http://localhost:3000/api/user/recommendedMissions', {
+        const response = await fetch(`http://localhost:3000/api/user/recommendedMissions/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure the auth token is set correctly
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
 
@@ -23,7 +24,6 @@ function FindPilot() {
         }
 
         const data = await response.json();
-        console.log('Missions fetched:', data);
         setMissions(data);
       } catch (error) {
         console.error('Error fetching missions:', error);
@@ -40,9 +40,9 @@ function FindPilot() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure the auth token is set correctly
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ missionId: mission.mission_id }),
+        body: JSON.stringify({ missionId: mission._id }),
       });
 
       if (!response.ok) {
@@ -50,7 +50,7 @@ function FindPilot() {
       }
 
       const data = await response.json();
-      setPilots(data);
+      setPilots(data.pilots);
     } catch (error) {
       console.error('Error fetching pilot data:', error);
     }
@@ -62,7 +62,7 @@ function FindPilot() {
       {!selectedMission ? (
         <div className='missions'>
           {missions.map((mission) => (
-            <div key={mission.mission_id} className='mission-card' onClick={() => handleMissionClick(mission)}>
+            <div key={mission._id} className='mission-card' onClick={() => handleMissionClick(mission)}>
               <h3>{mission.aircraft}</h3>
               <p><strong>Duration:</strong> {mission.duration_hours} hours</p>
               <p><strong>Destination:</strong> {mission.destination}</p>
@@ -72,7 +72,15 @@ function FindPilot() {
           ))}
         </div>
       ) : (
-        <div className='pilot-results'>
+        <div className='selected-mission'>
+          <h2>Mission Details</h2>
+          <p><strong>Aircraft:</strong> {selectedMission.aircraft}</p>
+          <p><strong>Duration:</strong> {selectedMission.duration_hours} hours</p>
+          <p><strong>Destination:</strong> {selectedMission.destination}</p>
+          <p><strong>Type:</strong> {selectedMission.mission_type}</p>
+          <p><strong>Specific Mission:</strong> {selectedMission.specific_mission}</p>
+
+          <h2>Recommended Pilots</h2>
           {pilots.length > 0 ? (
             <div className='cards'>
               {pilots.map((pilot) => (
@@ -93,6 +101,8 @@ function FindPilot() {
           ) : (
             <p>No pilots found</p>
           )}
+
+          <button onClick={() => setSelectedMission(null)} className='back-button'>Back to Missions</button>
         </div>
       )}
     </div>

@@ -57,10 +57,29 @@ router.put('/profile/:id', auth, async (req, res) => {
   }
 });
 
-router.get('/recommendedMissions', auth, async (req, res) => {
+router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
     const missions = await Mission.find({});
-    res.json(missions);
+    const recommendedMissions = missions
+      .map((mission) => {
+        let score = 0;
+        if (user.aircraft_qualification.includes(mission.aircraft)) score += 5;
+        if (user.total_flight_hours >= mission.required_hours) score += 3;
+        if (user.nvg_hours >= mission.nvg_hours) score += 2;
+        if (user.training_completed.includes(mission.training)) score += 4;
+        if (user.language_proficiency.includes(mission.language)) score += 1;
+
+        return { ...mission._doc, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3); // Get top 3 missions
+
+    res.json(recommendedMissions);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -69,9 +88,21 @@ router.get('/recommendedMissions', auth, async (req, res) => {
 router.post('/findPilot', auth, async (req, res) => {
   try {
     const { missionId } = req.body;
-    // Fetch pilots available for the selected mission
-    const pilots = await User.find({ aircraft_qualification: missionId });
-    res.json(pilots);
+    const mission = await Mission.findById(missionId);
+
+    if (!mission) {
+      return res.status(404).send('Mission not found');
+    }
+
+    const pilots = await User.find({
+      aircraft_qualification: { $in: [mission.aircraft] },
+      total_flight_hours: { $gte: mission.required_hours },
+      nvg_hours: { $gte: mission.nvg_hours },
+      training_completed: { $in: [mission.training] },
+      language_proficiency: { $in: [mission.language] },
+    });
+
+    res.json({ mission, pilots });
   } catch (error) {
     res.status(500).send(error.message);
   }

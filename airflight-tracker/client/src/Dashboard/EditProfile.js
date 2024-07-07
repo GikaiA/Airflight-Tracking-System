@@ -20,19 +20,19 @@ const EditProfile = () => {
   });
 
   const aircraftQualificationOptions = [
-    'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
+   'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
     'C-5 Galaxy', 'C-17 Globemaster III', 'C-20', 'C-21', 'C-32', 'C-37A/B', 'C-40B/C',
     'C-130 Hercules', 'HC-130J Combat King II', 'HC-130P/N King', 'MC-130H Combat Talon II', 'VC-25 Air Force One'
   ];
 
   const trainingCompletedOptions = [
-    'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
+   'No Selection', 'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
     'C-130 Hercules Initial Qualification Course', 'Boeing 767 Type Rating', 'KC-135 Stratotanker Type Rating',
     'Aerial Refueling Course', 'Combat Airlift Course', 'Advanced Aircraft Maneuvering Program (AAMP)', 'Emergency Response Training'
   ];
 
   const languageProficiencyOptions = [
-    'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
+    'No selection','English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
   ];
 
   useEffect(() => {

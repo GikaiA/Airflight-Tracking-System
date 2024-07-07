@@ -4,7 +4,7 @@ import './FindPilot.css';
 function FindPilot() {
   const [missions, setMissions] = useState([]);
   const [selectedMission, setSelectedMission] = useState(null);
-  const [pilots, setPilots] = useState([]);
+  const [recommendedPilot, setRecommendedPilot] = useState(null);
 
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
@@ -50,7 +50,11 @@ function FindPilot() {
       }
 
       const data = await response.json();
-      setPilots(data.pilots);
+      if (data.pilots.length > 0) {
+        setRecommendedPilot(data.pilots[0]); // Assuming you want the first pilot
+      } else {
+        setRecommendedPilot(null); // No pilots found for the mission
+      }
     } catch (error) {
       console.error('Error fetching pilot data:', error);
     }
@@ -80,26 +84,20 @@ function FindPilot() {
           <p><strong>Type:</strong> {selectedMission.mission_type}</p>
           <p><strong>Specific Mission:</strong> {selectedMission.specific_mission}</p>
 
-          <h2>Recommended Pilots</h2>
-          {pilots.length > 0 ? (
-            <div className='cards'>
-              {pilots.map((pilot) => (
-                <div className='card' key={pilot._id}>
-                  <div className='card-body'>
-                    <h3 className='card-title'>{pilot.username}</h3>
-                    <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
-                    <p className='card-text'><strong>Rank:</strong> {pilot.rank || 'N/A'}</p>
-                    <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Combat Hours:</strong> {pilot.combat_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Combat Sorties:</strong> {pilot.combat_sorties || 'N/A'}</p>
-                    <p className='card-text'><strong>Total Sorties:</strong> {pilot.total_sorties || 'N/A'}</p>
-                  </div>
-                </div>
-              ))}
+          <h2>Recommended Pilot</h2>
+          {recommendedPilot ? (
+            <div className='card'>
+              <div className='card-body'>
+                <h3 className='card-title'>{recommendedPilot.username}</h3>
+                <p className='card-text'><strong>Email:</strong> {recommendedPilot.email}</p>
+                <p className='card-text'><strong>Rank:</strong> {recommendedPilot.rank || 'N/A'}</p>
+                <p className='card-text'><strong>NVG Hours:</strong> {recommendedPilot.nvg_hours || 'N/A'}</p>
+                <p className='card-text'><strong>Total Flight Hours:</strong> {recommendedPilot.total_flight_hours || 'N/A'}</p>
+                {/* Add more fields as needed */}
+              </div>
             </div>
           ) : (
-            <p>No pilots found</p>
+            <p>No pilot found</p>
           )}
 
           <button onClick={() => setSelectedMission(null)} className='back-button'>Back to Missions</button>
@@ -110,4 +108,3 @@ function FindPilot() {
 }
 
 export default FindPilot;
-

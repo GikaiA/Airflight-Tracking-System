@@ -69,7 +69,7 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
       .map((mission) => {
         let score = 0;
         if (user.aircraft_qualification.includes(mission.aircraft)) score += 5;
-        if (user.total_flight_hours >= mission.required_hours) score += 3;
+        if (user.total_flight_hours >= mission.duration_hours) score += 3;
         if (user.nvg_hours >= mission.nvg_hours) score += 2;
         if (user.training_completed.includes(mission.training)) score += 4;
         if (user.language_proficiency.includes(mission.language)) score += 1;
@@ -95,23 +95,17 @@ router.post('/findPilot', auth, async (req, res) => {
     }
 
     const pilots = await User.find({
-      aircraft_qualification: { $in: [mission.aircraft] },
-      total_flight_hours: { $gte: mission.required_hours },
-      nvg_hours: { $gte: mission.nvg_hours },
-      training_completed: { $in: [mission.training] },
-      language_proficiency: { $in: [mission.language] },
-    });
+      $or: [
+        { aircraft_qualification: { $in: [mission.aircraft] } },
+        { training_completed: { $in: [mission.training] } },
+        { language_proficiency: { $in: [mission.language] } }
+      ]
+    }).collation({ locale: 'en', strength: 2 });
 
     res.json({ mission, pilots });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
-
-// Function to fetch pilots for a specific mission (implement your logic)
-async function getPilotsForMission(missionId) {
-  // Placeholder logic, replace with your actual implementation
-  return await User.find({ missionId });
-}
 
 module.exports = router;

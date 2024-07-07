@@ -63,13 +63,17 @@ const Dashboard = () => {
     <div className="dashboard">
       <div className="header">
         <h1>Welcome, {userData.username}!</h1>
-        <button onClick={() => navigate(`/edit-profile/${localStorage.getItem("userId")}`)} className="edit-profile-button">
+        <button
+          onClick={() =>
+            navigate(`/edit-profile/${localStorage.getItem("userId")}`)
+          }
+          className="edit-profile-button"
+        >
           Edit Profile
         </button>
       </div>
-      {updateMessage && (
-        <div className="update-message">{updateMessage}</div>
-      )} {/* Display update message */}
+      {updateMessage && <div className="update-message">{updateMessage}</div>}{" "}
+      {/* Display update message */}
       <div className="dashboard-cards-section">
         <div className="user-detail-section card">
           <h2>User Details</h2>

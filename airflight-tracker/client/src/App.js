@@ -15,6 +15,7 @@ import Search from "./Search/Search";
 import FindPilot from "./FindPilot/FindPilot";
 import About from "./About/About";
 import { AuthProvider } from './Context/AuthContext'; //new file
+import Flight from './Flight/Flight';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/edit-profile/:id" element={<EditProfile />} />
             <Route path="/findapilot" element={<FindPilot />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/flight" element={<Flight/>}/>
             <Route path="/accessforbidden" element={<AccessForbidden />} />
           </Routes>
           <Footer />

@@ -77,38 +77,54 @@ const Dashboard = () => {
       <div className="dashboard-cards-section">
         <div className="user-detail-section card">
           <h2>User Details</h2>
-          <p>Email: {userData.email}</p>
-          <p>Rank: {userData.rank}</p>
-          <p>Total Flight Hours: {userData.total_flight_hours}</p>
-          <p>NVG Hours: {userData.nvg_hours}</p>
-          <p>
-            Aircraft Qualification:
-            <ul>
-              {userData.aircraft_qualification &&
-                userData.aircraft_qualification.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-            </ul>
-          </p>
-          <p>Mission Experience: {userData.mission_experience}</p>
-          <p>
-            Training Completed:
-            <ul>
-              {userData.training_completed &&
-                userData.training_completed.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-            </ul>
-          </p>
-          <p>
-            Language Proficiency:
-            <ul>
-              {userData.language_proficiency &&
-                userData.language_proficiency.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
-            </ul>
-          </p>
+          <div className="detail-group">
+            <h3>Basic Information</h3>
+            <p>Email: {userData.email}</p>
+            <p>Rank: {userData.rank}</p>
+          </div>
+          <div className="detail-group">
+            <h3>Flight Hours</h3>
+            <p>Total Flight Hours: {userData.total_flight_hours}</p>
+            <p>NVG Hours: {userData.nvg_hours}</p>
+          </div>
+          <div className="detail-group">
+            <h3>Qualifications</h3>
+            <p>
+              Aircraft Qualification:
+              <ul>
+                {userData.aircraft_qualification &&
+                  userData.aircraft_qualification.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ul>
+            </p>
+          </div>
+          <div className="detail-group">
+            <h3>Mission Experience</h3>
+            <p>{userData.mission_experience}</p>
+          </div>
+          <div className="detail-group">
+            <h3>Training Completed</h3>
+            <p>
+              <ul>
+                {userData.training_completed &&
+                  userData.training_completed.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ul>
+            </p>
+          </div>
+          <div className="detail-group">
+            <h3>Language Proficiency</h3>
+            <p>
+              <ul>
+                {userData.language_proficiency &&
+                  userData.language_proficiency.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ul>
+            </p>
+          </div>
         </div>
         <div className="team card">
           <h2>My Team</h2>

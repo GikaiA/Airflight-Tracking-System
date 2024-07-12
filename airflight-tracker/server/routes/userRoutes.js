@@ -111,6 +111,7 @@ router.post('/findPilot', auth, async (req, res) => {
 // POST route to search pilots based on usernames
 router.post('/findPilotByName', async (req, res) => {
   try {
+    console.log(res);
     const { query } = req.body;
     const searchQuery = {};
 

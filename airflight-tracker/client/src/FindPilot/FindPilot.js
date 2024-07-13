@@ -5,6 +5,7 @@ function FindPilot() {
   const [missions, setMissions] = useState([]);
   const [selectedMission, setSelectedMission] = useState(null);
   const [recommendedPilots, setRecommendedPilots] = useState([]);
+  const [selectedPilot, setSelectedPilot] = useState(null);
 
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
@@ -35,6 +36,7 @@ function FindPilot() {
 
   const handleMissionClick = async (mission) => {
     setSelectedMission(mission);
+    setSelectedPilot(null); // Reset selected pilot when a new mission is selected
     try {
       const response = await fetch('http://localhost:3000/api/user/findPilot', {
         method: 'POST',
@@ -53,6 +55,36 @@ function FindPilot() {
       setRecommendedPilots(data.pilots);
     } catch (error) {
       console.error('Error fetching pilot data:', error);
+    }
+  };
+
+  const handlePilotClick = (pilot) => {
+    setSelectedPilot(pilot);
+  };
+
+  const handleAcceptMission = async () => {
+    if (!selectedMission || !selectedPilot) return;
+
+    try {
+      const response = await fetch('http://localhost:3000/api/user/acceptMission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ missionId: selectedMission._id, pilotId: selectedPilot._id }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      alert('Mission accepted with pilot: ' + data.pilot.username);
+      setSelectedMission(null); // Reset after accepting mission
+      setSelectedPilot(null); // Reset after accepting mission
+    } catch (error) {
+      console.error('Error accepting mission:', error);
     }
   };
 
@@ -84,7 +116,11 @@ function FindPilot() {
           {recommendedPilots.length > 0 ? (
             <div className='cards'>
               {recommendedPilots.map((pilot) => (
-                <div key={pilot._id} className='card'>
+                <div
+                  key={pilot._id}
+                  className={`card ${selectedPilot && selectedPilot._id === pilot._id ? 'selected' : ''}`}
+                  onClick={() => handlePilotClick(pilot)}
+                >
                   <div className='card-body'>
                     <h3 className='card-title'>{pilot.username}</h3>
                     <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
@@ -97,6 +133,10 @@ function FindPilot() {
             </div>
           ) : (
             <p>No pilots found</p>
+          )}
+
+          {selectedPilot && (
+            <button onClick={handleAcceptMission} className='accept-button'>Accept Mission with {selectedPilot.username}</button>
           )}
 
           <button onClick={() => setSelectedMission(null)} className='back-button'>Back to Missions</button>

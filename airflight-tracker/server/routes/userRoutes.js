@@ -119,4 +119,28 @@ router.post('/findPilot', auth, async (req, res) => {
   }
 });
 
+router.post('/acceptMission', auth, async (req, res) => {
+  try {
+    const { missionId, pilotId } = req.body;
+    const mission = await Mission.findById(missionId);
+    const pilot = await User.findById(pilotId);
+
+    if (!mission) {
+      return res.status(404).send('Mission not found');
+    }
+
+    if (!pilot) {
+      return res.status(404).send('Pilot not found');
+    }
+
+    // Logic to pair the pilot with the mission, e.g., update the mission document
+    mission.assignedPilot = pilot._id;
+    await mission.save();
+
+    res.json({ message: 'Mission accepted with pilot', mission, pilot });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;

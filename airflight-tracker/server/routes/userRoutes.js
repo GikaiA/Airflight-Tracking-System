@@ -102,7 +102,42 @@ router.post('/findPilot', auth, async (req, res) => {
       ]
     }).collation({ locale: 'en', strength: 2 });
 
-    res.json({ mission, pilots });
+    const scoredPilots = pilots.map((pilot) => {
+      let score = 0;
+      if (pilot.aircraft_qualification.includes(mission.aircraft)) score += 5;
+      if (pilot.total_flight_hours >= mission.duration_hours) score += 3;
+      if (pilot.nvg_hours >= mission.nvg_hours) score += 2;
+      if (pilot.training_completed.includes(mission.training)) score += 4;
+      if (pilot.language_proficiency.includes(mission.language)) score += 1;
+
+      return { ...pilot._doc, score };
+    }).sort((a, b) => b.score - a.score).slice(0, 3);
+
+    res.json({ mission, pilots: scoredPilots });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.post('/acceptMission', auth, async (req, res) => {
+  try {
+    const { missionId, pilotId } = req.body;
+    const mission = await Mission.findById(missionId);
+    const pilot = await User.findById(pilotId);
+
+    if (!mission) {
+      return res.status(404).send('Mission not found');
+    }
+
+    if (!pilot) {
+      return res.status(404).send('Pilot not found');
+    }
+
+    // Logic to pair the pilot with the mission, e.g., update the mission document
+    mission.assignedPilot = pilot._id;
+    await mission.save();
+
+    res.json({ message: 'Mission accepted with pilot', mission, pilot });
   } catch (error) {
     res.status(500).send(error.message);
   }

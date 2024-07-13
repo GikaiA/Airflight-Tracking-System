@@ -48,6 +48,22 @@
   font-size: 1.8em;
 }
 
+.detail-group {
+  margin-bottom: 20px;
+}
+
+.detail-group h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #ffdc00;
+  text-decoration: underline;
+}
+
+.detail-group ul {
+  list-style-type: none; /* Remove bullet points */
+  padding-left: 0; /* Remove default padding */
+}
+
 .edit-profile-button {
   font-size: 1.2em;
   background-color: #ff4136; /* Bold red button */

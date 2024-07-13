@@ -4,7 +4,8 @@ import './FindPilot.css';
 function FindPilot() {
   const [missions, setMissions] = useState([]);
   const [selectedMission, setSelectedMission] = useState(null);
-  const [recommendedPilot, setRecommendedPilot] = useState(null);
+  const [recommendedPilots, setRecommendedPilots] = useState([]);
+  const [selectedPilot, setSelectedPilot] = useState(null);
 
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
@@ -35,6 +36,7 @@ function FindPilot() {
 
   const handleMissionClick = async (mission) => {
     setSelectedMission(mission);
+    setSelectedPilot(null); // Reset selected pilot when a new mission is selected
     try {
       const response = await fetch('http://localhost:3000/api/user/findPilot', {
         method: 'POST',
@@ -50,13 +52,39 @@ function FindPilot() {
       }
 
       const data = await response.json();
-      if (data.pilots.length > 0) {
-        setRecommendedPilot(data.pilots[0]); // Assuming you want the first pilot
-      } else {
-        setRecommendedPilot(null); // No pilots found for the mission
-      }
+      setRecommendedPilots(data.pilots);
     } catch (error) {
       console.error('Error fetching pilot data:', error);
+    }
+  };
+
+  const handlePilotClick = (pilot) => {
+    setSelectedPilot(pilot);
+  };
+
+  const handleAcceptMission = async () => {
+    if (!selectedMission || !selectedPilot) return;
+
+    try {
+      const response = await fetch('http://localhost:3000/api/user/acceptMission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ missionId: selectedMission._id, pilotId: selectedPilot._id }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const data = await response.json();
+      alert('Mission accepted with pilot: ' + data.pilot.username);
+      setSelectedMission(null); // Reset after accepting mission
+      setSelectedPilot(null); // Reset after accepting mission
+    } catch (error) {
+      console.error('Error accepting mission:', error);
     }
   };
 
@@ -84,20 +112,31 @@ function FindPilot() {
           <p><strong>Type:</strong> {selectedMission.mission_type}</p>
           <p><strong>Specific Mission:</strong> {selectedMission.specific_mission}</p>
 
-          <h2>Recommended Pilot</h2>
-          {recommendedPilot ? (
-            <div className='card'>
-              <div className='card-body'>
-                <h3 className='card-title'>{recommendedPilot.username}</h3>
-                <p className='card-text'><strong>Email:</strong> {recommendedPilot.email}</p>
-                <p className='card-text'><strong>Rank:</strong> {recommendedPilot.rank || 'N/A'}</p>
-                <p className='card-text'><strong>NVG Hours:</strong> {recommendedPilot.nvg_hours || 'N/A'}</p>
-                <p className='card-text'><strong>Total Flight Hours:</strong> {recommendedPilot.total_flight_hours || 'N/A'}</p>
-                {/* Add more fields as needed */}
-              </div>
+          <h2>Recommended Pilots</h2>
+          {recommendedPilots.length > 0 ? (
+            <div className='cards'>
+              {recommendedPilots.map((pilot) => (
+                <div
+                  key={pilot._id}
+                  className={`card ${selectedPilot && selectedPilot._id === pilot._id ? 'selected' : ''}`}
+                  onClick={() => handlePilotClick(pilot)}
+                >
+                  <div className='card-body'>
+                    <h3 className='card-title'>{pilot.username}</h3>
+                    <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
+                    <p className='card-text'><strong>Rank:</strong> {pilot.rank || 'N/A'}</p>
+                    <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours || 'N/A'}</p>
+                    <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours || 'N/A'}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
-            <p>No pilot found</p>
+            <p>No pilots found</p>
+          )}
+
+          {selectedPilot && (
+            <button onClick={handleAcceptMission} className='accept-button'>Accept Mission with {selectedPilot.username}</button>
           )}
 
           <button onClick={() => setSelectedMission(null)} className='back-button'>Back to Missions</button>

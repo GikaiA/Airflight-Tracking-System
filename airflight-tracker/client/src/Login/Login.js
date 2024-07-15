@@ -74,9 +74,7 @@ const Login = () => {
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-    if (newPassword.length < 6) {
-      setPasswordError("Password must be at least 6 characters long.");
-    } else {
+    if (newPassword.length >= 6) {
       setPasswordError("");
     }
   };

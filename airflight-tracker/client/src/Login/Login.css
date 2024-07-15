@@ -1,88 +1,101 @@
 .loginpage {
-    background-color: #061a62;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+  background-color: #061a62;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
-.login-split-section{
-    width: 700px;
-    margin-left: -380;
-    /*height: 100%;*/
-    display: flex;
-    justify-content: center;
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
 
-.airforce-bg{
-    width: 1800px;
-    height: 1150px;
-    /*object-fit: cover;
+.left {
+    left: 0;
+    background-color: #111;
+  }
+
+  .right{
+    right: 0;
+  background-color: #061a62;
+  }
+
+.airforce-login-pic {
+  width: 1800px;
+  height: 1250px;
+  object-fit: cover;
     max-width: max-content;
-    max-height: max-content;*/
+    max-height: max-content;
 }
 
-
-.login-title{
-    font-size: 35px;
-    margin: 0;
+.login-title {
+  font-size: 35px;
+  margin: 0;
 }
-.login-section{
-    height: 30vh;
-    background-color: #061a62;
-    color: #F2BF04;
+.login-section {
+  background-color: #061a62;
+  color: #f2bf04;
 }
 
 input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 15px;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 15px;
 }
 
-.login-label{
-    color: #F2BF04;
-    font-size: 20px;
-    padding: 10px 10px;
+.login-label {
+  color: #f2bf04;
+  font-size: 20px;
+  padding: 10px 10px;
 }
 
-.login-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-left: 225px;
-    padding-top: 100px;
+.login-form-section {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.login-field{
-    width: 500px;
-    max-width: 100%;
+.login-field {
+  width: 500px;
+  max-width: 100%;
 }
 
-.login-component-button{
-    font-size: 20px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
+.login-component-button {
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-
-.login-form-button{
- width: 100px;
- padding: 10px 10px;
- background-color: #F2BF04;
- color: #061a62;
- border-radius: 5px;
- border: none;
+.login-form-button {
+  width: 100px;
+  padding: 10px 10px;
+  background-color: #f2bf04;
+  color: #061a62;
+  border-radius: 5px;
+  border: none;
 }
 
-.login-form-button:hover{
-    cursor: pointer;
+.login-form-button:hover {
+  cursor: pointer;
 }
 
-
-.forget-login-sentence{
-    color: #F2BF04;
+.forget-login-sentence {
+  color: #f2bf04;
 }

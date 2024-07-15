@@ -10,7 +10,12 @@ const userSchema = new mongoose.Schema({
   aircraft_qualification: { type: [String], default: [] },
   mission_experience: { type: String, default: '' },
   training_completed: { type: [String], default: [] },
-  language_proficiency: { type: [String], default: [] }
+  language_proficiency: { type: [String], default: [] },
+  acceptedMissions: [{
+    mission: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
+    aircraft: { type: String },
+    // Add more fields as needed
+  }]
 }, { collection: 'pilot' });
 
 const User = mongoose.model('User', userSchema);

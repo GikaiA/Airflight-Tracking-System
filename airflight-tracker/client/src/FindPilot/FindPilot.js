@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './FindPilot.css';
 
 function FindPilot() {
+  const navigate = useNavigate(); // Get navigate function from useNavigate
+
   const [missions, setMissions] = useState([]);
   const [selectedMission, setSelectedMission] = useState(null);
   const [recommendedPilots, setRecommendedPilots] = useState([]);
@@ -64,7 +67,7 @@ function FindPilot() {
 
   const handleAcceptMission = async () => {
     if (!selectedMission || !selectedPilot) return;
-
+  
     try {
       const response = await fetch('http://localhost:3000/api/user/acceptMission', {
         method: 'POST',
@@ -74,15 +77,16 @@ function FindPilot() {
         },
         body: JSON.stringify({ missionId: selectedMission._id, pilotId: selectedPilot._id }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
-
+  
       const data = await response.json();
       alert('Mission accepted with pilot: ' + data.pilot.username);
-      setSelectedMission(null); // Reset after accepting mission
-      setSelectedPilot(null); // Reset after accepting mission
+  
+      // Navigate back to Dashboard after accepting mission
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error accepting mission:', error);
     }

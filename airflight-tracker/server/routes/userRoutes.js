@@ -7,7 +7,7 @@ const auth = require('../middleware/authMiddleware');
 // GET user profile by ID route
 router.get('/profile/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('acceptedMissions');
     if (!user) {
       return res.status(404).send('User not found');
     }
@@ -122,22 +122,26 @@ router.post('/findPilot', auth, async (req, res) => {
 router.post('/acceptMission', auth, async (req, res) => {
   try {
     const { missionId, pilotId } = req.body;
+    
+    // Fetch the mission details
     const mission = await Mission.findById(missionId);
-    const pilot = await User.findById(pilotId);
-
     if (!mission) {
       return res.status(404).send('Mission not found');
     }
 
-    if (!pilot) {
+    // Update the pilot document with the accepted mission details
+    const updatedPilot = await User.findByIdAndUpdate(
+      pilotId,
+      { $push: { acceptedMissions: { mission: missionId, aircraft: mission.aircraft } } },
+      { new: true }
+    ).populate('acceptedMissions.mission'); // Populate mission details
+
+    if (!updatedPilot) {
       return res.status(404).send('Pilot not found');
     }
 
-    // Logic to pair the pilot with the mission, e.g., update the mission document
-    mission.assignedPilot = pilot._id;
-    await mission.save();
-
-    res.json({ message: 'Mission accepted with pilot', mission, pilot });
+    // Respond with the updated pilot document
+    res.json({ pilot: updatedPilot });
   } catch (error) {
     res.status(500).send(error.message);
   }

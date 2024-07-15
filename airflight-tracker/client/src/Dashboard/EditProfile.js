@@ -139,11 +139,11 @@ const EditProfile = () => {
         </label>
         <label>
           Total Flight Hours:
-          <input type="number" value={totalFlightHours} onChange={(e) => setTotalFlightHours(e.target.value)} />
+          <input type="number" value={totalFlightHours} min = "0" onChange={(e) => setTotalFlightHours(e.target.value)} />
         </label>
         <label>
           NVG Hours:
-          <input type="number" value={nvgHours} onChange={(e) => setNvgHours(e.target.value)} />
+          <input type="number" value={nvgHours} min = "0" onChange={(e) => setNvgHours(e.target.value)} />
         </label>
         <label>
           Aircraft Qualification:

@@ -70,11 +70,13 @@ const EditProfile = () => {
   }, []);
 
   const handleCheckboxChange = (setState, currentState, value) => {
-    if (currentState.includes(value)) {
-      setState(currentState.filter(item => item !== value));
-    } else {
-      setState([...currentState, value]);
-    }
+    setState(prevState => {
+      if (prevState.includes(value)) {
+        return prevState.filter(item => item !== value);
+      } else {
+        return [...prevState, value];
+      }
+    });
   };
 
   const toggleDropdown = (section) => {

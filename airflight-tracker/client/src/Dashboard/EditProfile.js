@@ -5,7 +5,7 @@ import './EditProfile.css';
 const EditProfile = () => {
   const navigate = useNavigate();
 
-  // Initialize state with empty strings or arrays
+  // State initialization
   const [email, setEmail] = useState('');
   const [rank, setRank] = useState('');
   const [totalFlightHours, setTotalFlightHours] = useState('');
@@ -18,32 +18,31 @@ const EditProfile = () => {
     training: false,
     language: false,
   });
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const aircraftQualificationOptions = [
-   'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
+    'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
     'C-5 Galaxy', 'C-17 Globemaster III', 'C-20', 'C-21', 'C-32', 'C-37A/B', 'C-40B/C',
     'C-130 Hercules', 'HC-130J Combat King II', 'HC-130P/N King', 'MC-130H Combat Talon II', 'VC-25 Air Force One'
   ];
 
   const trainingCompletedOptions = [
-   'No Selection', 'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
+    'No Selection', 'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
     'C-130 Hercules Initial Qualification Course', 'Boeing 767 Type Rating', 'KC-135 Stratotanker Type Rating',
     'Aerial Refueling Course', 'Combat Airlift Course', 'Advanced Aircraft Maneuvering Program (AAMP)', 'Emergency Response Training'
   ];
 
   const languageProficiencyOptions = [
-    'No selection','English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
+    'No selection', 'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
   ];
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       const userId = localStorage.getItem("userId");
-
       if (!userId) {
         alert("User is not authenticated. Please log in.");
         return;
       }
-
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
           method: "GET",
@@ -51,12 +50,10 @@ const EditProfile = () => {
             "Content-Type": "application/json",
           },
         });
-
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText);
         }
-
         const data = await response.json();
         setEmail(data.email || '');
         setRank(data.rank || '');
@@ -69,7 +66,6 @@ const EditProfile = () => {
         console.error("Fetch error:", error);
       }
     };
-
     fetchUserProfile();
   }, []);
 
@@ -81,14 +77,17 @@ const EditProfile = () => {
     }
   };
 
+  const toggleDropdown = (section) => {
+    setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePicture(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email) {
-      alert('Email cannot be empty');
-      return;
-    }
-
     const userId = localStorage.getItem("userId");
     const updateData = {
       email,
@@ -100,29 +99,29 @@ const EditProfile = () => {
       language_proficiency: languageProficiency,
     };
 
+    const formData = new FormData();
+    if (profilePicture) {
+      formData.append('profilePicture', profilePicture);
+    }
+    formData.append('data', JSON.stringify(updateData));
+
     try {
       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(updateData),
+        body: formData,
       });
-
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-
-      localStorage.setItem("updateMessage", "Profile updated successfully!");
+      localStorage.setItem('updateMessage', 'Profile updated successfully!');
       navigate('/dashboard');
     } catch (error) {
-      console.error("Update error:", error);
+      console.error('Update error:', error);
     }
-  };
-
-  const toggleDropdown = (section) => {
-    setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
   return (
@@ -204,6 +203,10 @@ const EditProfile = () => {
               ))}
             </div>
           </div>
+        </label>
+        <label>
+          Profile Picture:
+          <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
         </label>
         <button type="submit" className="update-button">Update Profile</button>
         <button type="button" className="back-button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>

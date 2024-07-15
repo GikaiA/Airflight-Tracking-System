@@ -85,6 +85,9 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="header">
+        <div className="profile-picture">
+          <img src={userData.profilePicture || '/default-profile.png'} alt="Profile" />
+        </div>
         <h1>Welcome, {userData.username}!</h1>
         <button
           onClick={() =>

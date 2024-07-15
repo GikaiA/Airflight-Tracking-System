@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     mission: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
     aircraft: { type: String },
     // Add more fields as needed
-  }]
+  }],
+  profilePicture: { type: String, default: '/default-profile.png' } // Default image path
 }, { collection: 'pilot' });
 
 const User = mongoose.model('User', userSchema);

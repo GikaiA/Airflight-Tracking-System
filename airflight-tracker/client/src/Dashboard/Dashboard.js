@@ -51,6 +51,29 @@ const Dashboard = () => {
     }
   }, []);
 
+  const deleteMission = async (missionId) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/deleteMission', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      setUpdateMessage('Mission deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting mission:', error);
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -130,21 +153,22 @@ const Dashboard = () => {
           <div className="team-members">
             {/* Display accepted missions and their associated pilots */}
             {userData.acceptedMissions &&
-            userData.acceptedMissions.length > 0 ? (
-              userData.acceptedMissions.map((acceptedMission, index) => (
-                <div key={index} className="team-member">
-                  {acceptedMission.mission && (
-                    <>
-                      <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
-                      <p>Aircraft: {acceptedMission.aircraft}</p>
-                      {/* Add more fields as needed */}
-                    </>
-                  )}
-                </div>
-              ))
-            ) : (
-              <p>No accepted missions yet.</p>
-            )}
+              userData.acceptedMissions.length > 0 ? (
+                userData.acceptedMissions.map((acceptedMission, index) => (
+                  <div key={index} className="team-member">
+                    {acceptedMission.mission && (
+                      <>
+                        <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
+                        <p>Aircraft: {acceptedMission.aircraft}</p>
+                        {/* Add more fields as needed */}
+                        <button onClick={() => deleteMission(acceptedMission.mission._id)}>Delete Mission</button>
+                      </>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No accepted missions yet.</p>
+              )}
           </div>
         </div>
         <div className="history card">

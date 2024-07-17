@@ -119,6 +119,12 @@ const Dashboard = () => {
               </ul>
             </p>
           </div>
+          <div className="detail-group">
+            <h3>Profile Image</h3>
+            {userData.profile_image && (
+              <img src={userData.profile_image} alt="Profile" className="profile-image" />
+            )}
+          </div>
         </div>
         <div className="team card">
           <h2>My Team</h2>

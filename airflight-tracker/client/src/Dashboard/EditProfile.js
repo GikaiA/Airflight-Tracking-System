@@ -5,6 +5,7 @@ import './EditProfile.css';
 const EditProfile = () => {
   const navigate = useNavigate();
 
+  // State initialization
   const [email, setEmail] = useState('');
   const [rank, setRank] = useState('');
   const [totalFlightHours, setTotalFlightHours] = useState('');
@@ -12,12 +13,13 @@ const EditProfile = () => {
   const [aircraftQualification, setAircraftQualification] = useState([]);
   const [trainingCompleted, setTrainingCompleted] = useState([]);
   const [languageProficiency, setLanguageProficiency] = useState([]);
-  const [profileImage, setProfileImage] = useState(null);
   const [dropdowns, setDropdowns] = useState({
     aircraft: false,
     training: false,
     language: false,
   });
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [profilePDF, setProfilePDF] = useState(null);
 
   const aircraftQualificationOptions = [
     'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
@@ -38,25 +40,22 @@ const EditProfile = () => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       const userId = localStorage.getItem("userId");
-
       if (!userId) {
         alert("User is not authenticated. Please log in.");
         return;
       }
-
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem('token')}`
           },
         });
-
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText);
         }
-
         const data = await response.json();
         setEmail(data.email || '');
         setRank(data.rank || '');
@@ -65,54 +64,39 @@ const EditProfile = () => {
         setAircraftQualification(data.aircraft_qualification || []);
         setTrainingCompleted(data.training_completed || []);
         setLanguageProficiency(data.language_proficiency || []);
-        setProfileImage(data.profile_image || null);
       } catch (error) {
         console.error("Fetch error:", error);
       }
     };
-
     fetchUserProfile();
   }, []);
 
-  const handleCheckboxChange = (setState, currentState, value) => {
-    if (currentState.includes(value)) {
-      setState(currentState.filter(item => item !== value));
-    } else {
-      setState([...currentState, value]);
-    }
+  const handleCheckboxChange = (setState, value) => {
+    setState(prevState => {
+      if (prevState.includes(value)) {
+        return prevState.filter(item => item !== value);
+      } else {
+        return [...prevState, value];
+      }
+    });
   };
 
-  const handleImageUpload = async (e) => {
+  const toggleDropdown = (section) => {
+    setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('image', file);
+    setProfilePicture(file);
+  };
 
-    try {
-      const response = await fetch('http://localhost:3000/api/user/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
-
-      const data = await response.json();
-      setProfileImage(data.imageUrl);
-    } catch (error) {
-      console.error("Upload error:", error);
-    }
+  const handleProfilePDFChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePDF(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email) {
-      alert('Email cannot be empty');
-      return;
-    }
-
     const userId = localStorage.getItem("userId");
     const updateData = {
       email,
@@ -122,32 +106,34 @@ const EditProfile = () => {
       aircraft_qualification: aircraftQualification,
       training_completed: trainingCompleted,
       language_proficiency: languageProficiency,
-      profile_image: profileImage,
     };
+
+    const formData = new FormData();
+    if (profilePicture) {
+      formData.append('profileFile', profilePicture);
+    }
+    if (profilePDF) {
+      formData.append('profileFile', profilePDF);
+    }
+    formData.append('data', JSON.stringify(updateData));
 
     try {
       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(updateData),
+        body: formData,
       });
-
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-
-      localStorage.setItem("updateMessage", "Profile updated successfully!");
+      localStorage.setItem('updateMessage', 'Profile updated successfully!');
       navigate('/dashboard');
     } catch (error) {
-      console.error("Update error:", error);
+      console.error('Update error:', error);
     }
-  };
-
-  const toggleDropdown = (section) => {
-    setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
   };
 
   return (
@@ -171,11 +157,6 @@ const EditProfile = () => {
           <input type="number" value={nvgHours} onChange={(e) => setNvgHours(e.target.value)} />
         </label>
         <label>
-          Profile Image:
-          <input type="file" onChange={handleImageUpload} />
-          {profileImage && <img src={profileImage} alt="Profile" className="profile-image-preview" />}
-        </label>
-        <label>
           Aircraft Qualification:
           <div className={`dropdown ${dropdowns.aircraft ? 'active' : ''}`}>
             <div className="dropdown-header" onClick={() => toggleDropdown('aircraft')}>
@@ -187,7 +168,7 @@ const EditProfile = () => {
                   <input
                     type="checkbox"
                     checked={aircraftQualification.includes(option)}
-                    onChange={() => handleCheckboxChange(setAircraftQualification, aircraftQualification, option)}
+                    onChange={() => handleCheckboxChange(setAircraftQualification, option)}
                   />
                   {option}
                 </label>
@@ -207,7 +188,7 @@ const EditProfile = () => {
                   <input
                     type="checkbox"
                     checked={trainingCompleted.includes(option)}
-                    onChange={() => handleCheckboxChange(setTrainingCompleted, trainingCompleted, option)}
+                    onChange={() => handleCheckboxChange(setTrainingCompleted, option)}
                   />
                   {option}
                 </label>
@@ -227,13 +208,21 @@ const EditProfile = () => {
                   <input
                     type="checkbox"
                     checked={languageProficiency.includes(option)}
-                    onChange={() => handleCheckboxChange(setLanguageProficiency, languageProficiency, option)}
+                    onChange={() => handleCheckboxChange(setLanguageProficiency, option)}
                   />
                   {option}
                 </label>
               ))}
             </div>
           </div>
+        </label>
+        <label>
+          Upload Profile Picture:
+          <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
+        </label>
+        <label>
+          Upload PDF:
+          <input type="file" accept="application/pdf" onChange={handleProfilePDFChange} />
         </label>
         <button type="submit" className="update-button">Update Profile</button>
         <button type="button" className="back-button" onClick={() => navigate('/dashboard')}>Back to Dashboard</button>

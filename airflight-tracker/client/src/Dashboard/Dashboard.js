@@ -24,8 +24,8 @@ const Dashboard = () => {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
 
@@ -36,6 +36,7 @@ const Dashboard = () => {
 
         const data = await response.json();
         setUserData(data);
+        console.log("Profile Picture Path: ", data.profilePicture); // Debugging: log the profile picture path
       } catch (err) {
         setError(err.message);
         console.error("Fetch error:", err);
@@ -51,6 +52,29 @@ const Dashboard = () => {
     }
   }, []);
 
+  const deleteMission = async (missionId) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/deleteMission', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      setUpdateMessage('Mission deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting mission:', error);
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -62,9 +86,14 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="header">
+        <div className="profile-picture">
+          <img src={`http://localhost:3000/${userData.profilePicture}`} alt="Profile" onError={(e) => e.target.src = '/default-profile.png'} />
+        </div>
         <h1>Welcome, {userData.username}!</h1>
         <button
-          onClick={() => navigate(`/edit-profile/${localStorage.getItem("userId")}`)}
+          onClick={() =>
+            navigate(`/edit-profile/${localStorage.getItem("userId")}`)
+          }
           className="edit-profile-button"
         >
           Edit Profile
@@ -89,9 +118,10 @@ const Dashboard = () => {
             <p>
               Aircraft Qualification:
               <ul>
-                {userData.aircraft_qualification && userData.aircraft_qualification.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.aircraft_qualification &&
+                  userData.aircraft_qualification.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
           </div>
@@ -103,9 +133,10 @@ const Dashboard = () => {
             <h3>Training Completed</h3>
             <p>
               <ul>
-                {userData.training_completed && userData.training_completed.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.training_completed &&
+                  userData.training_completed.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
           </div>
@@ -113,32 +144,34 @@ const Dashboard = () => {
             <h3>Language Proficiency</h3>
             <p>
               <ul>
-                {userData.language_proficiency && userData.language_proficiency.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.language_proficiency &&
+                  userData.language_proficiency.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
-          </div>
-          <div className="detail-group">
-            <h3>Profile Image</h3>
-            {userData.profile_image && (
-              <img src={userData.profile_image} alt="Profile" className="profile-image" />
-            )}
           </div>
         </div>
         <div className="team card">
           <h2>My Team</h2>
           <div className="team-members">
-            {userData.team && userData.team.length > 0 ? (
-              userData.team.map((pilot) => (
-                <div key={pilot._id} className="team-member">
-                  <p>Name: {pilot.username}</p>
-                  <p>Email: {pilot.email}</p>
-                </div>
-              ))
-            ) : (
-              <p>No team members found</p>
-            )}
+            {userData.acceptedMissions &&
+              userData.acceptedMissions.length > 0 ? (
+                userData.acceptedMissions.map((acceptedMission, index) => (
+                  <div key={index} className="team-member">
+                    {acceptedMission.mission && (
+                      <>
+                        <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
+                        <p>Aircraft: {acceptedMission.aircraft}</p>
+                        {/* Add more fields as needed */}
+                        <button onClick={() => deleteMission(acceptedMission.mission._id)}>Delete Mission</button>
+                      </>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No accepted missions yet.</p>
+              )}
           </div>
         </div>
         <div className="history card">
@@ -148,7 +181,8 @@ const Dashboard = () => {
               userData.history.map((mission) => (
                 <div key={mission._id} className="history-record">
                   <p>Date: {new Date(mission.date).toLocaleDateString()}</p>
-                  <p>Mission: {mission.specific_mission}</p>
+                  <p>Mission: {mission.specific_mission || "N/A"}</p>
+                  <p>Pilot: {mission.pilot.username || "N/A"}</p> {/* Display the pilot's username */}
                 </div>
               ))
             ) : (

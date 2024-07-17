@@ -12,12 +12,20 @@ connectDB();
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://localhost:3001',
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3001',  // or the specific URL of your frontend application
   credentials: true,
-}));
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type, Authorization', // Ensure Authorization header is allowed
+  exposedHeaders: ['Content-Length', 'X-Response-Time']  // Add other headers needed by the frontend
+};
 
-app.use(helmet());
+app.use(cors(corsOptions));
+
+app.use(helmet({
+  crossOriginResourcePolicy: false,  // This disables the cross-origin resource policy
+}));
 app.use(express.json());
 
 // Serve static files from the uploads directory

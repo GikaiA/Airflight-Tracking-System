@@ -5,6 +5,7 @@ const Mission = require('../models/Mission');
 const auth = require('../middleware/authMiddleware');
 const multer = require('multer');
 const fs = require('fs');
+const path = require('path');
 
 // Ensure upload directory exists
 const uploadDir = './uploads/profileFiles';
@@ -12,48 +13,30 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Multer configuration for file uploads
+// Set up multer for file upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, uploadDir);
+    cb(null, 'uploads/profileFiles/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  // Accept only image and PDF files
-  if (file.mimetype.startsWith('image/') || file.mimetype === 'application/pdf') {
-    cb(null, true);
-  } else {
-    cb(new Error('Invalid file type. Only image and PDF files are allowed.'), false);
+    cb(null, Date.now() + path.extname(file.originalname));
   }
-};
-
-const upload = multer({ 
-  storage: storage, 
-  fileFilter: fileFilter,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit
 });
 
-// POST route to upload profile file (image or PDF)
-router.post('/profile/:id/uploadFile', auth, upload.single('profileFile'), async (req, res) => {
+const upload = multer({ storage: storage });
+
+router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    const fileType = req.file.mimetype.startsWith('image/') ? 'image' : 'pdf';
-    if (fileType === 'image') {
-      user.profilePicture = req.file.path;
-    } else {
-      user.profilePDF = req.file.path;
-    }
+    // Update user's profile picture path
+    user.profilePicture = `uploads/profileFiles/${req.file.filename}`;
     await user.save();
 
-    res.json({ profileFile: req.file.path });
+    res.json({ profilePicture: user.profilePicture });
   } catch (error) {
     res.status(500).send(error.message);
   }

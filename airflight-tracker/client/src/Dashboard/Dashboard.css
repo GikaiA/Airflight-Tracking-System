@@ -18,6 +18,22 @@
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
+.profile-picture {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #ffdc00; /* Optional: Add a border to make it stand out */
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container without stretching */
+}
+
 .dashboard-cards-section {
   display: flex;
   justify-content: space-around;

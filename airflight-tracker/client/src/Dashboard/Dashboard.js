@@ -1,33 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Dashboard.css";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
-  const [error, setError] = useState("");
-  const [updateMessage, setUpdateMessage] = useState("");
+  const [error, setError] = useState('');
+  const [updateMessage, setUpdateMessage] = useState('');
+  const [profileImageError, setProfileImageError] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = localStorage.getItem("userId");
+      const userId = localStorage.getItem('userId');
 
       if (!userId) {
-        setError("User is not authenticated. Please log in.");
+        setError('User is not authenticated. Please log in.');
         return;
       }
 
       try {
-        const response = await fetch(
-          `http://localhost:3000/api/user/profile/${userId}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
-          }
-        );
+        const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
 
         if (!response.ok) {
           const errorText = await response.text();
@@ -36,20 +34,45 @@ const Dashboard = () => {
 
         const data = await response.json();
         setUserData(data);
+        setProfileImageError(false);
+        console.log('Profile Picture Path: ', data.profilePicture);
       } catch (err) {
         setError(err.message);
-        console.error("Fetch error:", err);
+        console.error('Fetch error:', err);
       }
     };
 
     fetchUserData();
 
-    const message = localStorage.getItem("updateMessage");
+    const message = localStorage.getItem('updateMessage');
     if (message) {
       setUpdateMessage(message);
-      localStorage.removeItem("updateMessage");
+      localStorage.removeItem('updateMessage');
     }
   }, []);
+
+  const deleteMission = async (missionId) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/deleteMission', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      setUpdateMessage('Mission deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting mission:', error);
+    }
+  };
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -58,19 +81,31 @@ const Dashboard = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="dashboard">
       <div className="header">
+        <div className="profile-picture">
+          {userData.profilePicture && !profileImageError ? (
+            <img
+              src={`http://localhost:3000/uploads/profileFiles/${userData.profilePicture.split('/').pop()}`}
+              alt="Profile"
+              onError={() => setProfileImageError(true)}
+              className="profile-image"
+            />
+          ) : (
+            <img src="/default-profile.png" alt="Default Profile" className="profile-image" />
+          )}
+        </div>
         <h1>Welcome, {userData.username}!</h1>
         <button
-          onClick={() => navigate(`/edit-profile/${localStorage.getItem("userId")}`)}
+          onClick={() => navigate(`/edit-profile/${localStorage.getItem('userId')}`)}
           className="edit-profile-button"
         >
           Edit Profile
         </button>
       </div>
       {updateMessage && <div className="update-message">{updateMessage}</div>}
+
       <div className="dashboard-cards-section">
         <div className="user-detail-section card">
           <h2>User Details</h2>
@@ -89,9 +124,10 @@ const Dashboard = () => {
             <p>
               Aircraft Qualification:
               <ul>
-                {userData.aircraft_qualification && userData.aircraft_qualification.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.aircraft_qualification &&
+                  userData.aircraft_qualification.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
           </div>
@@ -103,9 +139,10 @@ const Dashboard = () => {
             <h3>Training Completed</h3>
             <p>
               <ul>
-                {userData.training_completed && userData.training_completed.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.training_completed &&
+                  userData.training_completed.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
           </div>
@@ -113,9 +150,10 @@ const Dashboard = () => {
             <h3>Language Proficiency</h3>
             <p>
               <ul>
-                {userData.language_proficiency && userData.language_proficiency.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))}
+                {userData.language_proficiency &&
+                  userData.language_proficiency.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
               </ul>
             </p>
           </div>
@@ -123,15 +161,20 @@ const Dashboard = () => {
         <div className="team card">
           <h2>My Team</h2>
           <div className="team-members">
-            {userData.team && userData.team.length > 0 ? (
-              userData.team.map((pilot) => (
-                <div key={pilot._id} className="team-member">
-                  <p>Name: {pilot.username}</p>
-                  <p>Email: {pilot.email}</p>
+            {userData.acceptedMissions && userData.acceptedMissions.length > 0 ? (
+              userData.acceptedMissions.map((acceptedMission, index) => (
+                <div key={index} className="team-member">
+                  {acceptedMission.mission && (
+                    <>
+                      <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
+                      <p>Aircraft: {acceptedMission.aircraft}</p>
+                      <button onClick={() => deleteMission(acceptedMission.mission._id)}>Delete Mission</button>
+                    </>
+                  )}
                 </div>
               ))
             ) : (
-              <p>No team members found</p>
+              <p>No accepted missions yet.</p>
             )}
           </div>
         </div>
@@ -142,7 +185,8 @@ const Dashboard = () => {
               userData.history.map((mission) => (
                 <div key={mission._id} className="history-record">
                   <p>Date: {new Date(mission.date).toLocaleDateString()}</p>
-                  <p>Mission: {mission.specific_mission}</p>
+                  <p>Mission: {mission.specific_mission || 'N/A'}</p>
+                  <p>Pilot: {mission.pilot.username || 'N/A'}</p> {/* Display the pilot's username */}
                 </div>
               ))
             ) : (

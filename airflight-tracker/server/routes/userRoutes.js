@@ -55,7 +55,6 @@ router.get('/profile/:id', auth, async (req, res) => {
   }
 });
 
-// PUT route to update user profile
 router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) => {
   try {
     const userId = req.params.id;
@@ -69,36 +68,28 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
       language_proficiency,
     } = req.body;
 
-    // Prepare updates object with only provided fields
     const updates = {};
     if (email) updates.email = email;
     if (rank) updates.rank = rank;
     if (total_flight_hours) updates.total_flight_hours = total_flight_hours;
     if (nvg_hours) updates.nvg_hours = nvg_hours;
-    if (aircraft_qualification) updates.aircraft_qualification = aircraft_qualification.split(',').map(item => item.trim());
-    if (training_completed) updates.training_completed = training_completed.split(',').map(item => item.trim());
-    if (language_proficiency) updates.language_proficiency = language_proficiency.split(',').map(item => item.trim());
+    if (aircraft_qualification) updates.aircraft_qualification = aircraft_qualification;
+    if (training_completed) updates.training_completed = training_completed;
+    if (language_proficiency) updates.language_proficiency = language_proficiency;
     if (req.file) {
-      const fileType = req.file.mimetype.startsWith('image/') ? 'image' : 'pdf';
-      if (fileType === 'image') {
-        updates.profilePicture = req.file.path;
-      } else {
-        updates.profilePDF = req.file.path;
-      }
+      updates.profilePicture = req.file.path;
     }
 
-    // Find user by ID and update with new data
+    console.log('Updating user with:', updates);  // Debug log
+
     const user = await User.findByIdAndUpdate(userId, updates, { new: true });
 
-    // Handle case where user is not found
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    // Respond with updated user object
     res.json(user);
   } catch (error) {
-    // Handle other potential errors
     if (error.code === 11000) {
       res.status(400).send('Duplicate key error: Email already exists');
     } else {

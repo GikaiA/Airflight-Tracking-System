@@ -12,12 +12,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem('userId');
-
+  
       if (!userId) {
         setError('User is not authenticated. Please log in.');
         return;
       }
-
+  
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
           method: 'GET',
@@ -26,13 +26,14 @@ const Dashboard = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
-
+  
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText);
         }
-
+  
         const data = await response.json();
+        console.log('Fetched user data:', data);  // Debug log
         setUserData(data);
         setProfileImageError(false);
         console.log('Profile Picture Path: ', data.profilePicture);
@@ -41,15 +42,15 @@ const Dashboard = () => {
         console.error('Fetch error:', err);
       }
     };
-
+  
     fetchUserData();
-
+  
     const message = localStorage.getItem('updateMessage');
     if (message) {
       setUpdateMessage(message);
       localStorage.removeItem('updateMessage');
     }
-  }, []);
+  }, []);    
 
   const deleteMission = async (missionId) => {
     try {

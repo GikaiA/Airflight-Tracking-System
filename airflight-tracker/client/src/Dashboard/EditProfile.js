@@ -109,12 +109,12 @@ const EditProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!email) {
       alert('Email cannot be empty');
       return;
     }
-
+  
     const userId = localStorage.getItem("userId");
     const updateData = {
       email,
@@ -126,7 +126,9 @@ const EditProfile = () => {
       language_proficiency: languageProficiency,
       profilePicture: profileImage,
     };
-
+  
+    console.log('Submitting update data:', updateData);  // Debug log
+  
     try {
       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
         method: "PUT",
@@ -135,18 +137,18 @@ const EditProfile = () => {
         },
         body: JSON.stringify(updateData),
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-
+  
       localStorage.setItem("updateMessage", "Profile updated successfully!");
       navigate('/dashboard');
     } catch (error) {
       console.error("Update error:", error);
     }
-  };
+  };   
 
   const toggleDropdown = (section) => {
     setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));

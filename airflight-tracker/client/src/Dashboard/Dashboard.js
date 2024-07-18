@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -8,8 +8,10 @@ const Dashboard = () => {
   const [updateMessage, setUpdateMessage] = useState('');
   const [profileImageError, setProfileImageError] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to access location object
 
   useEffect(() => {
+    // Fetch user data
     const fetchUserData = async () => {
       const userId = localStorage.getItem('userId');
   
@@ -44,13 +46,14 @@ const Dashboard = () => {
     };
   
     fetchUserData();
-  
-    const message = localStorage.getItem('updateMessage');
+
+    // Read message from query parameters
+    const query = new URLSearchParams(location.search);
+    const message = query.get('message');
     if (message) {
       setUpdateMessage(message);
-      localStorage.removeItem('updateMessage');
     }
-  }, []);    
+  }, [location.search]);
 
   const deleteMission = async (missionId) => {
     try {
@@ -82,6 +85,7 @@ const Dashboard = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="dashboard">
       <div className="header">

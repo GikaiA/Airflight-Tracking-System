@@ -165,42 +165,30 @@ router.post('/findPilot', auth, async (req, res) => {
   }
 });
 
-// POST route to accept a mission with a specific pilot
-router.post('/acceptMission', auth, async (req, res) => {
-  try {
-    const { missionId, pilotId } = req.body;
+router.post('/acceptMission', async (req, res) => {
+  const { userId, missionId } = req.body;
 
-    // Fetch the mission details
+  try {
+    // Find the user and check mission
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Assuming missionId is valid and mission model is correctly referenced
     const mission = await Mission.findById(missionId);
     if (!mission) {
-      return res.status(404).send('Mission not found');
+      return res.status(404).json({ message: 'Mission not found' });
     }
 
-    // Update the pilot document with the accepted mission details
-    const updatedPilot = await User.findByIdAndUpdate(
-      pilotId,
-      { $push: { acceptedMissions: { mission: missionId, aircraft: mission.aircraft } } },
-      { new: true }
-    ).populate('acceptedMissions.mission'); // Populate mission details
-
-    if (!updatedPilot) {
-      return res.status(404).send('Pilot not found');
-    }
-
-    // Update the user document with the accepted mission details
-    const user = await User.findById(req.user.id);
-    user.history = user.history || [];
-    user.history.push({
-      mission: missionId,
-      pilot: pilotId,
-      date: new Date()
-    });
+    // Add mission to the user's accepted missions
+    user.acceptedMissions.push({ mission: missionId, aircraft: 'defaultAircraft' });
     await user.save();
 
-    // Respond with the updated user and pilot document
-    res.json({ pilot: updatedPilot, user });
+    res.status(200).json({ message: 'Mission accepted successfully' });
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error in acceptMission route:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 

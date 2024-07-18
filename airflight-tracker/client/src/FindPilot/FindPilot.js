@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './FindPilot.css';
 
 function FindPilot() {
@@ -6,6 +7,7 @@ function FindPilot() {
   const [selectedMission, setSelectedMission] = useState(null);
   const [recommendedPilots, setRecommendedPilots] = useState([]);
   const [selectedPilot, setSelectedPilot] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
@@ -62,27 +64,32 @@ function FindPilot() {
     setSelectedPilot(pilot);
   };
 
-  const handleAcceptMission = async () => {
-    if (!selectedMission || !selectedPilot) return;
-
+  const handleAcceptMission = async (userId, missionId) => {
     try {
+      // Ensure that `userId` and `missionId` are not HTML elements or React components
+      if (typeof userId !== 'string' || typeof missionId !== 'string') {
+        throw new Error('Invalid input data');
+      }
+
       const response = await fetch('http://localhost:3000/api/user/acceptMission', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ missionId: selectedMission._id, pilotId: selectedPilot._id }),
+        body: JSON.stringify({ userId, missionId }), // Ensure this only includes plain data
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
+        const errorData = await response.json();
+        console.error('Error data:', errorData);
+        throw new Error(errorData.message || 'Failed to process request');
       }
 
       const data = await response.json();
-      alert('Mission accepted with pilot: ' + data.pilot.username);
-      setSelectedMission(null); // Reset after accepting mission
-      setSelectedPilot(null); // Reset after accepting mission
+      console.log('Mission accepted:', data);
+      
+      // Redirect to dashboard with message
+      navigate(`/dashboard?message=Mission accepted with Pilot ${selectedPilot.username}`);
     } catch (error) {
       console.error('Error accepting mission:', error);
     }
@@ -136,7 +143,9 @@ function FindPilot() {
           )}
 
           {selectedPilot && (
-            <button onClick={handleAcceptMission} className='accept-button'>Accept Mission with {selectedPilot.username}</button>
+            <button onClick={() => handleAcceptMission(localStorage.getItem('userId'), selectedMission._id)} className='accept-button'>
+              Accept Mission with {selectedPilot.username}
+            </button>
           )}
 
           <button onClick={() => setSelectedMission(null)} className='back-button'>Back to Missions</button>

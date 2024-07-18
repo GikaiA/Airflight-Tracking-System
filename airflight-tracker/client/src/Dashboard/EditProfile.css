@@ -100,7 +100,20 @@
 .arrow.up {
   transform: rotate(180deg);
 }
+.profile-picture-cropper {
+  width: 150px; /* Set the size you want */
+  height: 150px; /* Set the size you want */
+  overflow: hidden;
+  border-radius: 50%;
+  position: relative;
+}
 
+.profile-picture-cropper img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  cursor: pointer;
+}
 
 
 

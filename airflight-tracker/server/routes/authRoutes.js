@@ -77,7 +77,7 @@ router.post("/login", async (req, res) => {
     }
 
     // Check if 2FA is enabled and verify OTP
-    if (user.twoFactorEnabled) {
+    if (user.twoFactorEnabled === 'true') {
       const verified = notp.totp.verify(otp, user.twoFactorSecret);
       if (!verified) {
         return res.status(401).json({ message: "Invalid OTP" });

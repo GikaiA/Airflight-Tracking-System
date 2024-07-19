@@ -37,14 +37,27 @@ const Login = () => {
     }
 
     try {
-      console.log("Attempting to login with:", usernameOrEmail, password);
-      const data = await loginService(usernameOrEmail, password);
-      console.log("Login successful:", data);
-      login(data.userId);
-      navigate("/dashboard");
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: usernameOrEmail, password })
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        if (data.twoFactorEnabled) {
+          navigate("/verify-otp", { state: { username: usernameOrEmail } });
+        } else {
+          login(data.userId);
+          navigate("/dashboard");
+        }
+      } else {
+        setError("Invalid credentials. Please try again.");
+      }
     } catch (err) {
-      console.error("Login failed:", err);
-      setError("Invalid credentials. Please try again.");
+      setError("Login failed. Please try again.");
     }
   };
 

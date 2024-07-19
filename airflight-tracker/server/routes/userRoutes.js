@@ -3,11 +3,49 @@ const router = express.Router();
 const User = require('../models/User');
 const Mission = require('../models/Mission');
 const auth = require('../middleware/authMiddleware');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
+// Ensure upload directory exists
+const uploadDir = './uploads/profileFiles';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Set up multer for file upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/profileFiles/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ storage: storage });
+
+router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Update user's profile picture path
+    user.profilePicture = `uploads/profileFiles/${req.file.filename}`;
+    await user.save();
+
+    res.json({ profilePicture: user.profilePicture });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
 
 // GET user profile by ID route
 router.get('/profile/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('acceptedMissions.mission');
     if (!user) {
       return res.status(404).send('User not found');
     }
@@ -17,8 +55,9 @@ router.get('/profile/:id', auth, async (req, res) => {
   }
 });
 
-router.put('/profile/:id', auth, async (req, res) => {
+router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) => {
   try {
+    const userId = req.params.id;
     const {
       email,
       rank,
@@ -29,24 +68,26 @@ router.put('/profile/:id', auth, async (req, res) => {
       language_proficiency,
     } = req.body;
 
-    if (!email) {
-      return res.status(400).send('Email is required');
+    const updates = {};
+    if (email) updates.email = email;
+    if (rank) updates.rank = rank;
+    if (total_flight_hours) updates.total_flight_hours = total_flight_hours;
+    if (nvg_hours) updates.nvg_hours = nvg_hours;
+    if (aircraft_qualification) updates.aircraft_qualification = aircraft_qualification;
+    if (training_completed) updates.training_completed = training_completed;
+    if (language_proficiency) updates.language_proficiency = language_proficiency;
+    if (req.file) {
+      updates.profilePicture = req.file.path;
     }
 
-    const updates = {
-      email,
-      rank,
-      total_flight_hours,
-      nvg_hours,
-      aircraft_qualification, // Already an array
-      training_completed, // Already an array
-      language_proficiency, // Already an array
-    };
+    console.log('Updating user with:', updates);  // Debug log
 
-    const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
+    const user = await User.findByIdAndUpdate(userId, updates, { new: true });
+
     if (!user) {
       return res.status(404).send('User not found');
     }
+
     res.json(user);
   } catch (error) {
     if (error.code === 11000) {
@@ -57,6 +98,7 @@ router.put('/profile/:id', auth, async (req, res) => {
   }
 });
 
+// GET recommended missions for user route
 router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -85,6 +127,7 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
   }
 });
 
+// POST route to find pilots for a mission
 router.post('/findPilot', auth, async (req, res) => {
   try {
     const { missionId } = req.body;
@@ -98,20 +141,23 @@ router.post('/findPilot', auth, async (req, res) => {
       $or: [
         { aircraft_qualification: { $in: [mission.aircraft] } },
         { training_completed: { $in: [mission.training] } },
-        { language_proficiency: { $in: [mission.language] } }
-      ]
+        { language_proficiency: { $in: [mission.language] } },
+      ],
     }).collation({ locale: 'en', strength: 2 });
 
-    const scoredPilots = pilots.map((pilot) => {
-      let score = 0;
-      if (pilot.aircraft_qualification.includes(mission.aircraft)) score += 5;
-      if (pilot.total_flight_hours >= mission.duration_hours) score += 3;
-      if (pilot.nvg_hours >= mission.nvg_hours) score += 2;
-      if (pilot.training_completed.includes(mission.training)) score += 4;
-      if (pilot.language_proficiency.includes(mission.language)) score += 1;
+    const scoredPilots = pilots
+      .map((pilot) => {
+        let score = 0;
+        if (pilot.aircraft_qualification.includes(mission.aircraft)) score += 5;
+        if (pilot.total_flight_hours >= mission.duration_hours) score += 3;
+        if (pilot.nvg_hours >= mission.nvg_hours) score += 2;
+        if (pilot.training_completed.includes(mission.training)) score += 4;
+        if (pilot.language_proficiency.includes(mission.language)) score += 1;
 
-      return { ...pilot._doc, score };
-    }).sort((a, b) => b.score - a.score).slice(0, 3);
+        return { ...pilot._doc, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
 
     res.json({ mission, pilots: scoredPilots });
   } catch (error) {
@@ -119,68 +165,53 @@ router.post('/findPilot', auth, async (req, res) => {
   }
 });
 
-router.post('/acceptMission', auth, async (req, res) => {
+router.post('/acceptMission', async (req, res) => {
+  const { userId, missionId } = req.body;
+
   try {
-    const { missionId, pilotId } = req.body;
+    // Find the user and check mission
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Assuming missionId is valid and mission model is correctly referenced
     const mission = await Mission.findById(missionId);
-    const pilot = await User.findById(pilotId);
-
     if (!mission) {
-      return res.status(404).send('Mission not found');
+      return res.status(404).json({ message: 'Mission not found' });
     }
 
-    if (!pilot) {
-      return res.status(404).send('Pilot not found');
-    }
+    // Add mission to the user's accepted missions
+    user.acceptedMissions.push({ mission: missionId, aircraft: 'defaultAircraft' });
+    await user.save();
 
-    // Logic to pair the pilot with the mission, e.g., update the mission document
-    mission.assignedPilot = pilot._id;
-    await mission.save();
-
-    res.json({ message: 'Mission accepted with pilot', mission, pilot });
+    res.status(200).json({ message: 'Mission accepted successfully' });
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error in acceptMission route:', error);
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 });
 
-// POST route to search pilots based on usernames
-router.post('/findPilotByName', async (req, res) => {
+// DELETE route to delete a mission from a user's accepted missions
+router.delete('/deleteMission', auth, async (req, res) => {
   try {
-    console.log(res);
-    const { query } = req.body;
-    const searchQuery = {};
+    const { userId, missionId } = req.body;
 
-    if (query.username) {
-      console.log(query.username);
-      searchQuery.username = new RegExp(query.username, 'i'); // Case-insensitive search
-      console.log(searchQuery);
+    // Update the user document to remove the mission
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { acceptedMissions: { mission: missionId } } },
+      { new: true }
+    ).populate('acceptedMissions.mission');
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
     }
 
-    const pilots = await User.find(searchQuery);
-    res.json(pilots);
+    res.json(updatedUser);
   } catch (error) {
-    console.error('Error finding pilots:', error);
-    res.status(500).json({ error: error.message });
+    res.status (500).send(error.message);
   }
-  /*
-  try {
-    const { name } = req.body;
-
-    if (!name) {
-      return res.status(400).json({ error: 'Name is required' });
-    }
-
-    const searchQuery = {
-      name: new RegExp(name, 'i') // Case-insensitive search
-    };
-
-    const pilots = await User.find(searchQuery);
-    res.json(pilots);
-  } catch (error) {
-    console.error('Error finding pilots:', error);
-    res.status(500).json({ error: error.message });
-  }*/
 });
-
 
 module.exports = router;

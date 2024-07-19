@@ -4,8 +4,6 @@ import './EditProfile.css';
 
 const EditProfile = () => {
   const navigate = useNavigate();
-
-  // Initialize state with empty strings or arrays
   const [email, setEmail] = useState('');
   const [rank, setRank] = useState('');
   const [totalFlightHours, setTotalFlightHours] = useState('');
@@ -13,6 +11,7 @@ const EditProfile = () => {
   const [aircraftQualification, setAircraftQualification] = useState([]);
   const [trainingCompleted, setTrainingCompleted] = useState([]);
   const [languageProficiency, setLanguageProficiency] = useState([]);
+  const [profileImage, setProfileImage] = useState(null);
   const [dropdowns, setDropdowns] = useState({
     aircraft: false,
     training: false,
@@ -20,19 +19,19 @@ const EditProfile = () => {
   });
 
   const aircraftQualificationOptions = [
-   'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
+    'No Selection', 'KC-10 Extender', 'KC-46A Pegasus', 'KC-135 Stratotanker',
     'C-5 Galaxy', 'C-17 Globemaster III', 'C-20', 'C-21', 'C-32', 'C-37A/B', 'C-40B/C',
     'C-130 Hercules', 'HC-130J Combat King II', 'HC-130P/N King', 'MC-130H Combat Talon II', 'VC-25 Air Force One'
   ];
 
   const trainingCompletedOptions = [
-   'No Selection', 'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
+    'No Selection', 'Private Pilot License (PPL)', 'Commercial Pilot License (CPL)', 'Airbus A330 Multi Role Tanker Transport (MRTT)',
     'C-130 Hercules Initial Qualification Course', 'Boeing 767 Type Rating', 'KC-135 Stratotanker Type Rating',
     'Aerial Refueling Course', 'Combat Airlift Course', 'Advanced Aircraft Maneuvering Program (AAMP)', 'Emergency Response Training'
   ];
 
   const languageProficiencyOptions = [
-    'No selection','English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
+    'No selection', 'English', 'Spanish', 'French', 'German', 'Chinese', 'Japanese', 'Russian', 'Portuguese', 'Arabic', 'Hindi'
   ];
 
   useEffect(() => {
@@ -65,6 +64,7 @@ const EditProfile = () => {
         setAircraftQualification(data.aircraft_qualification || []);
         setTrainingCompleted(data.training_completed || []);
         setLanguageProficiency(data.language_proficiency || []);
+        setProfileImage(data.profilePicture || null);
       } catch (error) {
         console.error("Fetch error:", error);
       }
@@ -81,14 +81,40 @@ const EditProfile = () => {
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('profilePicture', file);
+  
+    try {
+      const response = await fetch(`http://localhost:3000/api/user/profile/${localStorage.getItem("userId")}/upload`, {
+        method: 'POST',
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem('token')}`
+        },
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText);
+      }
+  
+      const data = await response.json();
+      setProfileImage(data.profilePicture);
+    } catch (error) {
+      console.error("Upload error:", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!email) {
       alert('Email cannot be empty');
       return;
     }
-
+  
     const userId = localStorage.getItem("userId");
     const updateData = {
       email,
@@ -98,8 +124,11 @@ const EditProfile = () => {
       aircraft_qualification: aircraftQualification,
       training_completed: trainingCompleted,
       language_proficiency: languageProficiency,
+      profilePicture: profileImage,
     };
-
+  
+    console.log('Submitting update data:', updateData);  // Debug log
+  
     try {
       const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
         method: "PUT",
@@ -108,18 +137,18 @@ const EditProfile = () => {
         },
         body: JSON.stringify(updateData),
       });
-
+  
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(errorText);
       }
-
+  
       localStorage.setItem("updateMessage", "Profile updated successfully!");
       navigate('/dashboard');
     } catch (error) {
       console.error("Update error:", error);
     }
-  };
+  };   
 
   const toggleDropdown = (section) => {
     setDropdowns(prev => ({ ...prev, [section]: !prev[section] }));
@@ -139,11 +168,16 @@ const EditProfile = () => {
         </label>
         <label>
           Total Flight Hours:
-          <input type="number" value={totalFlightHours} onChange={(e) => setTotalFlightHours(e.target.value)} />
+          <input type="number" value={totalFlightHours} min = "0" onChange={(e) => setTotalFlightHours(e.target.value)} />
         </label>
         <label>
           NVG Hours:
-          <input type="number" value={nvgHours} onChange={(e) => setNvgHours(e.target.value)} />
+          <input type="number" value={nvgHours} min = "0" onChange={(e) => setNvgHours(e.target.value)} />
+        </label>
+        <label>
+          Profile Image:
+          <input type="file" onChange={handleImageUpload} />
+          {profileImage && <img src={`http://localhost:3000/${profileImage}`} alt="Profile" className="profile-image-preview" />}
         </label>
         <label>
           Aircraft Qualification:

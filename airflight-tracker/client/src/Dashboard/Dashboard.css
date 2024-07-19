@@ -121,3 +121,14 @@
     align-items: center;
   }
 }
+
+/* Add this to your Dashboard.css */
+
+.team-member button {
+  margin-right: 10px;
+}
+
+.complete-mission-button {
+  background-color: #4CAF50;
+  color: white;
+}

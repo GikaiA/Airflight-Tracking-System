@@ -214,4 +214,34 @@ router.delete('/deleteMission', auth, async (req, res) => {
   }
 });
 
+router.post('/completeMission', auth, async (req, res) => {
+  const { userId, missionId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const missionIndex = user.acceptedMissions.findIndex(
+      (m) => m.mission.toString() === missionId
+    );
+
+    if (missionIndex === -1) {
+      return res.status(404).json({ message: 'Mission not found in accepted missions' });
+    }
+
+    const completedMission = user.acceptedMissions[missionIndex];
+    user.acceptedMissions.splice(missionIndex, 1);
+    user.completedMissions.push({ mission: completedMission.mission, aircraft: completedMission.aircraft });
+
+    await user.save();
+
+    const populatedUser = await User.findById(userId).populate('acceptedMissions.mission completedMissions.mission');
+    res.status(200).json({ message: 'Mission completed successfully', user: populatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
 module.exports = router;

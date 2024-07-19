@@ -8,18 +8,15 @@ const Dashboard = () => {
   const [updateMessage, setUpdateMessage] = useState('');
   const [profileImageError, setProfileImageError] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Hook to access location object
+  const location = useLocation();
 
   useEffect(() => {
-    // Fetch user data
     const fetchUserData = async () => {
       const userId = localStorage.getItem('userId');
-  
       if (!userId) {
         setError('User is not authenticated. Please log in.');
         return;
       }
-  
       try {
         const response = await fetch(`http://localhost:3000/api/user/profile/${userId}`, {
           method: 'GET',
@@ -28,26 +25,20 @@ const Dashboard = () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
-  
         if (!response.ok) {
           const errorText = await response.text();
           throw new Error(errorText);
         }
-  
         const data = await response.json();
-        console.log('Fetched user data:', data);  // Debug log
         setUserData(data);
         setProfileImageError(false);
-        console.log('Profile Picture Path: ', data.profilePicture);
       } catch (err) {
         setError(err.message);
-        console.error('Fetch error:', err);
       }
     };
-  
+
     fetchUserData();
 
-    // Read message from query parameters
     const query = new URLSearchParams(location.search);
     const message = query.get('message');
     if (message) {
@@ -65,16 +56,35 @@ const Dashboard = () => {
         },
         body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
       });
-
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
-
       const updatedUser = await response.json();
       setUserData(updatedUser);
       setUpdateMessage('Mission deleted successfully.');
     } catch (error) {
       console.error('Error deleting mission:', error);
+    }
+  };
+
+  const completeMission = async (missionId) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/completeMission', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      const updatedUser = await response.json();
+      setUserData(updatedUser.user);
+      setUpdateMessage('Mission completed successfully.');
+    } catch (error) {
+      console.error('Error completing mission:', error);
     }
   };
 
@@ -174,6 +184,7 @@ const Dashboard = () => {
                       <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
                       <p>Aircraft: {acceptedMission.aircraft}</p>
                       <button onClick={() => deleteMission(acceptedMission.mission._id)}>Delete Mission</button>
+                      <button onClick={() => completeMission(acceptedMission.mission._id)}>Complete Mission</button>
                     </>
                   )}
                 </div>
@@ -186,16 +197,16 @@ const Dashboard = () => {
         <div className="history card">
           <h2>History</h2>
           <div className="history-records">
-            {userData.history && userData.history.length > 0 ? (
-              userData.history.map((mission) => (
-                <div key={mission._id} className="history-record">
-                  <p>Date: {new Date(mission.date).toLocaleDateString()}</p>
-                  <p>Mission: {mission.specific_mission || 'N/A'}</p>
-                  <p>Pilot: {mission.pilot.username || 'N/A'}</p> {/* Display the pilot's username */}
+            {userData.completedMissions && userData.completedMissions.length > 0 ? (
+              userData.completedMissions.map((completedMission) => (
+                <div key={completedMission.mission._id} className="history-record">
+                  <p>Date: {new Date(completedMission.completedAt).toLocaleDateString()}</p>
+                  <p>Mission: {completedMission.mission.specific_mission || 'N/A'}</p>
+                  <p>Pilot: {userData.username || 'N/A'}</p>
                 </div>
               ))
             ) : (
-              <p>No missions found</p>
+              <p>No completed missions yet.</p>
             )}
           </div>
         </div>

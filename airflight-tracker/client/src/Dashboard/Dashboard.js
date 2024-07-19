@@ -88,6 +88,27 @@ const Dashboard = () => {
     }
   };
 
+  const clearCompletedMission = async (missionId) => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user/clearCompletedMission', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ userId: localStorage.getItem('userId'), missionId }),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      const updatedUser = await response.json();
+      setUserData(updatedUser);
+      setUpdateMessage('Completed mission cleared successfully.');
+    } catch (error) {
+      console.error('Error clearing completed mission:', error);
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -203,6 +224,7 @@ const Dashboard = () => {
                   <p>Date: {new Date(completedMission.completedAt).toLocaleDateString()}</p>
                   <p>Mission: {completedMission.mission.specific_mission || 'N/A'}</p>
                   <p>Pilot: {userData.username || 'N/A'}</p>
+                  <button onClick={() => clearCompletedMission(completedMission.mission._id)}>Clear Mission</button>
                 </div>
               ))
             ) : (

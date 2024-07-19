@@ -244,4 +244,25 @@ router.post('/completeMission', auth, async (req, res) => {
   }
 });
 
+router.delete('/clearCompletedMission', auth, async (req, res) => {
+  try {
+    const { userId, missionId } = req.body;
+
+    // Update the user document to remove the completed mission
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { completedMissions: { mission: missionId } } },
+      { new: true }
+    ).populate('acceptedMissions.mission completedMissions.mission');
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;

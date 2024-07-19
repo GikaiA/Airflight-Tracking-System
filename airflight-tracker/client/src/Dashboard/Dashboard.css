@@ -122,8 +122,6 @@
   }
 }
 
-/* Add this to your Dashboard.css */
-
 .team-member button {
   margin-right: 10px;
 }
@@ -131,4 +129,17 @@
 .complete-mission-button {
   background-color: #4CAF50;
   color: white;
+}
+
+.history-record button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.history-record button:hover {
+  background-color: #d32f2f;
 }

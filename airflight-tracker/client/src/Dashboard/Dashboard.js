@@ -198,18 +198,16 @@ const Dashboard = () => {
           <h2>My Team</h2>
           <div className="team-members">
             {userData.acceptedMissions && userData.acceptedMissions.length > 0 ? (
-              userData.acceptedMissions.map((acceptedMission, index) => (
-                <div key={index} className="team-member">
-                  {acceptedMission.mission && (
-                    <>
-                      <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
-                      <p>Aircraft: {acceptedMission.aircraft}</p>
-                      <button onClick={() => deleteMission(acceptedMission.mission._id)}>Delete Mission</button>
-                      <button onClick={() => completeMission(acceptedMission.mission._id)}>Complete Mission</button>
-                    </>
-                  )}
-                </div>
-              ))
+              userData.acceptedMissions
+                .filter(acceptedMission => acceptedMission.mission && acceptedMission.mission.specific_mission) // Only render non-empty missions
+                .map((acceptedMission, index) => (
+                  <div key={index} className="team-member card" onClick={() => navigate(`/mission/${acceptedMission.mission._id}`)}>
+                    <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
+                    <p>Aircraft: {acceptedMission.aircraft}</p>
+                    <button onClick={(e) => { e.stopPropagation(); deleteMission(acceptedMission.mission._id); }}>Delete Mission</button>
+                    <button onClick={(e) => { e.stopPropagation(); completeMission(acceptedMission.mission._id); }}>Complete Mission</button>
+                  </div>
+                ))
             ) : (
               <p>No accepted missions yet.</p>
             )}

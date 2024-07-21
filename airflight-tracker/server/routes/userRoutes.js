@@ -214,4 +214,81 @@ router.delete('/deleteMission', auth, async (req, res) => {
   }
 });
 
+router.post('/completeMission', auth, async (req, res) => {
+  const { userId, missionId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const missionIndex = user.acceptedMissions.findIndex(
+      (m) => m.mission.toString() === missionId
+    );
+
+    if (missionIndex === -1) {
+      return res.status(404).json({ message: 'Mission not found in accepted missions' });
+    }
+
+    const completedMission = user.acceptedMissions[missionIndex];
+    user.acceptedMissions.splice(missionIndex, 1);
+    user.completedMissions.push({ mission: completedMission.mission, aircraft: completedMission.aircraft });
+
+    await user.save();
+
+    const populatedUser = await User.findById(userId).populate('acceptedMissions.mission completedMissions.mission');
+    res.status(200).json({ message: 'Mission completed successfully', user: populatedUser });
+  } catch (error) {
+    res.status(500).json({ message: 'Internal server error', error: error.message });
+  }
+});
+
+router.delete('/clearCompletedMission', auth, async (req, res) => {
+  try {
+    const { userId, missionId } = req.body;
+
+    // Update the user document to remove the completed mission
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $pull: { completedMissions: { mission: missionId } } },
+      { new: true }
+    ).populate('acceptedMissions.mission completedMissions.mission');
+
+    if (!updatedUser) {
+      return res.status(404).send('User not found');
+    }
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+// GET copilot for mission
+router.get('/copilot/:missionId', auth, async (req, res) => {
+  try {
+    const missionId = req.params.missionId;
+    const userId = req.user.id;
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const acceptedMission = user.acceptedMissions.find(m => m.mission._id.toString() === missionId);
+    if (!acceptedMission) {
+      return res.status(404).send('Accepted mission not found');
+    }
+
+    const copilot = await User.findOne({ "acceptedMissions.mission": missionId });
+    if (!copilot) {
+      return res.status(404).send('Copilot not found');
+    }
+
+    res.json(copilot);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;

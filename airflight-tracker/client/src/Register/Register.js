@@ -1,3 +1,4 @@
+// src/Register/Register.js
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../services/authService";
@@ -20,8 +21,8 @@ const Register = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const data = await register(formData);
-      localStorage.setItem('userId', data.userId);
+      const user = await register(formData.username, formData.email, formData.password);
+      localStorage.setItem('userId', user.uid);
       navigate('/dashboard');
     } catch (err) {
       setError(err.message);

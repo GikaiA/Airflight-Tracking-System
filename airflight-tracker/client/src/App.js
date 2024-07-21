@@ -1,6 +1,5 @@
-
+// src/App.js
 import React from "react";
-//import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage/Homepage";
@@ -14,12 +13,12 @@ import Register from "./Register/Register";
 import Search from "./Search/Search";
 import FindPilot from "./FindPilot/FindPilot";
 import About from "./About/About";
-import { AuthProvider } from './Context/AuthContext'; //new file
+import { AuthProvider } from './Context/AuthContext';
 import Flight from './Flight/Flight';
 
 function App() {
   return (
-   <AuthProvider>
+    <AuthProvider>
       <div className="App">
         <BrowserRouter>
           <Navbar />
@@ -38,8 +37,8 @@ function App() {
           <Footer />
         </BrowserRouter>
       </div>
-   </AuthProvider>
- );
+    </AuthProvider>
+  );
 }
 
 export default App;

@@ -264,24 +264,27 @@ const Dashboard = () => {
           </div>
         </>
       ) : (
-        <div className="selected-mission card">
-          <h2>Mission Details</h2>
-          <p><strong>Aircraft:</strong> {selectedMission.mission.aircraft}</p>
-          <p><strong>Duration:</strong> {selectedMission.mission.duration_hours} hours</p>
-          <p><strong>Destination:</strong> {selectedMission.mission.destination}</p>
-          <p><strong>Type:</strong> {selectedMission.mission.mission_type}</p>
-          <p><strong>Specific Mission:</strong> {selectedMission.mission.specific_mission}</p>
+        <div className="mission-details-section">
+          <h1>Mission Details</h1>
+          <div className="mission-details card">
+            <p><strong>Aircraft:</strong> {selectedMission.mission.aircraft}</p>
+            <p><strong>Duration:</strong> {selectedMission.mission.duration_hours} hours</p>
+            <p><strong>Destination:</strong> {selectedMission.mission.destination}</p>
+            <p><strong>Type:</strong> {selectedMission.mission.mission_type}</p>
+            <p><strong>Specific Mission:</strong> {selectedMission.mission.specific_mission}</p>
+          </div>
 
           {copilot && (
-            <>
+            <div className="copilot-details card">
               <h2>Copilot Details</h2>
               <p><strong>Username:</strong> {copilot.username}</p>
               <p><strong>Email:</strong> {copilot.email}</p>
               <p><strong>Rank:</strong> {copilot.rank}</p>
               <p><strong>NVG Hours:</strong> {copilot.nvg_hours}</p>
               <p><strong>Total Flight Hours:</strong> {copilot.total_flight_hours}</p>
-            </>
+            </div>
           )}
+
           <button onClick={handleBackToDashboard} className="back-button">Back to Dashboard</button>
         </div>
       )}

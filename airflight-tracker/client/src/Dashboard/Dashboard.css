@@ -145,18 +145,28 @@
 }
 
 /* Styling for the selected mission details */
-.selected-mission {
+.mission-details-section {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.mission-details, .copilot-details {
   background-color: #002f6c;
   color: #ffdc00;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  margin: 10px;
+  margin: 10px auto;
+  text-align: left;
 }
 
-.selected-mission h2 {
+.mission-details h1, .copilot-details h2 {
   color: #ffdc00;
-  font-size: 2em;
+}
+
+.mission-details p, .copilot-details p {
+  font-size: 1.2em;
 }
 
 .back-button {

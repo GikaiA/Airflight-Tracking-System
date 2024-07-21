@@ -265,4 +265,30 @@ router.delete('/clearCompletedMission', auth, async (req, res) => {
   }
 });
 
+// GET copilot for mission
+router.get('/copilot/:missionId', auth, async (req, res) => {
+  try {
+    const missionId = req.params.missionId;
+    const userId = req.user.id;
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const acceptedMission = user.acceptedMissions.find(m => m.mission._id.toString() === missionId);
+    if (!acceptedMission) {
+      return res.status(404).send('Accepted mission not found');
+    }
+
+    const copilot = await User.findOne({ "acceptedMissions.mission": missionId });
+    if (!copilot) {
+      return res.status(404).send('Copilot not found');
+    }
+
+    res.json(copilot);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 module.exports = router;

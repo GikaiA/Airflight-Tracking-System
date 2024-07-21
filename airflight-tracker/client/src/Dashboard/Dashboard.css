@@ -143,3 +143,35 @@
 .history-record button:hover {
   background-color: #d32f2f;
 }
+
+/* Styling for the selected mission details */
+.selected-mission {
+  background-color: #002f6c;
+  color: #ffdc00;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+}
+
+.selected-mission h2 {
+  color: #ffdc00;
+  font-size: 2em;
+}
+
+.back-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ff4136;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #ff851b;
+  transform: scale(1.05);
+}

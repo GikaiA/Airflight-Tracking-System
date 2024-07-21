@@ -185,3 +185,8 @@
   background-color: #ff851b;
   transform: scale(1.05);
 }
+
+.details-container {
+  display: flex;
+  justify-content: space-around;
+}

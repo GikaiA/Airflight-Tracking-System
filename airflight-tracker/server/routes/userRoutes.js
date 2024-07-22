@@ -230,7 +230,11 @@ router.post('/completeMission', auth, async (req, res) => {
 
     const completedMission = user.acceptedMissions[missionIndex];
     user.acceptedMissions.splice(missionIndex, 1);
-    user.completedMissions.push({ mission: completedMission.mission, aircraft: completedMission.aircraft });
+    user.completedMissions.push({
+      mission: completedMission.mission,
+      aircraft: completedMission.aircraft,
+      completed_date: new Date()  // Sets the completed date to today
+    });
 
     await user.save();
 

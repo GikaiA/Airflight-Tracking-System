@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   completedMissions: [{
     mission: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
     aircraft: { type: String },
-    completedAt: { type: Date, default: Date.now }
+    completed_date: { type: Date, default: Date.now }  // Ensure this is correctly defined
   }],
   profilePicture: { type: String, default: '/default-profile.png' },
   profilePDF: { type: String, default: '' }

@@ -245,21 +245,22 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="history card">
-              <h2>History</h2>
-              <div className="history-records">
-                {userData.completedMissions && userData.completedMissions.length > 0 ? (
-                  userData.completedMissions.map((completedMission, index) => (
-                    <div key={index} className="history-record card">
-                      <h3>Mission: {completedMission.mission.specific_mission}</h3>
-                      <p>Aircraft: {completedMission.mission.aircraft}</p>
-                      <button onClick={() => clearCompletedMission(completedMission.mission._id)}>Clear Mission</button>
-                    </div>
-                  ))
-                ) : (
-                  <p>No completed missions yet.</p>
-                )}
-              </div>
-            </div>
+  <h2>History</h2>
+  <div className="history-records">
+    {userData.completedMissions && userData.completedMissions.length > 0 ? (
+      userData.completedMissions.map((completedMission, index) => (
+        <div key={index} className="history-record card">
+          <h3>Mission: {completedMission.mission.specific_mission}</h3>
+          <p>Aircraft: {completedMission.mission.aircraft}</p>
+          <p>Completed Date: {new Date(completedMission.completed_date).toLocaleDateString()}</p>
+          <button onClick={() => clearCompletedMission(completedMission.mission._id)}>Clear Mission</button>
+        </div>
+      ))
+    ) : (
+      <p>No completed missions yet.</p>
+    )}
+  </div>
+</div>
           </div>
         </>
       ) : (
@@ -268,9 +269,9 @@ const Dashboard = () => {
           <div className="mission-info">
             <h3>Mission: {selectedMission.mission.specific_mission}</h3>
             <p>Aircraft: {selectedMission.mission.aircraft}</p>
-            <p>Origin: {selectedMission.mission.origin}</p>
+            <p>Type: {selectedMission.mission.mission_type}</p>
             <p>Destination: {selectedMission.mission.destination}</p>
-            <p>Details: {selectedMission.mission.details}</p>
+            <p>Duration: {selectedMission.mission.duration_hours} hours</p>
             {copilot && <p>Copilot: {copilot.username}</p>}
             {!copilot && <p>No copilot selected yet.</p>}
           </div>

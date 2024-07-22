@@ -146,27 +146,31 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
   }
 });
 
-// Route to find pilots for a mission
 router.post('/findPilot', auth, async (req, res) => {
   try {
-    const { missionId } = req.body;
+    const { missionId, userId } = req.body;
+    console.log("Received Mission ID:", missionId, "User ID:", userId); // Debugging information
+
     if (!ObjectId.isValid(missionId)) {
       return res.status(400).json({ message: 'Invalid mission ID' });
     }
 
     const mission = await Mission.findById(missionId);
-
     if (!mission) {
       return res.status(404).send('Mission not found');
     }
 
+    // Find pilots excluding the logged-in user
     const pilots = await User.find({
+      _id: { $ne: userId }, // Exclude the logged-in user
       $or: [
         { aircraft_qualification: { $in: [mission.aircraft] } },
         { training_completed: { $in: [mission.training] } },
         { language_proficiency: { $in: [mission.language] } },
       ],
     }).collation({ locale: 'en', strength: 2 });
+
+    console.log("Found Pilots:", pilots); // Debugging information
 
     const scoredPilots = pilots
       .map((pilot) => {
@@ -181,6 +185,8 @@ router.post('/findPilot', auth, async (req, res) => {
       })
       .sort((a, b) => b.score - a.score)
       .slice(0, 3);
+
+    console.log("Scored Pilots:", scoredPilots); // Debugging information
 
     res.json({ mission, pilots: scoredPilots });
   } catch (error) {

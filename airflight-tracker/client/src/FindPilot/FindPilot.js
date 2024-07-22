@@ -40,25 +40,28 @@ function FindPilot() {
     setSelectedMission(mission);
     setSelectedPilot(null); // Reset selected pilot when a new mission is selected
     try {
+      const userId = localStorage.getItem("userId");
+      console.log("Mission ID:", mission._id, "User ID:", userId); // Debugging information
       const response = await fetch('http://localhost:3000/api/user/findPilot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ missionId: mission._id }),
+        body: JSON.stringify({ missionId: mission._id, userId }), // Include userId
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok ' + response.statusText);
       }
-
+  
       const data = await response.json();
+      console.log("Recommended Pilots:", data.pilots); // Debugging information
       setRecommendedPilots(data.pilots);
     } catch (error) {
       console.error('Error fetching pilot data:', error);
     }
-  };
+  };   
 
   const handlePilotClick = (pilot) => {
     setSelectedPilot(pilot);

@@ -165,32 +165,29 @@ router.post('/findPilot', auth, async (req, res) => {
   }
 });
 
-router.post('/acceptMission', async (req, res) => {
-  const { userId, missionId } = req.body;
+router.post('/acceptMission', auth, async (req, res) => {
+  const { userId, missionId, copilotId } = req.body;
 
   try {
-    // Find the user and check mission
+    // Find the user and update accepted missions
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Assuming missionId is valid and mission model is correctly referenced
-    const mission = await Mission.findById(missionId);
-    if (!mission) {
-      return res.status(404).json({ message: 'Mission not found' });
-    }
-
-    // Add mission to the user's accepted missions
-    user.acceptedMissions.push({ mission: missionId, aircraft: 'defaultAircraft' });
+    // Add mission with copilot to acceptedMissions
+    user.acceptedMissions.push({
+      mission: missionId,
+      copilot: copilotId
+    });
     await user.save();
 
-    res.status(200).json({ message: 'Mission accepted successfully' });
+    res.status(200).json(user);
   } catch (error) {
-    console.error('Error in acceptMission route:', error);
-    res.status(500).json({ message: 'Internal server error', error: error.message });
+    res.status(500).json({ message: 'Server error', error });
   }
 });
+
 
 // DELETE route to delete a mission from a user's accepted missions
 router.delete('/deleteMission', auth, async (req, res) => {
@@ -244,6 +241,11 @@ router.post('/completeMission', auth, async (req, res) => {
   }
 });
 
+
+
+
+
+
 router.delete('/clearCompletedMission', auth, async (req, res) => {
   try {
     const { userId, missionId } = req.body;
@@ -265,29 +267,25 @@ router.delete('/clearCompletedMission', auth, async (req, res) => {
   }
 });
 
-// GET copilot for mission
-router.get('/copilot/:missionId', auth, async (req, res) => {
+router.get('/copilot/:missionId', async (req, res) => {
+  const { missionId } = req.params;
+
   try {
-    const missionId = req.params.missionId;
-    const userId = req.user.id;
-    const user = await User.findById(userId).populate('acceptedMissions.mission');
+    const user = await User.findOne({ 'acceptedMissions.mission': missionId }).populate('acceptedMissions.copilot');
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(404).json({ error: 'User or mission not found' });
     }
 
-    const acceptedMission = user.acceptedMissions.find(m => m.mission._id.toString() === missionId);
-    if (!acceptedMission) {
-      return res.status(404).send('Accepted mission not found');
+    // Find the relevant copilot from the accepted missions
+    const missionData = user.acceptedMissions.find(m => m.mission.toString() === missionId);
+    if (!missionData || !missionData.copilot) {
+      return res.status(404).json({ error: 'Copilot not found' });
     }
 
-    const copilot = await User.findOne({ "acceptedMissions.mission": missionId });
-    if (!copilot) {
-      return res.status(404).send('Copilot not found');
-    }
-
-    res.json(copilot);
+    res.json(missionData.copilot);
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error fetching copilot:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

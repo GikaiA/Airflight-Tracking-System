@@ -66,28 +66,24 @@ function FindPilot() {
 
   const handleAcceptMission = async (userId, missionId) => {
     try {
-      // Ensure that `userId` and `missionId` are not HTML elements or React components
-      if (typeof userId !== 'string' || typeof missionId !== 'string') {
-        throw new Error('Invalid input data');
-      }
-
       const response = await fetch('http://localhost:3000/api/user/acceptMission', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({ userId, missionId }), // Ensure this only includes plain data
+        body: JSON.stringify({ userId, missionId, copilotId: selectedPilot._id }), // Include copilotId
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error data:', errorData);
         throw new Error(errorData.message || 'Failed to process request');
       }
-
+  
       const data = await response.json();
       console.log('Mission accepted:', data);
-      
+  
       // Redirect to dashboard with message
       navigate(`/dashboard?message=Mission accepted with Pilot ${selectedPilot.username}`);
     } catch (error) {

@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   acceptedMissions: [{
     mission: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
     aircraft: { type: String },
+    copilot: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }  // Add this line
   }],
   completedMissions: [{
     mission: { type: mongoose.Schema.Types.ObjectId, ref: 'Mission' },
@@ -23,6 +24,9 @@ const userSchema = new mongoose.Schema({
   profilePicture: { type: String, default: '/default-profile.png' },
   profilePDF: { type: String, default: '' }
 }, { collection: 'pilot' });
+
+
+
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

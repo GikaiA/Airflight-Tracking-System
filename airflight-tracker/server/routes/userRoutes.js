@@ -6,6 +6,7 @@ const auth = require('../middleware/authMiddleware');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { ObjectId } = require('mongoose').Types;
 
 // Ensure upload directory exists
 const uploadDir = './uploads/profileFiles';
@@ -25,14 +26,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Route to upload profile picture
 router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    // Update user's profile picture path
     user.profilePicture = `uploads/profileFiles/${req.file.filename}`;
     await user.save();
 
@@ -42,10 +47,14 @@ router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async 
   }
 });
 
-// GET user profile by ID route
+// Route to get user profile by ID
 router.get('/profile/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('acceptedMissions.mission');
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
     if (!user) {
       return res.status(404).send('User not found');
     }
@@ -55,9 +64,14 @@ router.get('/profile/:id', auth, async (req, res) => {
   }
 });
 
+// Route to update user profile
 router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) => {
   try {
     const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
     const {
       email,
       rank,
@@ -80,7 +94,7 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
       updates.profilePicture = req.file.path;
     }
 
-    console.log('Updating user with:', updates);  // Debug log
+    console.log('Updating user with:', updates);
 
     const user = await User.findByIdAndUpdate(userId, updates, { new: true });
 
@@ -98,10 +112,15 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
   }
 });
 
-// GET recommended missions for user route
+// Route to get recommended missions for user
 router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
@@ -119,7 +138,7 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
         return { ...mission._doc, score };
       })
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3); // Get top 3 missions
+      .slice(0, 3);
 
     res.json(recommendedMissions);
   } catch (error) {
@@ -127,10 +146,14 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
   }
 });
 
-// POST route to find pilots for a mission
+// Route to find pilots for a mission
 router.post('/findPilot', auth, async (req, res) => {
   try {
     const { missionId } = req.body;
+    if (!ObjectId.isValid(missionId)) {
+      return res.status(400).json({ message: 'Invalid mission ID' });
+    }
+
     const mission = await Mission.findById(missionId);
 
     if (!mission) {
@@ -165,23 +188,25 @@ router.post('/findPilot', auth, async (req, res) => {
   }
 });
 
+// Route to accept a mission
 router.post('/acceptMission', async (req, res) => {
   const { userId, missionId } = req.body;
 
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
+
   try {
-    // Find the user and check mission
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Assuming missionId is valid and mission model is correctly referenced
     const mission = await Mission.findById(missionId);
     if (!mission) {
       return res.status(404).json({ message: 'Mission not found' });
     }
 
-    // Add mission to the user's accepted missions
     user.acceptedMissions.push({ mission: missionId, aircraft: 'defaultAircraft' });
     await user.save();
 
@@ -192,12 +217,15 @@ router.post('/acceptMission', async (req, res) => {
   }
 });
 
-// DELETE route to delete a mission from a user's accepted missions
+// Route to delete a mission from a user's accepted missions
 router.delete('/deleteMission', auth, async (req, res) => {
-  try {
-    const { userId, missionId } = req.body;
+  const { userId, missionId } = req.body;
 
-    // Update the user document to remove the mission
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
+
+  try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { acceptedMissions: { mission: missionId } } },
@@ -210,12 +238,17 @@ router.delete('/deleteMission', auth, async (req, res) => {
 
     res.json(updatedUser);
   } catch (error) {
-    res.status (500).send(error.message);
+    res.status(500).send(error.message);
   }
 });
 
+// Route to complete a mission
 router.post('/completeMission', auth, async (req, res) => {
   const { userId, missionId } = req.body;
+
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
 
   try {
     const user = await User.findById(userId);
@@ -244,11 +277,15 @@ router.post('/completeMission', auth, async (req, res) => {
   }
 });
 
+// Route to clear a completed mission
 router.delete('/clearCompletedMission', auth, async (req, res) => {
-  try {
-    const { userId, missionId } = req.body;
+  const { userId, missionId } = req.body;
 
-    // Update the user document to remove the completed mission
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
+
+  try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { completedMissions: { mission: missionId } } },
@@ -265,11 +302,16 @@ router.delete('/clearCompletedMission', auth, async (req, res) => {
   }
 });
 
-// GET copilot for mission
+// Route to get copilot for mission
 router.get('/copilot/:missionId', auth, async (req, res) => {
   try {
     const missionId = req.params.missionId;
     const userId = req.user.id;
+
+    if (!ObjectId.isValid(missionId) || !ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid missionId or userId' });
+    }
+
     const user = await User.findById(userId).populate('acceptedMissions.mission');
     if (!user) {
       return res.status(404).send('User not found');

@@ -25,7 +25,6 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // finds user based on given credential, either username, or email
     const user = await User.findOne({ $or: [{ email: username }, { username: username }] });
 
     if (!user || user.password !== password) {

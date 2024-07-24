@@ -234,7 +234,7 @@ const Dashboard = () => {
                     .map((acceptedMission, index) => (
                       <div key={index} className="team-member card" onClick={() => handleMissionClick(acceptedMission)}>
                         <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
-                        <p>Aircraft: {acceptedMission.aircraft}</p>
+                        <p>Aircraft: {acceptedMission.mission.aircraft}</p>
                         <button onClick={(e) => { e.stopPropagation(); deleteMission(acceptedMission.mission._id); }}>Delete Mission</button>
                         <button onClick={(e) => { e.stopPropagation(); completeMission(acceptedMission.mission._id); }}>Complete Mission</button>
                       </div>
@@ -248,11 +248,11 @@ const Dashboard = () => {
               <h2>History</h2>
               <div className="history-records">
                 {userData.completedMissions && userData.completedMissions.length > 0 ? (
-                  userData.completedMissions.map((completedMission) => (
-                    <div key={completedMission.mission._id} className="history-record">
-                      <p>Date: {new Date(completedMission.completedAt).toLocaleDateString()}</p>
-                      <p>Mission: {completedMission.mission.specific_mission || 'N/A'}</p>
-                      <p>Pilot: {userData.username || 'N/A'}</p>
+                  userData.completedMissions.map((completedMission, index) => (
+                    <div key={index} className="history-record card">
+                      <h3>Mission: {completedMission.mission.specific_mission}</h3>
+                      <p>Aircraft: {completedMission.mission.aircraft}</p>
+                      <p>Completed Date: {new Date(completedMission.completed_date).toLocaleDateString()}</p>
                       <button onClick={() => clearCompletedMission(completedMission.mission._id)}>Clear Mission</button>
                     </div>
                   ))
@@ -265,31 +265,33 @@ const Dashboard = () => {
         </>
       ) : (
         <div className="mission-details-section">
-          <h1>Mission Details</h1>
-          <div className="details-container">
-            <div className="mission-details card">
-              <p><strong>Aircraft:</strong> {selectedMission.mission.aircraft}</p>
-              <p><strong>Duration:</strong> {selectedMission.mission.duration_hours} hours</p>
-              <p><strong>Destination:</strong> {selectedMission.mission.destination}</p>
-              <p><strong>Type:</strong> {selectedMission.mission.mission_type}</p>
-              <p><strong>Specific Mission:</strong> {selectedMission.mission.specific_mission}</p>
+          <div className="mission-details card">
+            <h2>Mission Details</h2>
+            <div className="mission-info">
+              <h3>Mission: {selectedMission.mission.specific_mission}</h3>
+              <p>Aircraft: {selectedMission.mission.aircraft}</p>
+              <p>Type: {selectedMission.mission.mission_type}</p>
+              <p>Destination: {selectedMission.mission.destination}</p>
+              <p>Duration: {selectedMission.mission.duration_hours} hours</p>
             </div>
-            {copilot && (
-              <div className="copilot-details card">
-                <h2>Copilot Details</h2>
-                <p><strong>Username:</strong> {copilot.username}</p>
-                <p><strong>Email:</strong> {copilot.email}</p>
-                <p><strong>Rank:</strong> {copilot.rank}</p>
-                <p><strong>NVG Hours:</strong> {copilot.nvg_hours}</p>
-                <p><strong>Total Flight Hours:</strong> {copilot.total_flight_hours}</p>
+          </div>
+          <div className="copilot-details card">
+            <h2>Copilot Details</h2>
+            {copilot ? (
+              <div className="copilot-info">
+                <p>Copilot: {copilot.username}</p>
+                <p>Email: {copilot.email}</p>
               </div>
+            ) : (
+              <p>No copilot selected yet.</p>
             )}
           </div>
-          <button onClick={handleBackToDashboard} className="back-button">Back to Dashboard</button>
+          <button className="back-button" onClick={handleBackToDashboard}>Back to Dashboard</button>
         </div>
       )}
     </div>
   );
 };
-
+//test
+//test
 export default Dashboard;

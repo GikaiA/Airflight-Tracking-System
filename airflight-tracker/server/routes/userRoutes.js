@@ -6,6 +6,7 @@ const auth = require('../middleware/authMiddleware');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { ObjectId } = require('mongoose').Types;
 
 // Ensure upload directory exists
 const uploadDir = './uploads/profileFiles';
@@ -25,14 +26,18 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Route to upload profile picture
 router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).send('User not found');
     }
 
-    // Update user's profile picture path
     user.profilePicture = `uploads/profileFiles/${req.file.filename}`;
     await user.save();
 
@@ -42,10 +47,14 @@ router.post('/profile/:id/upload', auth, upload.single('profilePicture'), async 
   }
 });
 
-// GET user profile by ID route
+// Route to get user profile by ID
 router.get('/profile/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).populate('acceptedMissions.mission');
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
     if (!user) {
       return res.status(404).send('User not found');
     }
@@ -55,9 +64,14 @@ router.get('/profile/:id', auth, async (req, res) => {
   }
 });
 
+// Route to update user profile
 router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) => {
   try {
     const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
     const {
       email,
       rank,
@@ -80,7 +94,7 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
       updates.profilePicture = req.file.path;
     }
 
-    console.log('Updating user with:', updates);  // Debug log
+    console.log('Updating user with:', updates);
 
     const user = await User.findByIdAndUpdate(userId, updates, { new: true });
 
@@ -98,16 +112,23 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
   }
 });
 
-// GET recommended missions for user route
 router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
     if (!user) {
       return res.status(404).send('User not found');
     }
 
+    const acceptedMissionIds = user.acceptedMissions.map(acceptedMission => acceptedMission.mission._id.toString());
+
     const missions = await Mission.find({});
     const recommendedMissions = missions
+      .filter(mission => !acceptedMissionIds.includes(mission._id.toString()))
       .map((mission) => {
         let score = 0;
         if (user.aircraft_qualification.includes(mission.aircraft)) score += 5;
@@ -119,7 +140,7 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
         return { ...mission._doc, score };
       })
       .sort((a, b) => b.score - a.score)
-      .slice(0, 3); // Get top 3 missions
+      .slice(0, 3);
 
     res.json(recommendedMissions);
   } catch (error) {
@@ -127,23 +148,31 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
   }
 });
 
-// POST route to find pilots for a mission
 router.post('/findPilot', auth, async (req, res) => {
   try {
-    const { missionId } = req.body;
-    const mission = await Mission.findById(missionId);
+    const { missionId, userId } = req.body;
+    console.log("Received Mission ID:", missionId, "User ID:", userId); // Debugging information
 
+    if (!ObjectId.isValid(missionId)) {
+      return res.status(400).json({ message: 'Invalid mission ID' });
+    }
+
+    const mission = await Mission.findById(missionId);
     if (!mission) {
       return res.status(404).send('Mission not found');
     }
 
+    // Find pilots excluding the logged-in user
     const pilots = await User.find({
+      _id: { $ne: userId }, // Exclude the logged-in user
       $or: [
         { aircraft_qualification: { $in: [mission.aircraft] } },
         { training_completed: { $in: [mission.training] } },
         { language_proficiency: { $in: [mission.language] } },
       ],
     }).collation({ locale: 'en', strength: 2 });
+
+    console.log("Found Pilots:", pilots); // Debugging information
 
     const scoredPilots = pilots
       .map((pilot) => {
@@ -159,45 +188,51 @@ router.post('/findPilot', auth, async (req, res) => {
       .sort((a, b) => b.score - a.score)
       .slice(0, 3);
 
+    console.log("Scored Pilots:", scoredPilots); // Debugging information
+
     res.json({ mission, pilots: scoredPilots });
   } catch (error) {
     res.status(500).send(error.message);
   }
 });
 
-router.post('/acceptMission', async (req, res) => {
-  const { userId, missionId } = req.body;
+router.post('/acceptMission', auth, async (req, res) => {
+  const { userId, missionId, copilotId } = req.body;
+
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
 
   try {
-    // Find the user and check mission
+    // Find the user and update accepted missions
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Assuming missionId is valid and mission model is correctly referenced
-    const mission = await Mission.findById(missionId);
-    if (!mission) {
-      return res.status(404).json({ message: 'Mission not found' });
-    }
-
-    // Add mission to the user's accepted missions
-    user.acceptedMissions.push({ mission: missionId, aircraft: 'defaultAircraft' });
+    // Add mission with copilot to acceptedMissions
+    user.acceptedMissions.push({
+      mission: missionId,
+      copilot: copilotId
+    });
     await user.save();
 
-    res.status(200).json({ message: 'Mission accepted successfully' });
+    res.status(200).json(user);
   } catch (error) {
-    console.error('Error in acceptMission route:', error);
-    res.status(500).json({ message: 'Internal server error', error: error.message });
+    res.status(500).json({ message: 'Server error', error });
   }
 });
 
+
 // DELETE route to delete a mission from a user's accepted missions
 router.delete('/deleteMission', auth, async (req, res) => {
-  try {
-    const { userId, missionId } = req.body;
+  const { userId, missionId } = req.body;
 
-    // Update the user document to remove the mission
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
+
+  try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { acceptedMissions: { mission: missionId } } },
@@ -210,12 +245,17 @@ router.delete('/deleteMission', auth, async (req, res) => {
 
     res.json(updatedUser);
   } catch (error) {
-    res.status (500).send(error.message);
+    res.status(500).send(error.message);
   }
 });
 
+// Route to complete a mission
 router.post('/completeMission', auth, async (req, res) => {
   const { userId, missionId } = req.body;
+
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
 
   try {
     const user = await User.findById(userId);
@@ -233,7 +273,11 @@ router.post('/completeMission', auth, async (req, res) => {
 
     const completedMission = user.acceptedMissions[missionIndex];
     user.acceptedMissions.splice(missionIndex, 1);
-    user.completedMissions.push({ mission: completedMission.mission, aircraft: completedMission.aircraft });
+    user.completedMissions.push({
+      mission: completedMission.mission,
+      aircraft: completedMission.aircraft,
+      completed_date: new Date()  // Sets the completed date to today
+    });
 
     await user.save();
 
@@ -244,11 +288,19 @@ router.post('/completeMission', auth, async (req, res) => {
   }
 });
 
-router.delete('/clearCompletedMission', auth, async (req, res) => {
-  try {
-    const { userId, missionId } = req.body;
 
-    // Update the user document to remove the completed mission
+
+
+
+
+router.delete('/clearCompletedMission', auth, async (req, res) => {
+  const { userId, missionId } = req.body;
+
+  if (!ObjectId.isValid(userId) || !ObjectId.isValid(missionId)) {
+    return res.status(400).json({ message: 'Invalid userId or missionId' });
+  }
+
+  try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $pull: { completedMissions: { mission: missionId } } },
@@ -265,29 +317,25 @@ router.delete('/clearCompletedMission', auth, async (req, res) => {
   }
 });
 
-// GET copilot for mission
-router.get('/copilot/:missionId', auth, async (req, res) => {
+router.get('/copilot/:missionId', async (req, res) => {
+  const { missionId } = req.params;
+
   try {
-    const missionId = req.params.missionId;
-    const userId = req.user.id;
-    const user = await User.findById(userId).populate('acceptedMissions.mission');
+    const user = await User.findOne({ 'acceptedMissions.mission': missionId }).populate('acceptedMissions.copilot');
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(404).json({ error: 'User or mission not found' });
     }
 
-    const acceptedMission = user.acceptedMissions.find(m => m.mission._id.toString() === missionId);
-    if (!acceptedMission) {
-      return res.status(404).send('Accepted mission not found');
+    // Find the relevant copilot from the accepted missions
+    const missionData = user.acceptedMissions.find(m => m.mission.toString() === missionId);
+    if (!missionData || !missionData.copilot) {
+      return res.status(404).json({ error: 'Copilot not found' });
     }
 
-    const copilot = await User.findOne({ "acceptedMissions.mission": missionId });
-    if (!copilot) {
-      return res.status(404).send('Copilot not found');
-    }
-
-    res.json(copilot);
+    res.json(missionData.copilot);
   } catch (error) {
-    res.status(500).send(error.message);
+    console.error('Error fetching copilot:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

@@ -339,4 +339,22 @@ router.get('/copilot/:missionId', async (req, res) => {
   }
 });
 
+
+// Route to search users by username
+router.post('/findPilotByName', auth, async (req, res) => {
+  const { query } = req.body;
+
+  try {
+    // Find users whose usernames match the search query (case-insensitive)
+    const pilots = await User.find({
+      username: { $regex: query, $options: 'i' }
+    });
+
+    res.json(pilots);
+  } catch (error) {
+    console.error('Error searching for pilots:', error);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;

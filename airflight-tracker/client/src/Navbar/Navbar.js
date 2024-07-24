@@ -81,11 +81,11 @@ function Navbar() {
                 Find a Pilot
               </Link>
             </li>
-            {/* <li className='navbar-item'>
+            { <li className='navbar-item'>
               <Link to='/search' className='navbar-text'>
                 Search
               </Link>
-            </li> */}
+            </li> }
           </>
         )}
         <li className='navbar-item'>

@@ -1,27 +1,75 @@
-.search{
+.search {
     height: 100vh;
-    background-color:#061a62 ;
-}
-
-
-.search-field-section{
+    background-color: #061a62;
+  }
+  
+  .search-field-section {
     padding-top: 90px;
-}
-
-
-.search-field{
+  }
+  
+  .search-field {
     font-size: 22px;
     width: 700px;
-    background-color: lightgray;
-    border-radius: 10px;
+    padding: 10px;
+  }
+  
+  .search-button-section {
+    margin-top: 20px;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    color: black;
-}
-
-.search-button{
-    font-size: 22px;
-    color: black;
-    border: none;
-    border-radius: 8px;
     cursor: pointer;
-}
+  }
+  
+  .pilot-results {
+    margin-top: 30px;
+  }
+  
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .card-text {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 10px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  
+  .no-pilot-sentence {
+    color: #fff;
+  }

@@ -1,0 +1,27 @@
+.pilot-details {
+    padding: 20px;
+    background-color: #061a62;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .details-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    color: #000;
+  }
+  
+  .details-profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: red;
+  }
+  

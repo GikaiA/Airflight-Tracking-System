@@ -357,4 +357,23 @@ router.post('/findPilotByName', auth, async (req, res) => {
   }
 });
 
+
+// Route to get full user profile by ID
+router.get('/pilot/:id', auth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    if (!ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    const user = await User.findById(userId).populate('acceptedMissions.mission');
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+
 module.exports = router;

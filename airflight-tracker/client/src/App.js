@@ -10,6 +10,7 @@ import Footer from "./Footer/Footer";
 import AccessForbidden from "./AccessForbidden/AccessForbidden";
 import Register from "./Register/Register";
 import Search from "./Search/Search";
+import PilotDetails from './PilotDetails/PilotDetails';
 import FindPilot from "./FindPilot/FindPilot";
 import About from "./About/About";
 import { AuthProvider } from './Context/AuthContext';
@@ -30,6 +31,7 @@ function App() {
             <Route path="/edit-profile/:id" element={<EditProfile />} />
             <Route path="/findapilot" element={<FindPilot />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/pilot/:id" element={<PilotDetails />} />
             <Route path="/flight" element={<Flight />} />
             <Route path="/accessforbidden" element={<AccessForbidden />} />
           

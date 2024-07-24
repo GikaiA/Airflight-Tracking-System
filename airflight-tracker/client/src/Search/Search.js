@@ -68,13 +68,9 @@ function Search() {
               {pilots.map((pilot) => (
                 <div className='card' key={pilot._id} onClick={() => handleCardClick(pilot._id)}>
                   <div className='card-body'>
+                    <img src={`http://localhost:3000/${pilot.profilePicture}`} alt='Profile' className='profile-picture'/>
                     <h3 className='card-title'>{pilot.username}</h3>
                     <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
-                    <p className='card-text'><strong>Rank:</strong> {pilot.rank || 'N/A'}</p>
-                    <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Aircraft Qualifications:</strong> {pilot.aircraft_qualification.join(', ') || 'N/A'}</p>
-                    <img src={`http://localhost:3000/${pilot.profilePicture}`} alt='Profile' className='profile-picture'/>
                   </div>
                 </div>
               ))}

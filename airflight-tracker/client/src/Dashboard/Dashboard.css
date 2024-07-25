@@ -1,12 +1,12 @@
 /* General styling for the dashboard */
 .dashboard {
-  height: 100vh;
   background-color: #001f3f; /* Dark blue background */
   color: #ffdc00; /* Bright yellow text for contrast */
   padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: auto;
 }
 
 .header {

@@ -12,7 +12,7 @@ function FindPilot() {
   useEffect(() => {
     const fetchRecommendedMissions = async () => {
       const userId = localStorage.getItem("userId");
-
+  
       try {
         const response = await fetch(`http://localhost:3000/api/user/recommendedMissions/${userId}`, {
           method: 'GET',
@@ -21,20 +21,20 @@ function FindPilot() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-
+  
         if (!response.ok) {
           throw new Error('Network response was not ok ' + response.statusText);
         }
-
+  
         const data = await response.json();
         setMissions(data);
       } catch (error) {
         console.error('Error fetching missions:', error);
       }
     };
-
+  
     fetchRecommendedMissions();
-  }, []);
+  }, []);  
 
   const handleMissionClick = async (mission) => {
     setSelectedMission(mission);

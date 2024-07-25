@@ -112,6 +112,7 @@ router.put('/profile/:id', auth, upload.single('profileFile'), async (req, res) 
   }
 });
 
+// Route to get recommended missions for a user
 router.get('/recommendedMissions/:id', auth, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -124,11 +125,11 @@ router.get('/recommendedMissions/:id', auth, async (req, res) => {
       return res.status(404).send('User not found');
     }
 
-    const acceptedMissionIds = user.acceptedMissions.map(acceptedMission => acceptedMission.mission._id.toString());
+    // Get all accepted mission IDs
+    const acceptedMissionIds = await User.distinct('acceptedMissions.mission');
 
-    const missions = await Mission.find({});
+    const missions = await Mission.find({ _id: { $nin: acceptedMissionIds } });
     const recommendedMissions = missions
-      .filter(mission => !acceptedMissionIds.includes(mission._id.toString()))
       .map((mission) => {
         let score = 0;
         if (user.aircraft_qualification.includes(mission.aircraft)) score += 5;

@@ -1,0 +1,47 @@
+.pilot-details {
+    padding: 20px;
+    color: #fff;
+    background-color: #001f3f; /* Match background color */
+    min-height: 100vh; /* Ensure full-height */
+  }
+  
+  .details-card {
+    background-color: #002f6c; /* Darker background for the card */
+    border: 1px solid #ffdc00; /* Accent border color */
+    padding: 20px;
+    border-radius: 8px;
+    color: #ffdc00; /* Text color */
+    max-width: 800px; /* Limit card width */
+    margin: 0 auto; /* Center card */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .details-profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #ffdc00; /* Add a border to the profile picture */
+  }
+  
+  .error-message {
+    color: #ff4136; /* Error color */
+    text-align: center;
+    font-size: 1.2em; /* Increase font size for visibility */
+  }
+  .back-button {
+    background-color: #ff4136; /* Accent color */
+    color: #fff; /* Text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
+  .back-button:hover {
+    background-color: #ff3333; /* Slightly darker on hover */
+  }
+  

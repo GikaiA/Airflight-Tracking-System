@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Search.css';
 
 function Search() {
@@ -6,12 +7,11 @@ function Search() {
   const [pilots, setPilots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // useNavigate hook for navigation
 
   const handleSearch = () => {
     setLoading(true);
     setError('');
-
-    console.log('Searching with given query value:', { query });
 
     fetch('http://localhost:3000/api/user/findPilotByName', {
       method: 'POST',
@@ -27,7 +27,6 @@ function Search() {
         return response.json();
       })
       .then((data) => {
-        console.log('Fetched Pilots:', data);
         setPilots(data);
         setLoading(false);
       })
@@ -36,6 +35,10 @@ function Search() {
         setError('Error fetching pilot data');
         setLoading(false);
       });
+  };
+
+  const handleCardClick = (pilotId) => {
+    navigate(`/pilot/${pilotId}`);
   };
 
   return (
@@ -63,16 +66,11 @@ function Search() {
           {pilots.length > 0 ? (
             <div className='cards'>
               {pilots.map((pilot) => (
-                <div className='card' key={pilot._id}>
+                <div className='card' key={pilot._id} onClick={() => handleCardClick(pilot._id)}>
                   <div className='card-body'>
+                    <img src={`http://localhost:3000/${pilot.profilePicture}`} alt='Profile' className='profile-picture'/>
                     <h3 className='card-title'>{pilot.username}</h3>
                     <p className='card-text'><strong>Email:</strong> {pilot.email}</p>
-                    <p className='card-text'><strong>Rank:</strong> {pilot.rank || 'N/A'}</p>
-                    <p className='card-text'><strong>NVG Hours:</strong> {pilot.nvg_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Combat Hours:</strong> {pilot.combat_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Total Flight Hours:</strong> {pilot.total_flight_hours || 'N/A'}</p>
-                    <p className='card-text'><strong>Combat Sorties:</strong> {pilot.combat_sorties || 'N/A'}</p>
-                    <p className='card-text'><strong>Total Sorties:</strong> {pilot.total_sorties || 'N/A'}</p>
                   </div>
                 </div>
               ))}

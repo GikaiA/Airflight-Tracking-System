@@ -1,6 +1,4 @@
-
 import React from "react";
-//import React, { useState, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./Homepage/Homepage";
@@ -12,34 +10,37 @@ import Footer from "./Footer/Footer";
 import AccessForbidden from "./AccessForbidden/AccessForbidden";
 import Register from "./Register/Register";
 import Search from "./Search/Search";
+import PilotDetails from './PilotDetails/PilotDetails';
 import FindPilot from "./FindPilot/FindPilot";
 import About from "./About/About";
-import { AuthProvider } from './Context/AuthContext'; //new file
+import { AuthProvider } from './Context/AuthContext';
 import Flight from './Flight/Flight';
 
 function App() {
   return (
-   <AuthProvider>
+    <AuthProvider>
       <div className="App">
         <BrowserRouter>
           <Navbar />
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="/about" element={<About/>}/>
+            <Route path="/about" element={<About />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/edit-profile/:id" element={<EditProfile />} />
             <Route path="/findapilot" element={<FindPilot />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/flight" element={<Flight/>}/>
+            <Route path="/pilot/:id" element={<PilotDetails />} />
+            <Route path="/flight" element={<Flight />} />
             <Route path="/accessforbidden" element={<AccessForbidden />} />
+          
           </Routes>
           <Footer />
         </BrowserRouter>
       </div>
-   </AuthProvider>
- );
+    </AuthProvider>
+  );
 }
 
 export default App;

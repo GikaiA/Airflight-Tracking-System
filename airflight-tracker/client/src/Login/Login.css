@@ -18,21 +18,22 @@
 }
 
 .left {
-    left: 0;
-    background-color: #061a62;
-  }
-
-  .right{
-    right: 0;
+  left: 0;
   background-color: #061a62;
-  }
+}
+
+.right {
+  right: 0;
+  background-color: #061a62;
+}
 
 .airforce-login-pic {
-  width: 1800px;
-  height: 1250px;
+  width: 100%;
+  height: 1050px;
   object-fit: cover;
-    max-width: max-content;
-    max-height: max-content;
+  max-width: max-content;
+  max-height: max-content;
+  padding-top: 100px;
 }
 
 .login-title {

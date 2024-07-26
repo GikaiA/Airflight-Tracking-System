@@ -3,7 +3,7 @@
   padding: 20px;
   color: #fff;
   background-color: #001f3f;
-  min-height: 100vh;
+  min-height: 110vh;
 }
 
 .findpilot-title {
@@ -77,8 +77,13 @@
   margin-bottom: 5px;
 }
 
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
 /* Styling for the back button */
 .back-button {
+  gap: 10px;
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #ff4136;

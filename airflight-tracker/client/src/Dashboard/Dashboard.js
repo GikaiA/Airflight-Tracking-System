@@ -235,8 +235,8 @@ const Dashboard = () => {
                       <div key={index} className="team-member card" onClick={() => handleMissionClick(acceptedMission)}>
                         <h3>Mission: {acceptedMission.mission.specific_mission}</h3>
                         <p>Aircraft: {acceptedMission.mission.aircraft}</p>
-                        <button onClick={(e) => { e.stopPropagation(); deleteMission(acceptedMission.mission._id); }}>Delete Mission</button>
-                        <button onClick={(e) => { e.stopPropagation(); completeMission(acceptedMission.mission._id); }}>Complete Mission</button>
+                        <button className='deletemission-button' onClick={(e) => { e.stopPropagation(); deleteMission(acceptedMission.mission._id); }}>Delete Mission</button>
+                        <button className='acceptmission-button' onClick={(e) => { e.stopPropagation(); completeMission(acceptedMission.mission._id); }}>Complete Mission</button>
                       </div>
                     ))
                 ) : (
